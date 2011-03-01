@@ -1,9 +1,11 @@
  = PDF Publishing Tools - TODO =
  
- @created 20-Nov-2010, Tim Telcik <tim.telcik@permeance.com.au>
- @modified 30-Nov-2010, Tim Telcik <tim.telcik@permeance.com.au>
- @modified 1-Mar-2011, Tim Telcik <telcik@gmail.com>
+Created: 20-Nov-2010, Tim Telcik <tim.telcik@permeance.com.au>
+Modified: 30-Nov-2010, Tim Telcik <tim.telcik@permeance.com.au>
+Modified: 1-Mar-2011, Tim Telcik <telcik@gmail.com>
  
+ 
+ == TODO ==
  
  * Integrate OpenOfficeReportBuilder with BookPublisher
  ** Use OpenOfficeReportBuilder to build Table Of Contents page
@@ -12,5 +14,5 @@
  
  * Review performance (eg. threading).
 
- * Review license model (eg. LGPL)
+ * Review license model
  

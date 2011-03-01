@@ -1,0 +1,71 @@
+= Sample book pubisher GUI output =
+
+Source dir is /Users/tim.telcik/spool/docs/training-slides
+Output dir is /Users/tim.telcik/spool/docs/pdf-output
+Output book file is /Users/tim.telcik/spool/docs/pdf-output-book.pdf
+Processing files in source dir /Users/tim.telcik/spool/docs/training-slides ...
+-- sourceDir: /Users/tim.telcik/spool/docs/training-slides
+-- outputDir: /Users/tim.telcik/spool/docs/pdf-output
+-- outputBookFile: /Users/tim.telcik/spool/docs/pdf-output-book.pdf
+-- progresMonitor: net.mitnet.tools.pdf.book.ui.gui.ProgressBarMonitor@7458e2a1
+sourceDir: /Users/tim.telcik/spool/docs/training-slides
+outputDir: /Users/tim.telcik/spool/docs/pdf-output
+outputFormat: pdf
+sourceFileList.size: 0
+sourceFileList: []
+-- tocBuilder: net.mitnet.tools.pdf.book.model.TableOfContentsBuilder@18f3552f
+-- sourceDir: /Users/tim.telcik/spool/docs/pdf-output
+-- outputFile: /Users/tim.telcik/spool/docs/pdf-output-book.pdf
+-- progresMonitor: net.mitnet.tools.pdf.book.ui.gui.ProgressBarMonitor@7458e2a1
+-- tocListener: net.mitnet.tools.pdf.book.model.TableOfContentsBuilder@18f3552f
+-- sourceFileList.size: 3
+-- sourceFileList: [/Users/tim.telcik/spool/docs/pdf-output/aaa-sample.pdf, /Users/tim.telcik/spool/docs/pdf-output/bbb-sample.pdf, /Users/tim.telcik/spool/docs/pdf-output/ccc-sample.pdf]
+-- Building output PDF file /Users/tim.telcik/spool/docs/pdf-output-book.pdf
+-- Using page label font com.lowagie.text.pdf.TrueTypeFont@2627cd63
+-- Reading source PDF file /Users/tim.telcik/spool/docs/pdf-output/aaa-sample.pdf
+-- PDF reader is com.lowagie.text.pdf.PdfReader@29a220e6
+-- PDF reader helper is net.mitnet.tools.pdf.book.pdf.itext.PdfReaderHelper@531df164
+-- PDF title is aaa-sample
+-- PDF author is tim.telcik
+-- PDF info title is AAA SAMPLE ODT
+-- PDF info author is AAA SAMPLE ODT
+-- There are 1 page(s) in source PDF file /Users/tim.telcik/spool/docs/pdf-output/aaa-sample.pdf
+-- Building output PDF page 1 ...
+-- Added TOC entry TableOfContentsEntry [title=AAA SAMPLE ODT, pageNumber=1] to listener
+-- Adding page 1 of 1 from source to output
+-- Finished reading 1 page(s) from source PDF file /Users/tim.telcik/spool/docs/pdf-output/aaa-sample.pdf
+33 % complete ...
+-- Reading source PDF file /Users/tim.telcik/spool/docs/pdf-output/bbb-sample.pdf
+-- PDF reader is com.lowagie.text.pdf.PdfReader@5006279d
+-- PDF reader helper is net.mitnet.tools.pdf.book.pdf.itext.PdfReaderHelper@4412dd76
+-- PDF title is bbb-sample
+-- PDF author is tim.telcik
+-- PDF info title is BBB SAMPLE ODT
+-- PDF info author is BBB SAMPLE ODT
+-- There are 1 page(s) in source PDF file /Users/tim.telcik/spool/docs/pdf-output/bbb-sample.pdf
+-- Building output PDF page 2 ...
+-- Added TOC entry TableOfContentsEntry [title=BBB SAMPLE ODT, pageNumber=2] to listener
+-- Adding page 1 of 1 from source to output
+-- Finished reading 1 page(s) from source PDF file /Users/tim.telcik/spool/docs/pdf-output/bbb-sample.pdf
+66 % complete ...
+-- Reading source PDF file /Users/tim.telcik/spool/docs/pdf-output/ccc-sample.pdf
+-- PDF reader is com.lowagie.text.pdf.PdfReader@6dbe4663
+-- PDF reader helper is net.mitnet.tools.pdf.book.pdf.itext.PdfReaderHelper@66ff45de
+-- PDF title is ccc-sample
+-- PDF author is tim.telcik
+-- PDF info title is CCC SAMPLE ODT
+-- PDF info author is CCC SAMPLE ODT
+-- There are 1 page(s) in source PDF file /Users/tim.telcik/spool/docs/pdf-output/ccc-sample.pdf
+-- Building output PDF page 3 ...
+-- Added TOC entry TableOfContentsEntry [title=CCC SAMPLE ODT, pageNumber=3] to listener
+-- Adding page 1 of 1 from source to output
+-- Finished reading 1 page(s) from source PDF file /Users/tim.telcik/spool/docs/pdf-output/ccc-sample.pdf
+100 % complete.
+-- Output PDF file /Users/tim.telcik/spool/docs/pdf-output-book.pdf contains 3 page(s)
+-- Output PDF Table Of Contents is TableOfContents [tocEntryList=[TableOfContentsEntry [title=AAA SAMPLE ODT, pageNumber=1], TableOfContentsEntry [title=BBB SAMPLE ODT, pageNumber=2], TableOfContentsEntry [title=CCC SAMPLE ODT, pageNumber=3]]]
+-- Output PDF Table Of Contents contains 3 entries
+--- Begin Table Of Contents
+AAA SAMPLE ODT ... Page 1
+BBB SAMPLE ODT ... Page 2
+CCC SAMPLE ODT ... Page 3
+--- End Table Of Contents

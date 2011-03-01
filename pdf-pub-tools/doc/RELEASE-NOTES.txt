@@ -1,0 +1,34 @@
+ =Training Book Publisher - Release Notes =
+ 
+ @created 20-Nov-2010, Tim Telcik <tim.telcik@permeance.com.au>
+ @modified 30-Nov-2010, Tim Telcik <tim.telcik@permeance.com.au>
+
+== Tools ==
+
+=== Command Line Interfaces (CLI) ===
+
+==== TrainingBookPublisherCLI ====
+
+com.liferay.training.tools.book.publisher.ui.cli.TrainingBookPublisherCLI
+purpose: creates final training PDF book
+usage: TrainingBookPublisherCLI -v -i <input-dir> -o <output-dir> -b <output-pdf-book>
+
+==== OpenOfficeDocConverterCLI ====
+
+com.liferay.training.tools.openoffice.ui.cli.OpenOfficeDocConverterCLI
+purpose: converts ODT to PDF (by default)
+usage: OpenOfficeDocConverterCLI -v -i <input-dir> -o <output-dir>
+
+com.liferay.training.tools.pdf.builder.ui.cli.PdfBookBuilderCLI
+purpose: builds PDF book from PDF files
+usage: PdfBookBuilderCLI -v -i <input-dir> -o -b <output-pdf-book>
+
+=== GUI ===
+
+==== TrainingBookPublisherGUI ====
+
+com.liferay.training.tools.book.publisher.ui.gui.TrainingBookPublisherGUI
+purpose: creates PDFs from ODT only at this stage; a bit more work to make this equivalent to
+TrainingBookPublisherCLI
+usage: launch from Eclipse
+

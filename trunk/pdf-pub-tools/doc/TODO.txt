@@ -1,7 +1,8 @@
- = =Training Book Publisher - Release Notes TODO =
+ = PDF Publishing Tools - TODO =
  
  @created 20-Nov-2010, Tim Telcik <tim.telcik@permeance.com.au>
  @modified 30-Nov-2010, Tim Telcik <tim.telcik@permeance.com.au>
+ @modified 1-Mar-2011, Tim Telcik <telcik@gmail.com>
  
  
  * Integrate OpenOfficeReportBuilder with BookPublisher

@@ -1,0 +1,15 @@
+ = =Training Book Publisher - Release Notes TODO =
+ 
+ @created 20-Nov-2010, Tim Telcik <tim.telcik@permeance.com.au>
+ @modified 30-Nov-2010, Tim Telcik <tim.telcik@permeance.com.au>
+ 
+ 
+ * Integrate OpenOfficeReportBuilder with BookPublisher
+ ** Use OpenOfficeReportBuilder to build Table Of Contents page
+ ** Merge Table Of Contents page with published book PDF
+ ** Generate PDF Bookmarks in output PDF file
+ 
+ * Review performance (eg. threading).
+
+ * Review license model (eg. LGPL)
+ 

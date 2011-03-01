@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="resources/templates"/>
+	<classpathentry kind="src" path="resources/images"/>
+	<classpathentry kind="src" path="resources/fonts"/>
+	<classpathentry kind="src" path="test/src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.launching.macosx.MacOSXType/JVM 1.6.0"/>
+	<classpathentry kind="lib" path="lib/commons-lang-2.3.jar"/>
+	<classpathentry kind="lib" path="lib/iText-2.1.7.jar" sourcepath="/Users/tim.telcik/.m2/repository/com/lowagie/itext/2.1.7/itext-2.1.7-sources.jar"/>
+	<classpathentry kind="lib" path="lib/swingx-beaninfo-1.6.2.jar"/>
+	<classpathentry kind="lib" path="lib/swingx-core-1.6.2.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="lib/swing-layout-1.0.3.jar"/>
+	<classpathentry kind="lib" path="lib/iText-toolbox-2.1.7.jar" sourcepath="etc/src/iText-toolbox-2.1.7-sources.jar"/>
+	<classpathentry kind="lib" path="lib/commons-cli-1.2.jar" sourcepath="/Users/tim.telcik/.m2/repository/commons-cli/commons-cli/1.2/commons-cli-1.2-sources.jar"/>
+	<classpathentry kind="lib" path="lib/commons-io-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/jodconverter-2.2.2.jar" sourcepath="etc/src/jodconverter-2.2.2-sources.jar"/>
+	<classpathentry kind="lib" path="lib/jodconverter-cli-2.2.2.jar" sourcepath="etc/src/jodconverter-cli-2.2.2-sources.jar"/>
+	<classpathentry kind="lib" path="lib/juh-3.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/jurt-3.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/ridl-3.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-api-1.5.6.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-jdk14-1.5.6.jar"/>
+	<classpathentry kind="lib" path="lib/unoil-3.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/xstream-1.3.1.jar"/>
+	<classpathentry kind="lib" path="lib/jodreports-2.3.0.jar" sourcepath="etc/src/jodreports-2.3.0-src.jar"/>
+	<classpathentry kind="lib" path="lib/freemarker-2.3.16.jar" sourcepath="etc/src/freemarker-2.3.16-sources.jar"/>
+	<classpathentry kind="lib" path="lib/jcommon-1.0.15.jar"/>
+	<classpathentry kind="lib" path="lib/jfreechart-1.0.12.jar"/>
+	<classpathentry kind="lib" path="lib/xom-1.2.5.jar"/>
+	<classpathentry kind="lib" path="lib/commons-logging-1.1.jar"/>
+	<classpathentry kind="output" path="classes"/>
+</classpath>

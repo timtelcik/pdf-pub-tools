@@ -1,0 +1,21 @@
+<shortcuts>
+  <skipIfNotSupported/>
+  <programGroup defaultName="Liferay Training Exporter"
+                location="startMenu"/>
+  <shortcut
+    name="Training Exporter"
+    target="$INSTALL_PATH\training-exporter.bat"
+    commandLine=""
+    workingDirectory="$INSTALL_PATH"
+    description="Liferay Training Exporter"
+    iconFile="$INSTALL_PATH\liferay.ico"
+    iconIndex="0"
+    initialState="normal"
+    programGroup="yes"
+    desktop="yes"
+    startMenu="yes"
+    startup="no">
+  </shortcut>
+</shortcuts>
+
+

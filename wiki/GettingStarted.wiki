@@ -2,16 +2,7 @@
 
    * Checkout source for this project.
    * Import into Eclipse IDE as an existing Java project.
+   * Run Book Publisher and related tools using Eclipse launchers.
 
 
 See [Usage]
-
-Add your content here.
-
-
-= Details =
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages

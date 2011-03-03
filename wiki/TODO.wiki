@@ -1,0 +1,12 @@
+#labels PDF,Java,Tools,Java
+#TODO items
+
+= TODO =
+
+This page contains a non-exhaustive list of TODO items.
+Add your content here.
+
+= TODO Release 1 =
+
+* Merge the TOC data structure with an Open Office template (*.odt) to build a TOC page
+* Merge the TOC page with the PDF booklet

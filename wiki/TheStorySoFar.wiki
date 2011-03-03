@@ -1,0 +1,11 @@
+#The Story So Far
+
+= The Story So Far =
+
+The PDF book publisher tool suite contains a number of tools, one of which ... the Book Publisher ... converts a folder conaining Open Office documents (ODT,ODP) into PDF docs.
+
+The translation is handled by running Open Office in "server mode" and uploading each file to the Open Office server using the JOD Converter API. See http://www.artofsolving.com/opensource/jodconverter
+
+The Book Publisher also assembles the PDF docs into a 2-up PDF booklet using iText with page number. See See http://itextpdf.com/
+
+There are many outstanding [TODO] items.

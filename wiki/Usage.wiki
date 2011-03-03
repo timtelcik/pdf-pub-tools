@@ -1,0 +1,69 @@
+=Usage Started=
+
+==Tools==
+
+===Command Line Interfaces (CLI)===
+
+====BookPublisherCLI====
+
+class: 
+
+net.mitnet.tools.pdf.book.publisher.ui.cli.BookPublisherCLI
+
+purpose: 
+
+creates final PDF book
+
+usage: 
+
+{{{
+BookPublisherCLI -v -i <input-dir> -o <output-dir> -b <output-pdf-book>
+}}}
+
+====OpenOfficeDocConverterCLI====
+
+class 
+
+net.mitnet.tools.pdf.openoffice.ui.cli.OpenOfficeDocConverterCLI
+
+purpose: 
+
+converts ODT to PDF (by default)
+
+usage: 
+
+{{{
+OpenOfficeDocConverterCLI -v -i <input-dir> -o <output-dir>
+}}}
+
+
+====PdfBookBuilderCLI====
+
+class: 
+
+net.mitnet.tools.pdf.pdf.builder.ui.cli.PdfBookBuilderCLI
+
+purpose: 
+
+builds PDF book from PDF files
+
+usage: 
+
+{{{
+PdfBookBuilderCLI -v -i <input-dir> -o -b <output-pdf-book>
+}}}
+
+===Graphical User Interface (GUI)===
+
+====BookPublisherGUI====
+
+class: 
+
+net.mitnet.tools.pdf.book.publisher.ui.gui.BookPublisherGUI
+
+purpose: 
+
+creates PDFs from ODT only at this stage; a bit more work to 
+make this equivalent to BookPublisherCLI
+
+usage: launch from Eclipse

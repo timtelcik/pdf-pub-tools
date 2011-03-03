@@ -11,13 +11,13 @@ The following is:
 
   * Merge the TOC data structure with an Open Office template (od) to build a TOC page
 
-  ** Integrate OpenOfficeReportBuilder with BookPublisher to create PDF TOC page
+     * Integrate OpenOfficeReportBuilder with BookPublisher to create PDF TOC page
 
-  ** Use OpenOfficeReportBuilder to build Table Of Contents (TOC) page
+     * Use OpenOfficeReportBuilder to build Table Of Contents (TOC) page
 
-  ** Merge Table Of Contents page with published book PDF
+     * Merge Table Of Contents page with published book PDF
 
-  ** Generate PDF Bookmarks in output PDF file
+     * Generate PDF Bookmarks in output PDF file
 
   * Merge the TOC page with the PDF booklet
 

@@ -1,18 +1,18 @@
-=Usage Started=
+= Usage =
 
-==Tools==
+== Tools ==
 
-===Command Line Interfaces (CLI)===
+=== Command Line Interfaces (CLI) ===
 
-====BookPublisherCLI====
-
-class: 
-
-net.mitnet.tools.pdf.book.publisher.ui.cli.BookPublisherCLI
+==== BookPublisherCLI ====
 
 purpose: 
 
 creates final PDF book
+
+class: 
+
+net.mitnet.tools.pdf.book.publisher.ui.cli.BookPublisherCLI
 
 usage: 
 
@@ -20,15 +20,15 @@ usage:
 BookPublisherCLI -v -i <input-dir> -o <output-dir> -b <output-pdf-book>
 }}}
 
-====OpenOfficeDocConverterCLI====
-
-class 
-
-net.mitnet.tools.pdf.openoffice.ui.cli.OpenOfficeDocConverterCLI
+==== OpenOfficeDocConverterCLI ====
 
 purpose: 
 
 converts ODT to PDF (by default)
+
+class 
+
+net.mitnet.tools.pdf.openoffice.ui.cli.OpenOfficeDocConverterCLI
 
 usage: 
 
@@ -37,15 +37,15 @@ OpenOfficeDocConverterCLI -v -i <input-dir> -o <output-dir>
 }}}
 
 
-====PdfBookBuilderCLI====
-
-class: 
-
-net.mitnet.tools.pdf.pdf.builder.ui.cli.PdfBookBuilderCLI
+==== PdfBookBuilderCLI ====
 
 purpose: 
 
 builds PDF book from PDF files
+
+class: 
+
+net.mitnet.tools.pdf.pdf.builder.ui.cli.PdfBookBuilderCLI
 
 usage: 
 
@@ -53,17 +53,17 @@ usage:
 PdfBookBuilderCLI -v -i <input-dir> -o -b <output-pdf-book>
 }}}
 
-===Graphical User Interface (GUI)===
+=== Graphical User Interface (GUI) ===
 
-====BookPublisherGUI====
-
-class: 
-
-net.mitnet.tools.pdf.book.publisher.ui.gui.BookPublisherGUI
+==== BookPublisherGUI ====
 
 purpose: 
 
 creates PDFs from ODT only at this stage; a bit more work to 
 make this equivalent to BookPublisherCLI
+
+class: 
+
+net.mitnet.tools.pdf.book.publisher.ui.gui.BookPublisherGUI
 
 usage: launch from Eclipse

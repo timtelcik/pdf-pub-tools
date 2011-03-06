@@ -44,9 +44,9 @@ import com.lowagie.text.Rectangle;
 
 
 /**
- * Training Book Publisher Command Line Interface (CLI).
+ * Book Publisher Command Line Interface (CLI).
  * 
- * This program converts Liferay training documents into a single PDF.
+ * This program converts a collection of Open Office documents into a single 2-up PDF.
  * 
  * TODO - refactor CLI logic with OpenOfficeDocConverterCLI and PdfBookBuilderCLI
  * 
@@ -62,7 +62,8 @@ public class BookPublisherCLI {
 	private static final String PAGE_SIZE_US_LETTER_STRING = "LETTER";
 	private static final String PAGE_SIZE_ISO_A4_STRING = "A4";
 	private static final String DEFAULT_PAGE_SIZE = PAGE_SIZE_ISO_A4_STRING;
-	private static final File DEFAULT_OUTPUT_FILE = new File( "training-book" + PdfBookBuilder.PDF_FILE_EXTENSION );
+	private static final File DEFAULT_OUTPUT_FILE = new File( "my-book" + PdfBookBuilder.PDF_FILE_EXTENSION );
+	
 
 	private static final Option OPTION_SOURCE_DIR = 
 		new Option("i","source-dir", true, "source directory");

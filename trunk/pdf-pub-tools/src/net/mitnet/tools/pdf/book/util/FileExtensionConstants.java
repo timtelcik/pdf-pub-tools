@@ -15,21 +15,18 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package net.mitnet.tools.pdf.book.pdf.io;
-
-import net.mitnet.tools.pdf.book.io.FileNameSuffixFileFilter;
-import net.mitnet.tools.pdf.book.util.FileExtensionConstants;
+package net.mitnet.tools.pdf.book.util;
 
 
 /**
- * PDF File Filter.
+ * File Extension Constants.
  * 
  * @author Tim Telcik <telcik@gmail.com>
  */
-public class PdfFileFilter extends FileNameSuffixFileFilter {
-	
-	public PdfFileFilter() {
-		super( FileExtensionConstants.PDF );
-	}
+public class FileExtensionConstants {
+
+	public static final String PDF = ".pdf";
+	public static final String OPEN_OFFICE_DOCUMENT = ".odt";
+	public static final String OPEN_OFFICE_PRESENTATION = ".odp";
 
 }

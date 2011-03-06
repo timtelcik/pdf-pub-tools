@@ -164,7 +164,7 @@ public class PdfBookBuilderCLI {
 				Toc toc = tocBuilder.getToc();
 				System.out.println( "-- Output PDF Table Of Contents is " + toc );
 				System.out.println( "-- Output PDF Table Of Contents contains " + toc.getTocEntryCount() + " entries" );
-				TocTracer.traceTableOfContents(toc);
+				TocTracer.traceToc(toc);
 			}
 
 			// TODO - output TOC data ???

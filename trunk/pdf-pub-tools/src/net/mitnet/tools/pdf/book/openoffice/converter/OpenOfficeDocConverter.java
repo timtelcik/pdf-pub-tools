@@ -19,6 +19,7 @@ package net.mitnet.tools.pdf.book.openoffice.converter;
 
 import java.io.File;
 import java.net.ConnectException;
+import java.util.ArrayList;
 import java.util.List;
 
 import net.mitnet.tools.pdf.book.io.FileHelper;
@@ -148,7 +149,13 @@ public class OpenOfficeDocConverter {
 			connection.disconnect();
 		}
 	}
-
+	
+	public void convertDocument( File sourceFile, File outputDir, String outputFormat, ProgressMonitor progresMonitor ) throws Exception {
+		List<File> sourceFiles = new ArrayList<File>();
+		sourceFiles.add(sourceFile);
+		convertDocuments( sourceFiles, outputDir, outputFormat, progresMonitor );
+	}
+	
 	private void convertDocument( DocumentConverter converter,
 			File inputFile, File outputFile, boolean verbose ) {
 

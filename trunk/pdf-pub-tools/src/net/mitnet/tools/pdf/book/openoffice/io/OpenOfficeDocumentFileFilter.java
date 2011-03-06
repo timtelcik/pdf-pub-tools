@@ -18,6 +18,7 @@
 package net.mitnet.tools.pdf.book.openoffice.io;
 
 import net.mitnet.tools.pdf.book.io.FileNameSuffixFileFilter;
+import net.mitnet.tools.pdf.book.util.FileExtensionConstants;
 
 
 /**
@@ -27,10 +28,8 @@ import net.mitnet.tools.pdf.book.io.FileNameSuffixFileFilter;
  */
 public class OpenOfficeDocumentFileFilter extends FileNameSuffixFileFilter {
 	
-	public static final String OPEN_OFFICE_DOCUMENT_FILE_EXTENSION = ".odt";
-	
 	public OpenOfficeDocumentFileFilter() {
-		super( OPEN_OFFICE_DOCUMENT_FILE_EXTENSION );
+		super( FileExtensionConstants.OPEN_OFFICE_DOCUMENT );
 	}
 
 }

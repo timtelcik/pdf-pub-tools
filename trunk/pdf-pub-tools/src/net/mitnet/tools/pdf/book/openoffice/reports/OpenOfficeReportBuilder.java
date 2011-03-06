@@ -65,7 +65,18 @@ import freemarker.template.Configuration;
  */
 public class OpenOfficeReportBuilder {
 	
+	private boolean verbose = false;
+	
+	
 	public OpenOfficeReportBuilder() {
+	}
+	
+	public void setVerbose( boolean value ) {
+		this.verbose = value;
+	}
+
+	public boolean isVerbose() {
+		return this.verbose;
 	}
 	
 	public void buildReport( String templateFile, Toc toc, String outputFile ) throws Exception {
@@ -90,7 +101,8 @@ public class OpenOfficeReportBuilder {
         	templateData = properties;
         } else {
         	String msg = "Template data file must be 'xml' or 'properties'; unsupported type: " + dataFileExtension;
-        	throw new Exception( msg );
+        	System.err.println(msg);
+        	throw new Exception(msg);
         }
 		
 		buildReport( templateFile, templateData, outputFile );
@@ -98,18 +110,23 @@ public class OpenOfficeReportBuilder {
 	
 	public void buildReport( File templateFile, Object templateData, File outputFile ) throws Exception {
       
-		System.out.println( "templateFile:" + templateFile );
-		System.out.println( "templateData:" + templateData );
-		System.out.println( "outputFile:" + outputFile );
+		if (isVerbose()) {
+			debug( "templateFile:" + templateFile );
+			debug( "templateData:" + templateData );
+			debug( "outputFile:" + outputFile );
+		}
 		
         DocumentTemplateFactory documentTemplateFactory = new DocumentTemplateFactory();
-        System.out.println( "documentTemplateFactory:" + documentTemplateFactory );
         
         Configuration freemarkerConfig = documentTemplateFactory.getFreemarkerConfiguration();
-        System.out.println( "freemarkerConfig:" + freemarkerConfig );
         
         DocumentTemplate docTemplate = documentTemplateFactory.getTemplate(templateFile);
-        System.out.println( "docTemplate:" + docTemplate );
+        
+		if (isVerbose()) {
+	        debug( "documentTemplateFactory:" + documentTemplateFactory );
+	        debug( "freemarkerConfig:" + freemarkerConfig );
+	        debug( "docTemplate:" + docTemplate );
+		}
         
         docTemplate.createDocument(templateData, new FileOutputStream(outputFile));
     }
@@ -118,6 +135,12 @@ public class OpenOfficeReportBuilder {
 		Map<String,String> templateData = new HashMap<String,String>();
 		// TODO - parse toc and fill template data
 		return templateData;
+	}
+	
+	private void debug( String msg ) {
+		if (isVerbose()) {
+			System.out.println("-- " + msg);
+		}
 	}
 
 }

@@ -53,9 +53,6 @@ import com.lowagie.text.Rectangle;
  * This program publishes a bundle of OpenOffice documents (*.odt) 
  * into a single 2-up PDF document.
  * 
- * NOTE: This class was derived from class "com.liferay.trainingexporter.ui.TrainingExporterUI"
- *       by Rich Sezov.
- * 
  * @author Rich Sezov <rich.sezov@liferay.com>
  * @author Tim Telcik <telcik@gmail.com>
  * 
@@ -285,7 +282,6 @@ public class BookPublisherGUI extends JFrame {
 		
 		this.progressBar.setMinimum(0); 
 		this.progressBar.setMaximum(100);
-		// this.progressBar.setIndeterminate(true);
 		
 		File sourceDir = getSourceDir();
 		File outputDir = getOutputDir();

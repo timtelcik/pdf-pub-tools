@@ -1,8 +1,21 @@
-= Getting Starred =
+= Getting Started =
+
+== Checkout Source ==
 
    * Checkout source for this project.
+
+== Build Tools ==
+
    * Import into Eclipse IDE as an existing Java project.
+
+- or -
+
    * Run Book Publisher and related tools using Eclipse launchers.
 
+== Usage ==
+
+   * Build tools
+   * Start Open Office in "headless" mode
+   * Run required tool. Some tools require OO in headless mode, some do not.
 
 See [Usage]

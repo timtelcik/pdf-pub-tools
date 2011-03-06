@@ -19,12 +19,14 @@ package net.mitnet.tools.pdf.book.reports;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.net.URL;
 import java.util.Map;
 
 import junit.framework.TestCase;
+import junit.framework.TestSuite;
+import net.mitnet.tools.pdf.book.model.toc.Toc;
+import net.mitnet.tools.pdf.book.model.toc.TocEntry;
+import net.mitnet.tools.pdf.book.model.toc.TocTemplateDataBuilder;
 import net.mitnet.tools.pdf.book.openoffice.reports.OpenOfficeReportBuilder;
 import net.sf.jooreports.templates.DocumentTemplateException;
 
@@ -37,6 +39,8 @@ import org.junit.BeforeClass;
 /**
  * Open Office Report Builder Test.
  * 
+ * TODO: review constants
+ * 
  * @author Tim Telcik <telcik@gmail.com>
  */ 
 public class OpenOfficeReportBuilderTest extends TestCase {
@@ -44,7 +48,17 @@ public class OpenOfficeReportBuilderTest extends TestCase {
 	private File homeDir = new File( System.getProperty( "user.home" ) );
 	
 	private File baseDir = new File( homeDir, "spool/reports/demo" );
-
+	
+	private File reportsBaseDir = null; 
+	
+	private File tempDir = new File( System.getProperty( "java.io.tmpdir" ) );
+	
+	private File reportsTempDir = null; 
+	
+	
+	public OpenOfficeReportBuilderTest(String name) {
+		super(name);
+	}
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -56,6 +70,17 @@ public class OpenOfficeReportBuilderTest extends TestCase {
 
 	@Before
 	public void setUp() throws Exception {
+		
+		// File reportsBaseDir = getReportsBaseDir();
+		
+		this.reportsBaseDir = getReportsBaseDir();
+		System.out.println("reportsBaseDir: " + reportsBaseDir);
+		
+		this.reportsTempDir = getReportsTempDir();
+		System.out.println("reportsTempDir: " + reportsTempDir);
+		
+		System.out.println("make dir path" + reportsTempDir);
+		this.reportsTempDir.mkdirs();
 	}
 
 	@After
@@ -64,18 +89,23 @@ public class OpenOfficeReportBuilderTest extends TestCase {
 	
 	public void testBuildOrderReport() throws Exception {
 		
+		System.out.println("--");
 		System.out.println("-- TEST BULD ORDER REPORT");
+		System.out.println("--");
 		
-		File demoDir = new File( this.baseDir, "order" );
-		System.out.println("demoDir:" + demoDir);
+		// File demoDir = new File( this.baseDir, "order" );
+		File demoDir = new File( this.reportsBaseDir, "order" );
+		
+		System.out.println("demoDir: " + demoDir);
 		
 		File templateFile = new File( demoDir, "order-template.odt" );
-		System.out.println("templateFile:" + templateFile);
+		System.out.println("templateFile: " + templateFile);
 		
 		File dataFile = new File( demoDir, "order-data.xml" );
-		System.out.println("dataFile:" + dataFile);
+		System.out.println("dataFile: " + dataFile);
 		
-		File outputFile = new File( demoDir, "order.odt" );
+		// File outputFile = new File( demoDir, "order.odt" );
+		File outputFile = new File( this.tempDir, "order.odt" );
 		System.out.println("outputFile" + outputFile);
 		
 		OpenOfficeReportBuilder reportBuilder = new OpenOfficeReportBuilder();
@@ -84,19 +114,22 @@ public class OpenOfficeReportBuilderTest extends TestCase {
 	
 	public void testBuildToc() throws Exception {
 		
+		System.out.println("--");
 		System.out.println("-- TEST BULD TOC");
+		System.out.println("--");
 		
 		File demoDir = new File( this.baseDir, "toc" );
-		System.out.println("demoDir:" + demoDir);
+		System.out.println("demoDir: " + demoDir);
 		
 		File templateFile = new File( demoDir, "toc-template.odt" );
-		System.out.println("templateFile:" + templateFile);
+		System.out.println("templateFile: " + templateFile);
 		
 		File dataFile = new File( demoDir, "toc-data.xml" );
-		System.out.println("dataFile:" + dataFile);
+		System.out.println("dataFile: " + dataFile);
 		
-		File outputFile = new File( demoDir, "toc-from-file.odt" );
-		System.out.println("outputFile:" + outputFile);
+		// File outputFile = new File( demoDir, "toc-from-file.odt" );
+		File outputFile = new File( this.reportsTempDir, "toc-from-file.odt" );
+		System.out.println("outputFile: " + outputFile);
 		
 		OpenOfficeReportBuilder reportBuilder = new OpenOfficeReportBuilder();
 		reportBuilder.buildReport(templateFile, dataFile, outputFile);
@@ -104,87 +137,78 @@ public class OpenOfficeReportBuilderTest extends TestCase {
 	
 	public void testBuildTocFromMap() throws Exception {
 		
+		System.out.println("--");
 		System.out.println("-- TEST BULD TOC FROM MAP");
+		System.out.println("--");
 		
 		File demoDir = new File( this.baseDir, "toc" );
-		System.out.println("demoDir:" + demoDir);
+		System.out.println("demoDir: " + demoDir);
 		
 		File templateFile = new File( demoDir, "toc-template.odt" );
-		System.out.println("templateFile:" + templateFile);
+		System.out.println("templateFile: " + templateFile);
 		
 		// File dataFile = new File( demoDir, "toc-data.xml" );
-		// System.out.println("dataFile:" + dataFile);
+		// System.out.println("dataFile: " + dataFile);
 		Map templateData = createSampleTocTemplateData();
-		System.out.println("templateData:" + templateData);
+		System.out.println("templateData: " + templateData);
 		
-		File outputFile = new File( demoDir, "toc-from-map.odt" );
-		System.out.println("outputFile:" + outputFile);
+		// File outputFile = new File( demoDir, "toc-from-map.odt" );
+		File outputFile = new File( this.reportsTempDir, "toc-from-map.odt" );
+		System.out.println("outputFile: " + outputFile);
 		
 		OpenOfficeReportBuilder reportBuilder = new OpenOfficeReportBuilder();
 		reportBuilder.buildReport(templateFile, templateData, outputFile);
 	}
 	
-    /**
-     * template contains <tt>[#list items as item]</tt>
-     */
-	/*
-	public void testScriptForRepeatingTableRow() throws IOException,
-			DocumentTemplateException {
-		File templateFile = getTestFile("visual-repeat-table-row-template.odt");
-		Map model = new HashMap();
-		List items = new ArrayList();
-		model.put("items", items);
-		Map one = new HashMap();
-		one.put("value", new Integer(1));
-		one.put("description", "one");
-		items.add(one);
-		Map two = new HashMap();
-		two.put("value", new Integer(2));
-		two.put("description", "two");
-		items.add(two);
-		Map three = new HashMap();
-		three.put("value", new Integer(3));
-		three.put("description", "three");
-		items.add(three);
-		String actual = processTemplate(templateFile, model);
-		String expected = "one\n" + "1\n" + "two\n" + "2\n" + "three\n" + "3\n"
-				+ "Total\n" + "6";
-		assertEquals(expected, actual);
-	}
-	*/
-	
-    /**
-     * template data contains <tt>[#list items as item]</tt>
-     */
 	private Map createSampleTocTemplateData() throws IOException, DocumentTemplateException {
-
-		Map model = new HashMap();
 		
-		Map toc = new HashMap();
-		model.put("toc", toc);
+		Toc toc = new Toc();
 		
-		List sectionList = new ArrayList();
-		toc.put("section", sectionList);
+		TocEntry tocEntry = null;
 		
-		Map tocEntryMap = null;
+		tocEntry = new TocEntry( "TITLE AAA", 100 );
+		toc.addTocEntry(tocEntry);
 		
-		tocEntryMap = createTocSectionData( "TITLE AAA", 100 );
-		sectionList.add(tocEntryMap);
+		tocEntry = new TocEntry( "TITLE BBB", 200 );
+		toc.addTocEntry(tocEntry);
 		
-		tocEntryMap = createTocSectionData( "TITLE BBB", 200 );
-		sectionList.add(tocEntryMap);
+		tocEntry = new TocEntry( "TITLE CCC", 300 );
+		toc.addTocEntry(tocEntry);
 		
-		tocEntryMap = createTocSectionData( "TITLE CCC", 300 );
-		sectionList.add(tocEntryMap);
+		System.out.println("toc: " + toc);
 		
-		return model;
+		Map tocTemplateDataMap = TocTemplateDataBuilder.buildTocTemplateData(toc);
+		
+		System.out.println("tocTemplateDataMap: " + tocTemplateDataMap);
+		
+		return tocTemplateDataMap;
 	}
 	
-	private Map createTocSectionData( String title, int pageNumber ) {
-		Map tocEntry = new HashMap();
-		tocEntry.put("title",title);
-		tocEntry.put("pageNumber", new Integer(pageNumber));
-		return tocEntry;
+	private File getReportsBaseDir() throws IOException {
+		File baseDir = null;
+		URL reportsUrl = getClass().getClassLoader().getResource("reports");
+		System.out.println("reportsUrl: " + reportsUrl);
+		if (reportsUrl != null) {
+			String urlString = reportsUrl.toExternalForm();
+			baseDir = new File( urlString);
+		}
+		System.out.println("baseDir: " + baseDir);
+		return baseDir;
+	}
+	
+	private File getReportsTempDir() throws IOException {
+		File tempDir = new File( this.tempDir, "reports" );
+		System.out.println("tempDir: " + tempDir);
+		return tempDir;
+	}	
+	
+	public static TestSuite suite() {
+		 TestSuite suite = new TestSuite();
+		 // suite.addTest(new OpenOfficeReportBuilderTest("testBuildOrderReport"));
+		 suite.addTest(new OpenOfficeReportBuilderTest("testBuildToc"));
+		 suite.addTest(new OpenOfficeReportBuilderTest("testBuildTocFromMap"));
+		 return suite;
 	}
 
 }
+

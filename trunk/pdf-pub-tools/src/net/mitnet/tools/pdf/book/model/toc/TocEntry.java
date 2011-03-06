@@ -15,7 +15,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package net.mitnet.tools.pdf.book.model;
+package net.mitnet.tools.pdf.book.model.toc;
 
 
 /**
@@ -23,16 +23,16 @@ package net.mitnet.tools.pdf.book.model;
  * 
  * @author Tim Telcik <telcik@gmail.com>
  */
-public class TableOfContentsEntry {
+public class TocEntry {
 	
 	private String title;
 	private int pageNumber;
 	
 	
-	public TableOfContentsEntry() {	
+	public TocEntry() {	
 	}
 	
-	public TableOfContentsEntry( String title, int pageNumber ) {
+	public TocEntry( String title, int pageNumber ) {
 		this.title = title;
 		this.pageNumber = pageNumber;
 	}
@@ -52,7 +52,7 @@ public class TableOfContentsEntry {
 
 	@Override
 	public String toString() {
-		return "TableOfContentsEntry [title=" + title + ", pageNumber="
+		return "TocEntry [title=" + title + ", pageNumber="
 				+ pageNumber + "]";
 	}
 

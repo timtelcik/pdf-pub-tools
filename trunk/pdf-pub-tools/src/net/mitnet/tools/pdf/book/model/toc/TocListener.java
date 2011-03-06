@@ -15,29 +15,16 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package net.mitnet.tools.pdf.book.model;
+package net.mitnet.tools.pdf.book.model.toc;
 
 
 /**
- * Table Of Contents Builder
- * 
+ * Represents a Table Of Contents Listener.
+ *  
  * @author Tim Telcik <telcik@gmail.com>
  */
-public class TableOfContentsBuilder implements TableOfContentsListener {
+public interface TocListener {
 	
-	private TableOfContents toc = new TableOfContents();
-
-	
-	public TableOfContentsBuilder() {
-	}
-	
-	@Override
-	public void tableOfContentsEntryAdded(TableOfContentsEntry tocEntry) {
-		toc.addTocEntry(tocEntry);
-	}
-	
-	public TableOfContents getTableOfContents() {
-		return this.toc;
-	}
+	public void addTocEntry( TocEntry tocEntry );
 
 }

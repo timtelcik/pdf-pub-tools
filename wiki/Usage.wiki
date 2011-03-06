@@ -1,5 +1,21 @@
 = Usage =
 
+== Open Office ==
+
+Start Open Office in "headless" mode:
+
+* Mac OS X*
+
+{{{
+/Applications/OpenOffice.org.app/Contents/MacOS/soffice.bin -headless -accept="socket,host=127.0.0.1,port=8100;urp;" -nofirststartwizard
+}}}
+
+*Windows XP/Visa/7*
+
+{{{
+soffice -headless -accept="socket,host=127.0.0.1,port=8100;urp;" -nofirststartwizard
+}}}
+
 == Tools ==
 
 === Command Line Interfaces (CLI) ===

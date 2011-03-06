@@ -19,9 +19,9 @@ package net.mitnet.tools.pdf.book.pdf.builder.ui.cli;
 
 import java.io.File;
 
-import net.mitnet.tools.pdf.book.model.TableOfContents;
-import net.mitnet.tools.pdf.book.model.TableOfContentsBuilder;
-import net.mitnet.tools.pdf.book.model.TableOfContentsTracer;
+import net.mitnet.tools.pdf.book.model.toc.Toc;
+import net.mitnet.tools.pdf.book.model.toc.TocBuilder;
+import net.mitnet.tools.pdf.book.model.toc.TocTracer;
 import net.mitnet.tools.pdf.book.pdf.builder.PdfBookBuilder;
 import net.mitnet.tools.pdf.book.ui.cli.CommandLineHelper;
 import net.mitnet.tools.pdf.book.ui.cli.ConsoleProgressMonitor;
@@ -153,7 +153,7 @@ public class PdfBookBuilderCLI {
 			}
 
 			ProgressMonitor progressMonitor = new ConsoleProgressMonitor();
-			TableOfContentsBuilder tocBuilder = new TableOfContentsBuilder();
+			TocBuilder tocBuilder = new TocBuilder();
 			PdfBookBuilder pdfBookBuilder = new PdfBookBuilder(pageSize);
 			pdfBookBuilder.setMetaTitle(metaTitle);
 			pdfBookBuilder.setMetaAuthor(metaAuthor);
@@ -161,10 +161,10 @@ public class PdfBookBuilderCLI {
 			pdfBookBuilder.buildBook(sourceDir, outputBookFile, progressMonitor, tocBuilder);
 			
 			if (verbose) {
-				TableOfContents toc = tocBuilder.getTableOfContents();
+				Toc toc = tocBuilder.getToc();
 				System.out.println( "-- Output PDF Table Of Contents is " + toc );
 				System.out.println( "-- Output PDF Table Of Contents contains " + toc.getTocEntryCount() + " entries" );
-				TableOfContentsTracer.traceTableOfContents(toc);
+				TocTracer.traceTableOfContents(toc);
 			}
 
 			// TODO - output TOC data ???

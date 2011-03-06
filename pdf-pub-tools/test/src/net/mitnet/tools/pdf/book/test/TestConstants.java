@@ -27,7 +27,6 @@ import java.io.File;
  */
 public class TestConstants {
 	
-	
 	public static final File HOME_DIR = new File( System.getProperty( "user.home" ) );
 	
 	public static final File FILE_SEP = new File( System.getProperty( "file.separator" ) );

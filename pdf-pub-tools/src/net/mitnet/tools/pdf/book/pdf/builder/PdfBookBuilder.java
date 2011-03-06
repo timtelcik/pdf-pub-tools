@@ -25,9 +25,9 @@ import java.util.Locale;
 import java.util.Map;
 
 import net.mitnet.tools.pdf.book.io.FileHelper;
-import net.mitnet.tools.pdf.book.model.TableOfContents;
-import net.mitnet.tools.pdf.book.model.TableOfContentsEntry;
-import net.mitnet.tools.pdf.book.model.TableOfContentsListener;
+import net.mitnet.tools.pdf.book.model.toc.Toc;
+import net.mitnet.tools.pdf.book.model.toc.TocEntry;
+import net.mitnet.tools.pdf.book.model.toc.TocListener;
 import net.mitnet.tools.pdf.book.pdf.itext.PdfReaderHelper;
 import net.mitnet.tools.pdf.book.util.MathHelper;
 import net.mitnet.tools.pdf.book.util.ProgressMonitor;
@@ -137,7 +137,7 @@ public class PdfBookBuilder {
 		this.metaAuthor = metaAuthor;
 	}
 
-	public void buildBook( File sourceDir, File outputFile, ProgressMonitor progresMonitor, TableOfContentsListener tocListener ) throws Exception {
+	public void buildBook( File sourceDir, File outputFile, ProgressMonitor progresMonitor, TocListener tocListener ) throws Exception {
 
 		if (isVerboseEnabled()) {
 			System.out.println( "-- sourceDir: " + sourceDir);
@@ -155,7 +155,7 @@ public class PdfBookBuilder {
 		}
 	}
 
-	public void buildBook( List<File> sourceFileList, File outputFile, ProgressMonitor progresMonitor, TableOfContentsListener tocListener ) {
+	public void buildBook( List<File> sourceFileList, File outputFile, ProgressMonitor progresMonitor, TocListener tocListener ) {
 		
 		try {
 
@@ -261,8 +261,8 @@ public class PdfBookBuilder {
 						// add first page of current source to TOC listener
 						if (firstPageOfCurrentSource) {
 							int firstPageOfCurrentSourceInOutput = outputPageCount;
-							TableOfContentsEntry tocEntry = new TableOfContentsEntry( currentSourcePdfTitle, firstPageOfCurrentSourceInOutput );
-							tocListener.tableOfContentsEntryAdded(tocEntry);
+							TocEntry tocEntry = new TocEntry( currentSourcePdfTitle, firstPageOfCurrentSourceInOutput );
+							tocListener.addTocEntry(tocEntry);
 							firstPageOfCurrentSource = false;
 							if (isVerboseEnabled()) {
 								System.out.println("-- Added TOC entry " + tocEntry + " to listener");
@@ -371,7 +371,7 @@ public class PdfBookBuilder {
 		}
 	}
 	
-	private Map buildTocTemplateData( TableOfContents toc ) {
+	private Map buildTocTemplateData( Toc toc ) {
 		Map templateData = new HashMap();
 		return templateData;
 	}

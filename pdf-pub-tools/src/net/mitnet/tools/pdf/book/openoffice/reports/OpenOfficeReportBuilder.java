@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import net.mitnet.tools.pdf.book.model.TableOfContents;
+import net.mitnet.tools.pdf.book.model.toc.Toc;
 import net.sf.jooreports.templates.DocumentTemplate;
 import net.sf.jooreports.templates.DocumentTemplateFactory;
 
@@ -68,7 +68,7 @@ public class OpenOfficeReportBuilder {
 	public OpenOfficeReportBuilder() {
 	}
 	
-	public void buildReport( String templateFile, TableOfContents toc, String outputFile ) throws Exception {
+	public void buildReport( String templateFile, Toc toc, String outputFile ) throws Exception {
 		Map<String,String> templateData = buildTemplateData( toc );
 		buildReport( new File(templateFile), templateData, new File(outputFile));
 	}
@@ -96,10 +96,10 @@ public class OpenOfficeReportBuilder {
 		buildReport( templateFile, templateData, outputFile );
     }
 	
-	public void buildReport( File templateFile, Object temnplateData, File outputFile ) throws Exception {
+	public void buildReport( File templateFile, Object templateData, File outputFile ) throws Exception {
       
 		System.out.println( "templateFile:" + templateFile );
-		System.out.println( "temnplateData:" + temnplateData );
+		System.out.println( "templateData:" + templateData );
 		System.out.println( "outputFile:" + outputFile );
 		
         DocumentTemplateFactory documentTemplateFactory = new DocumentTemplateFactory();
@@ -111,14 +111,13 @@ public class OpenOfficeReportBuilder {
         DocumentTemplate docTemplate = documentTemplateFactory.getTemplate(templateFile);
         System.out.println( "docTemplate:" + docTemplate );
         
-        docTemplate.createDocument(temnplateData, new FileOutputStream(outputFile));
+        docTemplate.createDocument(templateData, new FileOutputStream(outputFile));
     }
 	
-	private Map<String,String> buildTemplateData( TableOfContents toc ) {
+	private Map<String,String> buildTemplateData( Toc toc ) {
 		Map<String,String> templateData = new HashMap<String,String>();
 		// TODO - parse toc and fill template data
 		return templateData;
 	}
 
 }
-

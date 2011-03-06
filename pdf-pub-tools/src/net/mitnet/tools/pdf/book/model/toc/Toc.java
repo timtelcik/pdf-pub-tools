@@ -15,30 +15,45 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package net.mitnet.tools.pdf.book.model;
+package net.mitnet.tools.pdf.book.model.toc;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 
 /**
- * Table Of Conetns Tracer.
+ * Table Of Contents.
  * 
  * @author Tim Telcik <telcik@gmail.com>
  */
-public class TableOfContentsTracer {
+public class Toc {
 	
-	public static void traceTableOfContents( TableOfContents toc ) {
-		if (toc != null) {
-			System.out.println("--- Begin Table Of Contents");
-			Iterator<TableOfContentsEntry> tocIter = toc.iterator();
-			while (tocIter.hasNext()) {
-				TableOfContentsEntry tocEntry = tocIter.next();
-				String title = tocEntry.getTitle();
-				int pageNumber = tocEntry.getPageNumber();
-				System.out.println( title + " ... Page " + pageNumber );
-			}
-			System.out.println("--- End Table Of Contents");
-		}
+	private List<TocEntry> tocEntryList = new ArrayList<TocEntry>();
+	
+	
+	public Toc() {
+	}
+	
+	public Toc( List<TocEntry> tocEntries ) {
+		this.tocEntryList = tocEntries;
+	}
+	
+	public void addTocEntry( TocEntry tocEntry ) {
+		tocEntryList.add( tocEntry );
+	}
+	
+	public int getTocEntryCount() {
+		return tocEntryList.size();
+	}
+	
+	public Iterator<TocEntry> iterator() {
+		return tocEntryList.iterator();
+	}
+
+	@Override
+	public String toString() {
+		return "Toc [tocEntryList=" + tocEntryList + "]";
 	}
 
 }

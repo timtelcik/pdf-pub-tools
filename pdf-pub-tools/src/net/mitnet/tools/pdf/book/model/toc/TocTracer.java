@@ -15,45 +15,30 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package net.mitnet.tools.pdf.book.model;
+package net.mitnet.tools.pdf.book.model.toc;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 
 /**
- * Table Of Contents.
+ * Table Of Conetns Tracer.
  * 
  * @author Tim Telcik <telcik@gmail.com>
  */
-public class TableOfContents {
+public class TocTracer {
 	
-	private List<TableOfContentsEntry> tocEntryList = new ArrayList<TableOfContentsEntry>();
-	
-	
-	public TableOfContents() {
-	}
-	
-	public TableOfContents( List<TableOfContentsEntry> tocEntries ) {
-		this.tocEntryList = tocEntries;
-	}
-	
-	public void addTocEntry( TableOfContentsEntry tocEntry ) {
-		tocEntryList.add( tocEntry );
-	}
-	
-	public int getTocEntryCount() {
-		return tocEntryList.size();
-	}
-	
-	public Iterator<TableOfContentsEntry> iterator() {
-		return tocEntryList.iterator();
-	}
-
-	@Override
-	public String toString() {
-		return "TableOfContents [tocEntryList=" + tocEntryList + "]";
+	public static void traceTableOfContents( Toc toc ) {
+		if (toc != null) {
+			System.out.println("--- Begin Table Of Contents");
+			Iterator<TocEntry> tocIter = toc.iterator();
+			while (tocIter.hasNext()) {
+				TocEntry tocEntry = tocIter.next();
+				String title = tocEntry.getTitle();
+				int pageNumber = tocEntry.getPageNumber();
+				System.out.println( title + " ... Page " + pageNumber );
+			}
+			System.out.println("--- End Table Of Contents");
+		}
 	}
 
 }

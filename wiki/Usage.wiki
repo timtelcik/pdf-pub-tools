@@ -2,7 +2,7 @@
 
 == Open Office ==
 
-Start Open Office in "headless" mode:
+Start Open Office in "headless" mode on localhost, listen on port 8100 :
 
 * Mac OS X*
 

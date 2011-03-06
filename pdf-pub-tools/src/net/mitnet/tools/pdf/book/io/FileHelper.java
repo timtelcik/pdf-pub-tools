@@ -73,4 +73,9 @@ public class FileHelper {
 		return fileList;
 	}
 	
+	public static File getSystemTempDir() {
+		File tempDir = new File( System.getProperty( "java.io.tmpdir" ) );
+		return tempDir;
+	}
+	
 }

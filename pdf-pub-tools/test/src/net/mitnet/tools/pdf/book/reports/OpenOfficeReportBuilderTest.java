@@ -112,7 +112,7 @@ public class OpenOfficeReportBuilderTest extends TestCase {
 		reportBuilder.buildReport(templateFile, dataFile, outputFile);
 	}
 	
-	public void testBuildToc() throws Exception {
+	public void testBuildTocFromFile() throws Exception {
 		
 		System.out.println("--");
 		System.out.println("-- TEST BULD TOC");
@@ -189,8 +189,7 @@ public class OpenOfficeReportBuilderTest extends TestCase {
 		URL reportsUrl = getClass().getClassLoader().getResource("reports");
 		System.out.println("reportsUrl: " + reportsUrl);
 		if (reportsUrl != null) {
-			String urlString = reportsUrl.toExternalForm();
-			baseDir = new File( urlString);
+			baseDir = new File(reportsUrl.getFile());
 		}
 		System.out.println("baseDir: " + baseDir);
 		return baseDir;
@@ -205,7 +204,7 @@ public class OpenOfficeReportBuilderTest extends TestCase {
 	public static TestSuite suite() {
 		 TestSuite suite = new TestSuite();
 		 // suite.addTest(new OpenOfficeReportBuilderTest("testBuildOrderReport"));
-		 suite.addTest(new OpenOfficeReportBuilderTest("testBuildToc"));
+		 suite.addTest(new OpenOfficeReportBuilderTest("testBuildTocFromFile"));
 		 suite.addTest(new OpenOfficeReportBuilderTest("testBuildTocFromMap"));
 		 return suite;
 	}

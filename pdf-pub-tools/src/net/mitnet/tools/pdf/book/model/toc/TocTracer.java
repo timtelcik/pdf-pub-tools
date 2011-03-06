@@ -27,7 +27,7 @@ import java.util.Iterator;
  */
 public class TocTracer {
 	
-	public static void traceTableOfContents( Toc toc ) {
+	public static void traceToc( Toc toc ) {
 		if (toc != null) {
 			System.out.println("--- Begin Table Of Contents");
 			Iterator<TocEntry> tocIter = toc.iterator();

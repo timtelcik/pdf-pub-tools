@@ -261,12 +261,14 @@ public class PdfBookBuilder {
 						// add first page of current source to TOC listener
 						if (firstPageOfCurrentSource) {
 							int firstPageOfCurrentSourceInOutput = outputPageCount;
-							TocEntry tocEntry = new TocEntry( currentSourcePdfTitle, firstPageOfCurrentSourceInOutput );
-							tocListener.addTocEntry(tocEntry);
-							firstPageOfCurrentSource = false;
-							if (isVerboseEnabled()) {
-								System.out.println("-- Added TOC entry " + tocEntry + " to listener");
+							if (tocListener != null) {
+								TocEntry tocEntry = new TocEntry( currentSourcePdfTitle, firstPageOfCurrentSourceInOutput );
+								tocListener.addTocEntry(tocEntry);
+								if (isVerboseEnabled()) {
+									System.out.println("-- Added TOC entry " + tocEntry + " to listener");
+								}
 							}
+							firstPageOfCurrentSource = false;
 						}
 						
 						// extract first page from source document

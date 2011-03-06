@@ -19,13 +19,12 @@ package net.mitnet.tools.pdf.book.openoffice;
 
 import java.io.File;
 
+import junit.framework.TestCase;
 import net.mitnet.tools.pdf.book.openoffice.converter.OpenOfficeDocConverter;
 import net.mitnet.tools.pdf.book.openoffice.net.OpenOfficeServerContext;
 import net.mitnet.tools.pdf.book.test.TestConstants;
 import net.mitnet.tools.pdf.book.ui.cli.ConsoleProgressMonitor;
 import net.mitnet.tools.pdf.book.util.ProgressMonitor;
-
-import junit.framework.TestCase;
 
 
 /**

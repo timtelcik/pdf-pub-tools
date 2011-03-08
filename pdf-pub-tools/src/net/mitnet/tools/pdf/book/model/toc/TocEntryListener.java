@@ -19,11 +19,11 @@ package net.mitnet.tools.pdf.book.model.toc;
 
 
 /**
- * Represents a Table Of Contents Listener.
+ * Represents a Table Of Contents Listener entry listener.
  *  
  * @author Tim Telcik <telcik@gmail.com>
  */
-public interface TocListener {
+public interface TocEntryListener {
 	
 	public void addTocEntry( TocEntry tocEntry );
 

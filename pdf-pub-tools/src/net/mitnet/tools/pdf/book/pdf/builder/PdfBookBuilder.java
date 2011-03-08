@@ -27,7 +27,7 @@ import java.util.Map;
 import net.mitnet.tools.pdf.book.io.FileHelper;
 import net.mitnet.tools.pdf.book.model.toc.Toc;
 import net.mitnet.tools.pdf.book.model.toc.TocEntry;
-import net.mitnet.tools.pdf.book.model.toc.TocListener;
+import net.mitnet.tools.pdf.book.model.toc.TocEntryListener;
 import net.mitnet.tools.pdf.book.pdf.itext.PdfReaderHelper;
 import net.mitnet.tools.pdf.book.util.MathHelper;
 import net.mitnet.tools.pdf.book.util.ProgressMonitor;
@@ -137,7 +137,7 @@ public class PdfBookBuilder {
 		this.metaAuthor = metaAuthor;
 	}
 
-	public void buildBook( File sourceDir, File outputFile, ProgressMonitor progresMonitor, TocListener tocListener ) throws Exception {
+	public void buildBook( File sourceDir, File outputFile, ProgressMonitor progresMonitor, TocEntryListener tocListener ) throws Exception {
 
 		if (isVerboseEnabled()) {
 			System.out.println( "-- sourceDir: " + sourceDir);
@@ -155,7 +155,7 @@ public class PdfBookBuilder {
 		}
 	}
 
-	public void buildBook( List<File> sourceFileList, File outputFile, ProgressMonitor progresMonitor, TocListener tocListener ) {
+	public void buildBook( List<File> sourceFileList, File outputFile, ProgressMonitor progresMonitor, TocEntryListener tocListener ) {
 		
 		try {
 

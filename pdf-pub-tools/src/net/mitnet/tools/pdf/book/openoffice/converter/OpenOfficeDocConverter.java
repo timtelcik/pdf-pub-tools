@@ -18,6 +18,7 @@
 package net.mitnet.tools.pdf.book.openoffice.converter;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,7 @@ import net.mitnet.tools.pdf.book.openoffice.net.OpenOfficeServerContext;
 import net.mitnet.tools.pdf.book.util.MathHelper;
 import net.mitnet.tools.pdf.book.util.ProgressMonitor;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
 import com.artofsolving.jodconverter.DocumentConverter;
@@ -152,18 +154,36 @@ public class OpenOfficeDocConverter {
 	
 	public void convertDocument( File sourceFile, File outputDir, String outputFormat, ProgressMonitor progresMonitor ) throws Exception {
 		List<File> sourceFiles = new ArrayList<File>();
-		sourceFiles.add(sourceFile);
+		sourceFiles.add( sourceFile );
 		convertDocuments( sourceFiles, outputDir, outputFormat, progresMonitor );
 	}
 	
 	private void convertDocument( DocumentConverter converter,
-			File inputFile, File outputFile, boolean verbose ) {
+			File inputFile, File outputFile, boolean verbose ) throws IOException {
 
-		if (isVerboseEnabled()) {
-			trace("-- converting " + inputFile + " to " + outputFile);
+		String inputFileExtension = FilenameUtils.getExtension(inputFile.getName());
+		String outputFileExtension = FilenameUtils.getExtension(outputFile.getName());
+		
+		boolean sameExtension = false;
+		
+		if ((inputFileExtension != null) && (outputFileExtension != null)) {
+			if (inputFileExtension.equals(outputFileExtension)) {
+				sameExtension = true;
+			}
 		}
-		converter.convert(inputFile, outputFile);
-		// converter.convert(inputFile, inputFormat, outputFile, outputFormat);
+		
+		if (sameExtension) {
+			if (isVerboseEnabled()) {
+				trace("-- input and output file have same extension - copying " + inputFile + " to " + outputFile);
+			}
+			FileUtils.copyFile(inputFile, outputFile);
+		} else {
+			if (isVerboseEnabled()) {
+				trace("-- converting " + inputFile + " to " + outputFile);
+			}
+			converter.convert(inputFile, outputFile);
+			// converter.convert(inputFile, inputFormat, outputFile, outputFormat);
+		}
 	}
 	
 	private OpenOfficeConnection openConnection( OpenOfficeServerContext serverContext ) throws Exception {
@@ -186,13 +206,13 @@ public class OpenOfficeDocConverter {
 	
 	private void trace( String msg ) {
 		if (isVerboseEnabled()) {
-			System.out.println( msg );
+			System.out.println( "-- " + msg );
 		}
 	}
 	
 	private void debug( String msg ) {
 		if (isDebugEnabled()) {
-			System.out.println( msg );
+			System.out.println( "-- " + msg );
 		}
 	}
 

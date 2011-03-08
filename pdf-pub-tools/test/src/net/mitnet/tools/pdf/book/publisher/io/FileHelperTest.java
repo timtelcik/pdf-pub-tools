@@ -55,6 +55,7 @@ public class FileHelperTest extends TestCase {
 		List<File> sourceFileList = FileHelper.findOpenOfficeFiles(sourceDir);
 		System.out.println( "sourceFileList.size: " + sourceFileList.size());
 		System.out.println( "sourceFileList: " + sourceFileList);
+		System.out.println( "source dir " + sourceDir + " contains " + sourceFileList.size() + " ODT file(s)");
 	}
 	
 	public void testFindOpenOfficeFilesRecursive() throws Exception {
@@ -69,6 +70,7 @@ public class FileHelperTest extends TestCase {
 		List<File> sourceFileList = FileHelper.findOpenOfficeFiles(sourceDir,true);
 		System.out.println( "sourceFileList.size: " + sourceFileList.size());
 		System.out.println( "sourceFileList: " + sourceFileList);
+		System.out.println( "source dir " + sourceDir + " contains " + sourceFileList.size() + " ODT file(s)");
 	}
 	
 	public void testFindPdfFiles() throws Exception {
@@ -82,6 +84,7 @@ public class FileHelperTest extends TestCase {
 		List<File> sourceFileList = FileHelper.findPdfFiles(sourceDir);
 		System.out.println( "sourceFileList.size: " + sourceFileList.size());
 		System.out.println( "sourceFileList: " + sourceFileList);
+		System.out.println( "source dir " + sourceDir + " contains " + sourceFileList.size() + " PDF file(s)");
 	}
 
 	
@@ -96,6 +99,7 @@ public class FileHelperTest extends TestCase {
 		List<File> sourceFileList = FileHelper.findPdfFiles(sourceDir,true);
 		System.out.println( "sourceFileList.size: " + sourceFileList.size());
 		System.out.println( "sourceFileList: " + sourceFileList);
+		System.out.println( "source dir " + sourceDir + " contains " + sourceFileList.size() + " PDF file(s)");
 	}
 
 }

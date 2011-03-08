@@ -21,6 +21,7 @@ import java.io.File;
 import java.net.ConnectException;
 
 import net.mitnet.tools.pdf.book.openoffice.converter.OpenOfficeDocConverter;
+import net.mitnet.tools.pdf.book.ui.cli.CliConstants;
 import net.mitnet.tools.pdf.book.ui.cli.CommandLineHelper;
 import net.mitnet.tools.pdf.book.ui.cli.ConsoleProgressMonitor;
 import net.mitnet.tools.pdf.book.util.ProgressMonitor;
@@ -28,7 +29,6 @@ import net.mitnet.tools.pdf.book.util.ProgressMonitor;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.PosixParser;
 
@@ -50,40 +50,18 @@ import com.artofsolving.jodconverter.openoffice.connection.SocketOpenOfficeConne
  */
 public class OpenOfficeDocConverterCLI {
 
-	private static final Option OPTION_SOURCE_DIR = 
-		new Option("i","source-dir", true, "source directory");
-	
-	private static final Option OPTION_OUTPUT_DIR = 
-		new Option("o","output-dir", true, "output directory");
-	
-	private static final Option OPTION_OUTPUT_FORMAT = 
-		new Option("f","output-format", true, "output format (e.g. pdf)");
-	
-	private static final Option OPTION_OPEN_OFFICE_HOST = 
-		new Option("ooh","open-office-host", true, "OpenOffice host");
-	
-	private static final Option OPTION_OPEN_OFFICE_PORT = 
-		new Option("oop","open-office-port", true, "OpenOffice port");
-	
-	private static final Option OPTION_VERBOSE = 
-		new Option("v", "verbose", false, "verbose");
-	
 	private static final Options OPTIONS = initOptions();
 	
 	private static final String DEFAULT_OUTPUT_FORMAT = "pdf";
 
-	private static final int EXIT_CODE_ERROR = 1;
-	private static final int EXIT_CODE_CONNECTION_FAILED = 1;
-	private static final int EXIT_CODE_TOO_FEW_ARGS = 255;
-
 	private static Options initOptions() {
 		Options options = new Options();
-		options.addOption(OPTION_SOURCE_DIR);
-		options.addOption(OPTION_OUTPUT_DIR);
-		options.addOption(OPTION_OUTPUT_FORMAT);
-		options.addOption(OPTION_OPEN_OFFICE_HOST);
-		options.addOption(OPTION_OPEN_OFFICE_PORT);
-		options.addOption(OPTION_VERBOSE);
+		options.addOption(CliConstants.OPTION_SOURCE_DIR);
+		options.addOption(CliConstants.OPTION_OUTPUT_DIR);
+		options.addOption(CliConstants.OPTION_OUTPUT_FORMAT);
+		options.addOption(CliConstants.OPTION_OPEN_OFFICE_HOST);
+		options.addOption(CliConstants.OPTION_OPEN_OFFICE_PORT);
+		options.addOption(CliConstants.OPTION_VERBOSE);
 		return options;
 	}
 
@@ -93,37 +71,37 @@ public class OpenOfficeDocConverterCLI {
 		CommandLine commandLine = commandLineParser.parse(OPTIONS, arguments);
 		CommandLineHelper commandLineHelper = new CommandLineHelper(commandLine);
 		
-		if (!commandLineHelper.hasOption(OPTION_SOURCE_DIR)) {
-			System.out.println("Must specify a source directory");
+		if (!commandLineHelper.hasOption(CliConstants.OPTION_SOURCE_DIR)) {
+			System.err.println("Must specify " + CliConstants.OPTION_SOURCE_DIR.getDescription());
 			showHelp();
-			System.exit(EXIT_CODE_ERROR);
+			System.exit(CliConstants.EXIT_CODE_ERROR);
 		}
-		File sourceDir = commandLineHelper.getOptionValueAsFile(OPTION_SOURCE_DIR);
+		File sourceDir = commandLineHelper.getOptionValueAsFile(CliConstants.OPTION_SOURCE_DIR);
 
-		if (!commandLineHelper.hasOption(OPTION_OUTPUT_DIR)) {
-			System.out.println("Must specify an output directory");
+		if (!commandLineHelper.hasOption(CliConstants.OPTION_OUTPUT_DIR)) {
+			System.err.println("Must specify " + CliConstants.OPTION_OUTPUT_DIR.getDescription());
 			showHelp();
-			System.exit(EXIT_CODE_ERROR);
+			System.exit(CliConstants.EXIT_CODE_ERROR);
 		}
-		File outputDir = commandLineHelper.getOptionValueAsFile(OPTION_OUTPUT_DIR);
+		File outputDir = commandLineHelper.getOptionValueAsFile(CliConstants.OPTION_OUTPUT_DIR);
 
 		int openOfficePort = SocketOpenOfficeConnection.DEFAULT_PORT;
-		if (commandLineHelper.hasOption(OPTION_OPEN_OFFICE_PORT)) {
-			openOfficePort = commandLineHelper.getOptionValueAsInt(OPTION_OPEN_OFFICE_PORT);
+		if (commandLineHelper.hasOption(CliConstants.OPTION_OPEN_OFFICE_PORT)) {
+			openOfficePort = commandLineHelper.getOptionValueAsInt(CliConstants.OPTION_OPEN_OFFICE_PORT);
 		}
 
 		String openOfficeHost = SocketOpenOfficeConnection.DEFAULT_HOST;
-		if (commandLineHelper.hasOption(OPTION_OPEN_OFFICE_HOST)) {
-			openOfficeHost = commandLineHelper.getOptionValue(OPTION_OPEN_OFFICE_HOST);
+		if (commandLineHelper.hasOption(CliConstants.OPTION_OPEN_OFFICE_HOST)) {
+			openOfficeHost = commandLineHelper.getOptionValue(CliConstants.OPTION_OPEN_OFFICE_HOST);
 		}
 
 		String outputFormat = DEFAULT_OUTPUT_FORMAT;
-		if (commandLineHelper.hasOption(OPTION_OUTPUT_FORMAT)) {
-			outputFormat = commandLineHelper.getOptionValue(OPTION_OUTPUT_FORMAT);
+		if (commandLineHelper.hasOption(CliConstants.OPTION_OUTPUT_FORMAT)) {
+			outputFormat = commandLineHelper.getOptionValue(CliConstants.OPTION_OUTPUT_FORMAT);
 		}
 
 		boolean verbose = false;
-		if (commandLineHelper.hasOption(OPTION_VERBOSE)) {
+		if (commandLineHelper.hasOption(CliConstants.OPTION_VERBOSE)) {
 			verbose = true;
 		}
 
@@ -142,7 +120,7 @@ public class OpenOfficeDocConverterCLI {
 				+ " and listening on port " 
 				+ openOfficePort + ".";
 			System.err.println(msg);
-			System.exit(EXIT_CODE_CONNECTION_FAILED);
+			System.exit(CliConstants.EXIT_CODE_CONNECTION_FAILED);
 		}
 		try {
 			System.out.println( "Source dir is " + sourceDir );
@@ -167,7 +145,7 @@ public class OpenOfficeDocConverterCLI {
 				+ " [options] -i <input-dir> -o <output-dir>\n";
 		HelpFormatter helpFormatter = new HelpFormatter();
 		helpFormatter.printHelp(syntax, OPTIONS);
-		System.exit(EXIT_CODE_TOO_FEW_ARGS);
+		System.exit(CliConstants.EXIT_CODE_TOO_FEW_ARGS);
 	}
 
 }

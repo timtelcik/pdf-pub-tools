@@ -25,6 +25,7 @@ import net.mitnet.tools.pdf.book.openoffice.ui.cli.OpenOfficeDocConverterCLI;
 import net.mitnet.tools.pdf.book.pdf.builder.PdfBookBuilder;
 import net.mitnet.tools.pdf.book.pdf.builder.ui.cli.PdfBookBuilderCLI;
 import net.mitnet.tools.pdf.book.publisher.BookPublisher;
+import net.mitnet.tools.pdf.book.ui.cli.CliConstants;
 import net.mitnet.tools.pdf.book.ui.cli.CommandLineHelper;
 import net.mitnet.tools.pdf.book.ui.cli.ConsoleProgressMonitor;
 import net.mitnet.tools.pdf.book.util.ProgressMonitor;
@@ -32,7 +33,6 @@ import net.mitnet.tools.pdf.book.util.ProgressMonitor;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.PosixParser;
 import org.apache.commons.io.FilenameUtils;
@@ -59,55 +59,22 @@ import com.lowagie.text.Rectangle;
  */
 public class BookPublisherCLI {
 	
-	private static final String PAGE_SIZE_US_LETTER_STRING = "LETTER";
-	private static final String PAGE_SIZE_ISO_A4_STRING = "A4";
-	private static final String DEFAULT_PAGE_SIZE = PAGE_SIZE_ISO_A4_STRING;
 	private static final File DEFAULT_OUTPUT_FILE = new File( "my-book" + PdfBookBuilder.PDF_FILE_EXTENSION );
 	
 
-	private static final Option OPTION_SOURCE_DIR = 
-		new Option("i","source-dir", true, "source directory");
-	
-	private static final Option OPTION_OUTPUT_DIR = 
-		new Option("o","output-dir", true, "output directory");
-	
-	private static final Option OPTION_OUTPUT_BOOK_FILE = 
-		new Option("b","output-book-file", true, "output book file");
-	
-	private static final Option OPTION_PAGE_SIZE = 
-		new Option("ps","page-size", true, "output page size [usletter,a4]");
-	
-	private static final Option OPTION_VERBOSE = 
-		new Option("v", "verbose", false, "verbose");
-	
-	private static final Option OPTION_META_TITLE = 
-		new Option("mt", "meta-title", false, "PDF meta-data title");
-	
-	private static final Option OPTION_META_AUTHOR = 
-		new Option("ma", "meta-author", false, "PDF meta-data author");
-	
-	private static final Option OPTION_OPEN_OFFICE_HOST = 
-		new Option("ooh","open-office-host", true, "OpenOffice host");
-	
-	private static final Option OPTION_OPEN_OFFICE_PORT = 
-		new Option("oop","open-office-port", true, "OpenOffice port");
-	
 	private static final Options OPTIONS = initOptions();
 	
-	private static final int EXIT_CODE_ERROR = 1;
-	private static final int EXIT_CODE_TOO_FEW_ARGS = 255;
-
 	private static Options initOptions() {
 		Options options = new Options();
-		options.addOption(OPTION_SOURCE_DIR);
-		options.addOption(OPTION_OUTPUT_DIR);
-		options.addOption(OPTION_OUTPUT_BOOK_FILE);
-		options.addOption(OPTION_PAGE_SIZE);
-		options.addOption(OPTION_VERBOSE);
-		options.addOption(OPTION_META_TITLE);
-		options.addOption(OPTION_META_AUTHOR);
-		options.addOption(OPTION_OPEN_OFFICE_HOST);
-		options.addOption(OPTION_OPEN_OFFICE_PORT);
+		options.addOption(CliConstants.OPTION_SOURCE_DIR);
+		options.addOption(CliConstants.OPTION_OUTPUT_DIR);
+		options.addOption(CliConstants.OPTION_OUTPUT_BOOK_FILE);
+		options.addOption(CliConstants.OPTION_PAGE_SIZE);
+		options.addOption(CliConstants.OPTION_VERBOSE);
+		options.addOption(CliConstants.OPTION_META_TITLE);
+		options.addOption(CliConstants.OPTION_META_AUTHOR);
+		options.addOption(CliConstants.OPTION_OPEN_OFFICE_HOST);
+		options.addOption(CliConstants.OPTION_OPEN_OFFICE_PORT);
 		return options;
 	}
 
@@ -117,51 +84,53 @@ public class BookPublisherCLI {
 		CommandLine commandLine = commandLineParser.parse(OPTIONS, arguments);
 		CommandLineHelper commandLineHelper = new CommandLineHelper( commandLine );
 		
-		if (!commandLineHelper.hasOption(OPTION_SOURCE_DIR)) {
-			System.err.println("Must specify a source directory");
+		if (!commandLineHelper.hasOption(CliConstants.OPTION_SOURCE_DIR)) {
+			System.err.println("Must specify " + CliConstants.OPTION_SOURCE_DIR.getDescription());
 			showHelp();
-			System.exit(EXIT_CODE_ERROR);
+			System.exit(CliConstants.EXIT_CODE_ERROR);
 		}
-		File sourceDir = commandLineHelper.getOptionValueAsFile(OPTION_SOURCE_DIR);
+		File sourceDir = commandLineHelper.getOptionValueAsFile(CliConstants.OPTION_SOURCE_DIR);
 		
-		if (!commandLineHelper.hasOption(OPTION_OUTPUT_DIR)) {
-			System.out.println("Must specify an output directory");
+		if (!commandLineHelper.hasOption(CliConstants.OPTION_OUTPUT_DIR)) {
+			System.err.println("Must specify " + CliConstants.OPTION_OUTPUT_DIR.getDescription());
 			showHelp();
-			System.exit(EXIT_CODE_ERROR);
+			System.exit(CliConstants.EXIT_CODE_ERROR);
 		}
-		File outputDir = commandLineHelper.getOptionValueAsFile(OPTION_OUTPUT_DIR);
+		File outputDir = commandLineHelper.getOptionValueAsFile(CliConstants.OPTION_OUTPUT_DIR);
 
-		File outputBookFile = DEFAULT_OUTPUT_FILE;
-		if (commandLineHelper.hasOption(OPTION_OUTPUT_BOOK_FILE)) {
-			outputBookFile = commandLineHelper.getOptionValueAsFile(OPTION_OUTPUT_BOOK_FILE);
+		if (!commandLineHelper.hasOption(CliConstants.OPTION_OUTPUT_BOOK_FILE)) {
+			System.err.println("Must specify " + CliConstants.OPTION_OUTPUT_BOOK_FILE.getDescription());
+			showHelp();
+			System.exit(CliConstants.EXIT_CODE_ERROR);
 		}
+		File outputBookFile = commandLineHelper.getOptionValueAsFile(CliConstants.OPTION_OUTPUT_BOOK_FILE);;
 		
 		OpenOfficeServerContext serverContext = new OpenOfficeServerContext();
 
 		String openOfficeHost = SocketOpenOfficeConnection.DEFAULT_HOST;
-		if (commandLineHelper.hasOption(OPTION_OPEN_OFFICE_HOST)) {
-			openOfficeHost = commandLineHelper.getOptionValue(OPTION_OPEN_OFFICE_HOST);
+		if (commandLineHelper.hasOption(CliConstants.OPTION_OPEN_OFFICE_HOST)) {
+			openOfficeHost = commandLineHelper.getOptionValue(CliConstants.OPTION_OPEN_OFFICE_HOST);
 			serverContext.setHost(openOfficeHost);
 		}
 
 		int openOfficePort = SocketOpenOfficeConnection.DEFAULT_PORT;
-		if (commandLineHelper.hasOption(OPTION_OPEN_OFFICE_PORT)) {
-			openOfficePort = commandLineHelper.getOptionValueAsInt(OPTION_OPEN_OFFICE_PORT);
+		if (commandLineHelper.hasOption(CliConstants.OPTION_OPEN_OFFICE_PORT)) {
+			openOfficePort = commandLineHelper.getOptionValueAsInt(CliConstants.OPTION_OPEN_OFFICE_PORT);
 			serverContext.setPort(openOfficePort);
 		}
 
 		Rectangle pageSize = PageSize.A4;
-		if (commandLineHelper.hasOption(OPTION_PAGE_SIZE)) {
-			String pageSizeString = commandLineHelper.getOptionValue(OPTION_PAGE_SIZE);
+		if (commandLineHelper.hasOption(CliConstants.OPTION_PAGE_SIZE)) {
+			String pageSizeString = commandLineHelper.getOptionValue(CliConstants.OPTION_PAGE_SIZE);
 			if (!StringUtils.isEmpty(pageSizeString)) {
-				if (PAGE_SIZE_US_LETTER_STRING.equalsIgnoreCase(pageSizeString)) {
+				if (CliConstants.PAGE_SIZE_US_LETTER_STRING.equalsIgnoreCase(pageSizeString)) {
 					pageSize = PageSize.LETTER;
 				}
 			}
 		}
 
 		boolean verbose = false;
-		if (commandLineHelper.hasOption(OPTION_VERBOSE)) {
+		if (commandLineHelper.hasOption(CliConstants.OPTION_VERBOSE)) {
 			verbose = true;
 		}
 		
@@ -169,17 +138,13 @@ public class BookPublisherCLI {
 		if (metaTitle != null) {
 			metaTitle = metaTitle.toUpperCase();
 		}
-		if (commandLineHelper.hasOption(OPTION_META_TITLE)) {
-			metaTitle = commandLineHelper.getOptionValue(OPTION_META_TITLE);
+		if (commandLineHelper.hasOption(CliConstants.OPTION_META_TITLE)) {
+			metaTitle = commandLineHelper.getOptionValue(CliConstants.OPTION_META_TITLE);
 		}
 		
 		String metaAuthor = System.getProperty( "user.name" );
-		if (commandLineHelper.hasOption(OPTION_META_AUTHOR)) {
-			metaAuthor = commandLineHelper.getOptionValue(OPTION_META_AUTHOR);
-		}
-
-		if (verbose) {
-			System.out.println("-- Building PDF training book " + outputBookFile);
+		if (commandLineHelper.hasOption(CliConstants.OPTION_META_AUTHOR)) {
+			metaAuthor = commandLineHelper.getOptionValue(CliConstants.OPTION_META_AUTHOR);
 		}
 
 		try {
@@ -189,7 +154,7 @@ public class BookPublisherCLI {
 				System.out.println( "-- Output dir is " + outputDir );
 				System.out.println( "-- Output file is " + outputBookFile );
 				System.out.println( "-- Page size is " + pageSize );
-				System.out.println( "-- Publishing PDF training book " + outputBookFile + " ...");
+				System.out.println( "-- Publishing PDF book " + outputBookFile + " ...");
 			}
 
 			ProgressMonitor progressMonitor = new ConsoleProgressMonitor();
@@ -201,22 +166,23 @@ public class BookPublisherCLI {
 
 		} catch (Exception e) {
 			e.printStackTrace(System.err);
-			String msg = "Error publishing PDF training book " + outputBookFile + " : " + e.getMessage();
+			String msg = "Error publishing book " + outputBookFile + " : " + e.getMessage();
 			System.err.println( msg );
 			throw new Exception( msg, e );
 		}
 		
 		if (verbose) {
-			System.out.println( "-- Finished publishing PDF training book " + outputBookFile + ".");
+			System.out.println( "-- Finished publishing book " + outputBookFile + ".");
 		}
 	}
 
 	private static void showHelp() {
+		// TODO - fix args
 		String syntax = BookPublisherCLI.class.getName()
-				+ " [options] -i <input-dir> -o <output-dir> [-of <output-file>] [-p <page-size>] \n";
+				+ " [options] -indir <input-dir> -ooutdir <output-dir> [-of <output-file>] [-p <page-size>] \n";
 		HelpFormatter helpFormatter = new HelpFormatter();
 		helpFormatter.printHelp(syntax, OPTIONS);
-		System.exit(EXIT_CODE_TOO_FEW_ARGS);
+		System.exit(CliConstants.EXIT_CODE_TOO_FEW_ARGS);
 	}
 
 }

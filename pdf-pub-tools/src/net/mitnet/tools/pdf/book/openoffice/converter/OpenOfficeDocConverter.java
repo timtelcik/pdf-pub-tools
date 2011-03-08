@@ -31,6 +31,7 @@ import net.mitnet.tools.pdf.book.util.ProgressMonitor;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.StringUtils;
 
 import com.artofsolving.jodconverter.DocumentConverter;
 import com.artofsolving.jodconverter.openoffice.connection.OpenOfficeConnection;
@@ -43,6 +44,7 @@ import com.artofsolving.jodconverter.openoffice.converter.OpenOfficeDocumentConv
  * This class is a facade to the underlying "OpenOfficeDocumentConverter".
  * 
  * TODO - review tracing and debugging.
+ * TODO - review convert document method signatures
  * 
  * @author Tim Telcik <telcik@gmail.com>
  * 
@@ -56,8 +58,8 @@ public class OpenOfficeDocConverter {
 	public static final String DEFAULT_OUTPUT_FORMAT = OUTPUT_FORMAT_PDF;
 
 	private OpenOfficeServerContext serverContext = null;
-	private boolean verbose = false;
-	private boolean debug = false;
+	private boolean traceEnabled = false;
+	private boolean debugEnabled = false;
 	
 
 	public OpenOfficeDocConverter( OpenOfficeServerContext serverContext ) throws Exception {
@@ -68,76 +70,83 @@ public class OpenOfficeDocConverter {
 		this.serverContext = new OpenOfficeServerContext( openOfficeHost, openOfficePort );
 	}
 
-	public void setVerbose( boolean value ) {
-		this.verbose = value;
+	public void setTraceEnabled( boolean value ) {
+		this.traceEnabled = value;
 	}
 
-	public boolean isVerboseEnabled() {
-		return this.verbose;
+	public boolean isTraceEnabled() {
+		return this.traceEnabled;
 	}
 	
 	public void setDebug( boolean value ) {
-		this.debug = value;
+		this.debugEnabled = value;
 	}
 	
 	public boolean isDebugEnabled() {
-		return this.debug;
+		return this.debugEnabled;
 	}
 
 	public void convertDocuments( File sourceDir, File outputDir, String outputFormat, ProgressMonitor progresMonitor ) throws Exception {
 
-		if (isVerboseEnabled()) {
+		if (isTraceEnabled()) {
 			trace( "sourceDir: " + sourceDir);
 			trace( "outputDir: " + outputDir);
 			trace( "outputFormat: " + outputFormat);
 		}
 		
 		List<File> sourceFileList = FileHelper.findOpenOfficeFiles(sourceDir,true);
-		trace( "sourceFileList.size: " + sourceFileList.size());
-		trace( "sourceFileList: " + sourceFileList);
+		if (isDebugEnabled()) {
+			trace( "sourceFileList.size: " + sourceFileList.size());
+			trace( "sourceFileList: " + sourceFileList);
+		}
 		
 		if (!sourceFileList.isEmpty()) {
-			convertDocuments( sourceFileList, outputDir, outputFormat, progresMonitor );			
+			convertDocuments( sourceDir, sourceFileList, outputDir, outputFormat, progresMonitor );			
 		}
 	}
 
-	public void convertDocuments( List<File> sourceFileList, File outputDir, String outputFormat, ProgressMonitor progresMonitor ) throws Exception {
+	public void convertDocuments( File sourceDir, List<File> sourceFileList, File outputDir, String outputFormat, ProgressMonitor progresMonitor ) throws Exception {
 
-		if (isVerboseEnabled()) {
+		if (isTraceEnabled()) {
+			trace( "sourceDir: " + sourceDir);
 			trace( "sourceFileList: " + sourceFileList);
 			trace( "outputDir: " + outputDir);
 			trace( "outputFormat: " + outputFormat);
-			trace("-- converting " + sourceFileList.size() + " document(s)");
-			trace("-- output dir is " + outputDir);
-			trace("-- output format is " + outputFormat);
-			trace("-- connecting to OpenOffice server " + this.serverContext);
+			trace("converting " + sourceFileList.size() + " document(s)");
+			trace("output dir is " + outputDir);
+			trace("output format is " + outputFormat);
+			trace("connecting to OpenOffice server " + this.serverContext);
 		}
 		OpenOfficeConnection connection = openConnection(serverContext);
-		if (isVerboseEnabled()) {
-			trace("-- connection is " + connection );
+		if (isTraceEnabled()) {
+			trace("connection is " + connection );
 		}
 
 		try {
 			DocumentConverter converter = new OpenOfficeDocumentConverter(connection);
-			if (isVerboseEnabled()) {
-				trace("-- converter is " + converter );
+			if (isTraceEnabled()) {
+				trace("converter is " + converter );
 			}
 			
 			int currentItemIndex = 0;
 			int maxItemIndex = sourceFileList.size();
-			for (File currentFile : sourceFileList) {
+			for (File inputFile : sourceFileList) {
 				currentItemIndex++;
-				File inputFile = currentFile;
-				String basePath = null;
+				String baseOutputFilePath = null;
 				if ( outputDir == null ) {
-					basePath = inputFile.getParent();
+					baseOutputFilePath = inputFile.getParent();
 				} else {
-					basePath = outputDir.getCanonicalPath();
+					String relativePath = FileHelper.parseRelativePathToParent( sourceDir, inputFile );
+					if (StringUtils.isEmpty(relativePath)) {
+						baseOutputFilePath = outputDir.getAbsolutePath();
+					} else {
+						baseOutputFilePath = new File( outputDir, relativePath ).getPath();
+					}
 				}
 				String baseInputFileName = FilenameUtils.getBaseName(inputFile.getName());
 				String outputFileName =  baseInputFileName + "." + outputFormat;
-				File outputFile = new File( basePath, outputFileName );
-				convertDocument(converter, inputFile, outputFile, verbose);
+				File outputFile = new File( baseOutputFilePath, outputFileName );
+				convertDocument( converter, inputFile, outputFile );
 				if (progresMonitor != null) {
 					int progressPercentage = MathHelper.calculatePercentage( currentItemIndex, maxItemIndex );
 					progresMonitor.setProgressPercentage(progressPercentage);
@@ -145,8 +154,8 @@ public class OpenOfficeDocConverter {
 			}
 
 		} finally {
-			if (isVerboseEnabled()) {
-				trace("-- disconnecting");
+			if (isTraceEnabled()) {
+				trace("disconnecting");
 			}
 			connection.disconnect();
 		}
@@ -155,11 +164,11 @@ public class OpenOfficeDocConverter {
 	public void convertDocument( File sourceFile, File outputDir, String outputFormat, ProgressMonitor progresMonitor ) throws Exception {
 		List<File> sourceFiles = new ArrayList<File>();
 		sourceFiles.add( sourceFile );
-		convertDocuments( sourceFiles, outputDir, outputFormat, progresMonitor );
+		File sourceDir = sourceFile.getParentFile();
+		convertDocuments( sourceDir, sourceFiles, outputDir, outputFormat, progresMonitor );
 	}
 	
-	private void convertDocument( DocumentConverter converter,
-			File inputFile, File outputFile, boolean verbose ) throws IOException {
+	private void convertDocument( DocumentConverter converter, File inputFile, File outputFile  ) throws IOException {
 
 		String inputFileExtension = FilenameUtils.getExtension(inputFile.getName());
 		String outputFileExtension = FilenameUtils.getExtension(outputFile.getName());
@@ -173,13 +182,13 @@ public class OpenOfficeDocConverter {
 		}
 		
 		if (sameExtension) {
-			if (isVerboseEnabled()) {
-				trace("-- input and output file have same extension - copying " + inputFile + " to " + outputFile);
+			if (isTraceEnabled()) {
+				trace("input and output file have same extension - copying " + inputFile + " to " + outputFile);
 			}
 			FileUtils.copyFile(inputFile, outputFile);
 		} else {
-			if (isVerboseEnabled()) {
-				trace("-- converting " + inputFile + " to " + outputFile);
+			if (isTraceEnabled()) {
+				trace("converting " + inputFile + " to " + outputFile);
 			}
 			converter.convert(inputFile, outputFile);
 			// converter.convert(inputFile, inputFormat, outputFile, outputFormat);
@@ -190,8 +199,8 @@ public class OpenOfficeDocConverter {
 
 		OpenOfficeConnection connection = OpenOfficeConnectionFactory.createConnection(serverContext);
 		try {
-			if (isVerboseEnabled()) {
-				trace("-- connecting to OpenOffice using server context " + serverContext);
+			if (isTraceEnabled()) {
+				trace("connecting to OpenOffice using server context " + serverContext);
 			}
 			connection.connect();
 		} catch (ConnectException ce) {
@@ -205,14 +214,14 @@ public class OpenOfficeDocConverter {
 	}
 	
 	private void trace( String msg ) {
-		if (isVerboseEnabled()) {
-			System.out.println( "-- " + msg );
+		if (isTraceEnabled()) {
+			System.out.println( "" + msg );
 		}
 	}
 	
 	private void debug( String msg ) {
 		if (isDebugEnabled()) {
-			System.out.println( "-- " + msg );
+			System.out.println( "--" + msg );
 		}
 	}
 

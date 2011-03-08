@@ -266,7 +266,7 @@ public class BookPublisherGUI extends JFrame {
 				OpenOfficeServerContext serverContext = new OpenOfficeServerContext();
 				OpenOfficeDocConverter docConverter = new OpenOfficeDocConverter(serverContext);
 				boolean verbose = true;
-				docConverter.setVerbose(verbose);
+				docConverter.setTraceEnabled(verbose);
 				docConverter.convertDocuments( sourceDir, outputDir, OpenOfficeDocConverter.OUTPUT_FORMAT_PDF, progressMonitor );
 				setStatusMessage("Finished converting documents.");
 			} catch (Exception ex) {

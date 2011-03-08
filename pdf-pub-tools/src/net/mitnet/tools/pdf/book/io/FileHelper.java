@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.StringUtils;
 
 
 /**
@@ -87,9 +88,46 @@ public class FileHelper {
 		return fileList;
 	}	
 	
+	/**
+	 * Returns the system temp dir.
+	 */
 	public static File getSystemTempDir() {
 		File tempDir = new File( System.getProperty( "java.io.tmpdir" ) );
 		return tempDir;
+	}
+	
+
+	/**
+	 * Parses the path for a file relative to a parent dir.
+	 * 
+	 * For example,
+	 * if parentDir is "/home/users/nobody/spool/docs/input"
+	 * and file is "/home/users/nobody/spool/docs/input/a/b/c/test.odt"
+	 * the relative path will be "a/b/c"
+	 * 
+	 * @param parentDir parent dir
+	 * @param file file relative to parent dir
+	 */
+	public static String parseRelativePathToParent( File parentDir, File file ) {
+		
+		String result = null;
+		
+		if (parentDir != null && file != null) {
+			// String fileName = file.getName();
+			// int fileNameLength = fileName.length();
+			String parentDirAbsolutePath = parentDir.getAbsolutePath();
+			String fileAbsolutePath = file.getAbsolutePath();
+			int parentDirAbsolutePathLength = parentDirAbsolutePath.length();
+			// int fileAbsolutePathLength = fileAbsolutePath.length();
+			String relativeFilePath = fileAbsolutePath.substring(parentDirAbsolutePathLength);
+			// String relativePath = FilenameUtils.getPathNoEndSeparator(relativeFilePath);
+			String relativePath = FilenameUtils.getPath(relativeFilePath);
+			if (!StringUtils.isEmpty(relativePath)) {
+				result = relativePath;				
+			}
+		}
+		
+		return result;
 	}
 	
 }

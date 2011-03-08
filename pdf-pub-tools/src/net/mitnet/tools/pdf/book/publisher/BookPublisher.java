@@ -171,7 +171,7 @@ public class BookPublisher {
 		
 		// Convert Open Office documents to PDF
 		OpenOfficeDocConverter openOfficeDocConverter = new OpenOfficeDocConverter(this.serverContext);
-		openOfficeDocConverter.setVerbose(isVerbose());
+		openOfficeDocConverter.setTraceEnabled(isVerbose());
 		openOfficeDocConverter.convertDocuments(sourceDir, outputDir, OpenOfficeDocConverter.OUTPUT_FORMAT_PDF, progresMonitor);
 
 		// Prepare TOC ?
@@ -192,6 +192,7 @@ public class BookPublisher {
 		pdfBookBuilder.buildBook( pdfSourceDir, outputBookFile, progresMonitor, tocBuilder );
 
 		// Build TOC doc
+		// TODO: refactor to PdfTocPageBuilder
 		if (isBuildTocEnabled()) {
 			
 			// Trace TOC

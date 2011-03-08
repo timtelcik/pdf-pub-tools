@@ -146,6 +146,8 @@ public class BookPublisher {
 	 *
 	 * This method chains together the OpenOffice to PDF conversion process and PDF book assembly.
 	 * 
+	 * TODO: refactor
+	 * 
 	 * @param sourceDir
 	 * @param outputDir
 	 * @param outputBookFile
@@ -203,7 +205,7 @@ public class BookPublisher {
 			// Build TOC PDF
 			File tocTemplateFile = getTocTemplateFile();
 			File tocOutputFile = new File( tempDir, getTempTocFileName() );
-			buildTocDoc( toc, tocTemplateFile, tocOutputFile );
+			buildTocDoc( tocTemplateFile, toc, tocOutputFile );
 			File tocSourceFile = tocOutputFile;
 			openOfficeDocConverter.convertDocument(tocSourceFile, tempDir, OpenOfficeDocConverter.OUTPUT_FORMAT_PDF, progresMonitor);
 			
@@ -226,7 +228,7 @@ public class BookPublisher {
 		
 		// TODO - copy/add meta data to output book PDF
 		
-		// TODO - add bookmarks to output book PDF
+		// TODO - convert TOC model to PDF bookmarks using com.itextpdf.text.pdf.SimpleBookmark and insert in output book PDF
 	}
 	
 	private String getTempTocFileName() {
@@ -250,7 +252,7 @@ public class BookPublisher {
 		return tocTemplateFile;
 	}
 	
-	private void buildTocDoc( Toc toc, File tocTemplateFile, File tocOutputFile ) throws Exception {
+	private void buildTocDoc( File tocTemplateFile, Toc toc, File tocOutputFile ) throws Exception {
 		
 		if (isVerbose()) {
 			debug("Building TOC doc" );

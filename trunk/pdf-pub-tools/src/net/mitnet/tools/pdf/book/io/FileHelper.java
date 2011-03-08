@@ -36,42 +36,56 @@ import org.apache.commons.io.FilenameUtils;
  */
 public class FileHelper {
 	
-	public static final String OPEN_OFFICE_DOC_SUFFIX_NAME = "odt";
-	public static final String OPEN_OFFICE_DOC_SUFFIX = "." + OPEN_OFFICE_DOC_SUFFIX_NAME;
+	public static final String OO_TEXT_DOC_EXTENSION_NAME = "odt";
+	public static final String OO_TEXT_DOC_EXTENSION = "." + OO_TEXT_DOC_EXTENSION_NAME;
 	
-	public static final String PDF_DOC_SUFFIX_NAME = "pdf";
-	public static final String PDF_DOC_SUFFIX = "." + OPEN_OFFICE_DOC_SUFFIX_NAME;
+	public static final String PDF_DOC_EXTENSION_NAME = "pdf";
+	public static final String PDF_DOC_EXTENSION = "." + OO_TEXT_DOC_EXTENSION_NAME;
 
 
 	public static List<File> findOpenOfficeFiles( File startDir ) {
-		return findFilesBySuffix( startDir, OPEN_OFFICE_DOC_SUFFIX_NAME, false );
+		return findOpenOfficeFiles( startDir, false );
 	}
 
 	public static List<File> findOpenOfficeFiles( File startDir, boolean recursive ) {
-		return findFilesBySuffix( startDir, OPEN_OFFICE_DOC_SUFFIX_NAME, recursive );
+		String[] fileExtensions = new String[] { OO_TEXT_DOC_EXTENSION_NAME, PDF_DOC_EXTENSION_NAME };
+		return findFilesByExtensions( startDir, fileExtensions, recursive );
+	}
+	
+	public static List<File> findOpenOfficeTextDocFiles( File startDir ) {
+		return findFilesByExtension( startDir, OO_TEXT_DOC_EXTENSION_NAME, false );
+	}
+
+	public static List<File> findOpenOfficeTextDocFiles( File startDir, boolean recursive ) {
+		return findFilesByExtension( startDir, OO_TEXT_DOC_EXTENSION_NAME, recursive );
 	}
 	
 	public static List<File> findPdfFiles( File startDir ) {
-		return findFilesBySuffix( startDir, PDF_DOC_SUFFIX_NAME, false );
+		return findFilesByExtension( startDir, PDF_DOC_EXTENSION_NAME, false );
 	}
 
 	public static List<File> findPdfFiles( File startDir, boolean recursive ) {
-		return findFilesBySuffix( startDir, PDF_DOC_SUFFIX_NAME, recursive );
+		return findFilesByExtension( startDir, PDF_DOC_EXTENSION_NAME, recursive );
 	}
 	
-	public static List<File> findFilesBySuffix( File startDir, final String fileSuffixName ) {
-		return findFilesBySuffix( startDir, fileSuffixName, false );
+	public static List<File> findFilesByExtension( File startDir, final String fileSuffixName ) {
+		return findFilesByExtension( startDir, fileSuffixName, false );
 	}
 	
-	public static List<File> findFilesBySuffix( File startDir, final String fileSuffixName, boolean recursive ) {
-		final String[] fileExtensions = new String[] { fileSuffixName };
+	public static List<File> findFilesByExtension( File startDir, final String fileExtension, boolean recursive ) {
+		String[] fileExtensions = new String[] { fileExtension };
+		List<File> fileList = findFilesByExtensions( startDir, fileExtensions, recursive );
+		return fileList;
+	}
+	
+	public static List<File> findFilesByExtensions( File startDir, String[] fileExtensions, boolean recursive ) {
 		@SuppressWarnings("unchecked")
 		Collection<File> fileCollection = FileUtils.listFiles( startDir, fileExtensions, recursive );
 		// System.out.println("fileCollection: " + fileCollection);
 		List<File> fileList = new ArrayList<File>(fileCollection);
 		// System.out.println("fileList: " + fileList);
 		return fileList;
-	}
+	}	
 	
 	public static File getSystemTempDir() {
 		File tempDir = new File( System.getProperty( "java.io.tmpdir" ) );

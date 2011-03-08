@@ -19,11 +19,11 @@ package net.mitnet.tools.pdf.book.model.toc;
 
 
 /**
- * Table Of Contents Builder
+ * Table Of Contents Builder.
  * 
  * @author Tim Telcik <telcik@gmail.com>
  */
-public class TocBuilder implements TocListener {
+public class TocBuilder implements TocEntryListener {
 	
 	private Toc toc = new Toc();
 

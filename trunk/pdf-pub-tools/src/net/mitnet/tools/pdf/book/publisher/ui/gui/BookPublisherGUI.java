@@ -252,7 +252,6 @@ public class BookPublisherGUI extends JFrame {
 		
 		this.progressBar.setMinimum(0); 
 		this.progressBar.setMaximum(100);
-		// this.progressBar.setIndeterminate(true);
 		
 		File sourceDir = getSourceDir();
 		File outputDir = getOutputDir();

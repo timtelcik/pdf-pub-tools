@@ -7,6 +7,6 @@
 <listEntry value="1"/>
 </listAttribute>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="net.mitnet.tools.pdf.book.pdf.builder.ui.cli.PdfBookBuilderCLI"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-i /Users/tim.telcik/spool/docs/liferay-book/output -b /Users/tim.telcik/spool/docs/liferay-book/training-book.pdf -ps a4 -v"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-v -indir &quot;-indir /Users/tim.telcik/spool/test/pdf-pub-tools/docs/source/pdf&quot; -outbook &quot;-indir /Users/tim.telcik/spool/test/pdf-pub-tools/docs/output/test-book.pdf&quot; -ps a4"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="pdf-pub-tools"/>
 </launchConfiguration>

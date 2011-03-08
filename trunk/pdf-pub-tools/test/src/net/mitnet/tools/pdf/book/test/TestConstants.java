@@ -33,8 +33,10 @@ public class TestConstants {
 	
 	public static final File SPOOL_DIR = new File( HOME_DIR, "/spool" );
 	
-	public static final File BOOK_SOURCE_DIR = new File( SPOOL_DIR, "/docs/liferay-book/source" );
-	public static final File BOOK_OUTPUT_DIR = new File( SPOOL_DIR, "/docs/liferay-book/output" );
+	public static final File TEST_WORK_DIR = new File( SPOOL_DIR, "/test" );
+	
+	public static final File BOOK_SOURCE_DIR = new File( TEST_WORK_DIR, "/pdf-pub-tools/docs/source" );
+	public static final File BOOK_OUTPUT_DIR = new File( TEST_WORK_DIR, "/pdf-pub-tools/docs/output" );
 	
 	public static final File PDF_SOURCE_DIR = new File( SPOOL_DIR, "/docs/itext-toolbox/source" );
 	public static final File PDF_OUTPUT_DIR = new File( SPOOL_DIR, "/docs/itext-toolbox/output" );

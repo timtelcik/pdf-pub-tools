@@ -129,7 +129,7 @@ public class OpenOfficeDocConverterCLI {
 			System.out.println( "Converting files ...");
 			ProgressMonitor progressMonitor = new ConsoleProgressMonitor();
 			OpenOfficeDocConverter docConverter = new OpenOfficeDocConverter(openOfficeHost,openOfficePort);
-			docConverter.setVerbose(verbose);
+			docConverter.setTraceEnabled(verbose);
 			docConverter.convertDocuments( sourceDir, outputDir, outputFormat, progressMonitor );
 		} finally {
 			if (verbose) {

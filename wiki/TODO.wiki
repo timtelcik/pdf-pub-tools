@@ -7,19 +7,15 @@ This page contains a non-exhaustive list of TODO items.
 
 = TODO Release 1 =
 
-== Build TOC Page ==
+== Book Publisher ==
 
-  * Merge the TOC data structure with an Open Office template (od) to build a TOC page
+=== Build TOC Page ===
 
-  * Integrate OpenOfficeReportBuilder with BookPublisher to create PDF TOC page
+  * Revise Table of Contents (TOC) template document (toc-template.odt).
 
-  * Use OpenOfficeReportBuilder to build Table Of Contents (TOC) page
+=== Add PDF Bookmarks ===
 
-  * Merge Table Of Contents (TOC) page with published PDF book
-
-== Add PDF Bookmarks ==
-
-  * Generate PDF Bookmarks in output PDF file. See iText PDF bookmark helper http://api.itextpdf.com/com/itextpdf/text/pdf/SimpleBookmark.html
+  * Add PDF Bookmarks to PDF book file. See iText Simple Bookmark helper class http://api.itextpdf.com/com/itextpdf/text/pdf/SimpleBookmark.html
 
 == Review Performance ==
 

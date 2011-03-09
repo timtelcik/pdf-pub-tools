@@ -29,7 +29,7 @@ import net.mitnet.tools.pdf.book.util.FileExtensionConstants;
 public class PdfFileFilter extends FileNameSuffixFileFilter {
 	
 	public PdfFileFilter() {
-		super( FileExtensionConstants.PDF );
+		super( FileExtensionConstants.PDF_DOC_EXTENSION );
 	}
 
 }

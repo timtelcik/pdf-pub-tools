@@ -29,7 +29,7 @@ import net.mitnet.tools.pdf.book.util.FileExtensionConstants;
 public class OpenOfficeDocumentFileFilter extends FileNameSuffixFileFilter {
 	
 	public OpenOfficeDocumentFileFilter() {
-		super( FileExtensionConstants.OPEN_OFFICE_DOCUMENT );
+		super( FileExtensionConstants.OO_TEXT_DOC_EXTENSION );
 	}
 
 }

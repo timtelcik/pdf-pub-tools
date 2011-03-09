@@ -214,10 +214,10 @@ public class BookPublisher {
 			if (isVerbose()) {
 				debug("Merging TOC with book");
 			}
-			String firstPdfName = FileNameHelper.rewriteFileNameSuffix(tocSourceFile,FileExtensionConstants.PDF);
+			String firstPdfName = FileNameHelper.rewriteFileNameSuffix(tocSourceFile,FileExtensionConstants.PDF_DOC_EXTENSION);
 			File firstPdf = new File(tempDir,firstPdfName);
 			File secondPdf = outputBookFile;
-			String concatName = FileNameHelper.rewriteFileNameSuffix(outputBookFile,"-plus-toc",FileExtensionConstants.PDF);
+			String concatName = FileNameHelper.rewriteFileNameSuffix(outputBookFile,"-plus-toc",FileExtensionConstants.PDF_DOC_EXTENSION);
 			File concatPdf = new File(outputBookFile.getParent(),concatName);
 			concatPdf(firstPdf, secondPdf, concatPdf);
 			if (concatPdf.exists()) {
@@ -233,7 +233,7 @@ public class BookPublisher {
 	}
 	
 	private String getTempTocFileName() {
-		return "toc" + FileExtensionConstants.OPEN_OFFICE_DOCUMENT; 
+		return "toc" + FileExtensionConstants.OO_PRESENTATION_DOC_EXTENSION; 
 	}
 
 	private File getTocTemplateFile() throws IOException {

@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import net.mitnet.tools.pdf.book.util.FileExtensionConstants;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
@@ -37,36 +39,29 @@ import org.apache.commons.lang.StringUtils;
  */
 public class FileHelper {
 	
-	public static final String OO_TEXT_DOC_EXTENSION_NAME = "odt";
-	public static final String OO_TEXT_DOC_EXTENSION = "." + OO_TEXT_DOC_EXTENSION_NAME;
-	
-	public static final String PDF_DOC_EXTENSION_NAME = "pdf";
-	public static final String PDF_DOC_EXTENSION = "." + OO_TEXT_DOC_EXTENSION_NAME;
-
-
 	public static List<File> findOpenOfficeFiles( File startDir ) {
 		return findOpenOfficeFiles( startDir, false );
 	}
 
 	public static List<File> findOpenOfficeFiles( File startDir, boolean recursive ) {
-		String[] fileExtensions = new String[] { OO_TEXT_DOC_EXTENSION_NAME, PDF_DOC_EXTENSION_NAME };
+		String[] fileExtensions = FileExtensionConstants.SUPPORTED_OO_FILE_EXTENSIONS;
 		return findFilesByExtensions( startDir, fileExtensions, recursive );
 	}
 	
 	public static List<File> findOpenOfficeTextDocFiles( File startDir ) {
-		return findFilesByExtension( startDir, OO_TEXT_DOC_EXTENSION_NAME, false );
+		return findFilesByExtension( startDir, FileExtensionConstants.OO_TEXT_DOC_EXTENSION_NAME, false );
 	}
 
 	public static List<File> findOpenOfficeTextDocFiles( File startDir, boolean recursive ) {
-		return findFilesByExtension( startDir, OO_TEXT_DOC_EXTENSION_NAME, recursive );
+		return findFilesByExtension( startDir, FileExtensionConstants.OO_TEXT_DOC_EXTENSION_NAME, recursive );
 	}
 	
 	public static List<File> findPdfFiles( File startDir ) {
-		return findFilesByExtension( startDir, PDF_DOC_EXTENSION_NAME, false );
+		return findFilesByExtension( startDir, FileExtensionConstants.PDF_DOC_EXTENSION_NAME, false );
 	}
 
 	public static List<File> findPdfFiles( File startDir, boolean recursive ) {
-		return findFilesByExtension( startDir, PDF_DOC_EXTENSION_NAME, recursive );
+		return findFilesByExtension( startDir, FileExtensionConstants.PDF_DOC_EXTENSION_NAME, recursive );
 	}
 	
 	public static List<File> findFilesByExtension( File startDir, final String fileSuffixName ) {
@@ -98,7 +93,9 @@ public class FileHelper {
 	
 
 	/**
-	 * Parses the path for a file relative to a parent dir.
+	 * Returns the path between a file and a parent directory/folder.
+	 * 
+	 * NOTE: The file must be a child of the parent.
 	 * 
 	 * For example,
 	 * if parentDir is "/home/users/nobody/spool/docs/input"
@@ -108,9 +105,9 @@ public class FileHelper {
 	 * @param parentDir parent dir
 	 * @param file file relative to parent dir
 	 */
-	public static String parseRelativePathToParent( File parentDir, File file ) {
+	public static String getPathToParent( File parentDir, File file ) {
 		
-		String result = null;
+		String pathToParent = null;
 		
 		if (parentDir != null && file != null) {
 			// String fileName = file.getName();
@@ -123,11 +120,11 @@ public class FileHelper {
 			// String relativePath = FilenameUtils.getPathNoEndSeparator(relativeFilePath);
 			String relativePath = FilenameUtils.getPath(relativeFilePath);
 			if (!StringUtils.isEmpty(relativePath)) {
-				result = relativePath;				
+				pathToParent = relativePath;				
 			}
 		}
 		
-		return result;
+		return pathToParent;
 	}
 	
 }

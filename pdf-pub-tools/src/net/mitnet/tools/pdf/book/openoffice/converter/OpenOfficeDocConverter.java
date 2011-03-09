@@ -136,11 +136,11 @@ public class OpenOfficeDocConverter {
 				if ( outputDir == null ) {
 					baseOutputFilePath = inputFile.getParent();
 				} else {
-					String relativePath = FileHelper.parseRelativePathToParent( sourceDir, inputFile );
-					if (StringUtils.isEmpty(relativePath)) {
+					String pathToParent = FileHelper.getPathToParent( sourceDir, inputFile );
+					if (StringUtils.isEmpty(pathToParent)) {
 						baseOutputFilePath = outputDir.getAbsolutePath();
 					} else {
-						baseOutputFilePath = new File( outputDir, relativePath ).getPath();
+						baseOutputFilePath = new File( outputDir, pathToParent ).getPath();
 					}
 				}
 				String baseInputFileName = FilenameUtils.getBaseName(inputFile.getName());

@@ -23,7 +23,6 @@ import java.util.List;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import net.mitnet.tools.pdf.book.io.FileHelper;
-import net.mitnet.tools.pdf.book.reports.OpenOfficeReportBuilderTest;
 import net.mitnet.tools.pdf.book.test.TestConstants;
 
 
@@ -104,7 +103,7 @@ public class FileHelperTest extends TestCase {
 		System.out.println( "source dir " + sourceDir + " contains " + sourceFileList.size() + " PDF file(s)");
 	}
 	
-	public void testParseRelativePathToParent() throws Exception {
+	public void testPathToParent() throws Exception {
 		
 		File parentDir = new File( "/Users/tim.telcik/spool/docs/input" );
 		System.out.println( "parentDir: " + parentDir);
@@ -120,13 +119,13 @@ public class FileHelperTest extends TestCase {
 		String sourceFileCanonicalPath = sourceFile.getCanonicalPath();
 		System.out.println( "sourceFileCanonicalPath: " + sourceFileCanonicalPath);
 		
-		String relativePath = FileHelper.parseRelativePathToParent(parentDir, sourceFile);
-		System.out.println( "relativePath: " + relativePath);
+		String pathToParent = FileHelper.getPathToParent(parentDir, sourceFile);
+		System.out.println( "pathToParent: " + pathToParent);
 	}
 	
 	public static TestSuite suite() {
 		 TestSuite suite = new TestSuite();
-		 suite.addTest(new FileHelperTest("testParseRelativePathToParent"));
+		 suite.addTest(new FileHelperTest("testPathToParent"));
 		 return suite;
 	}
 	

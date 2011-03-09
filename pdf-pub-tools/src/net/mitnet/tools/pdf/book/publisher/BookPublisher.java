@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Map;
 
+import net.mitnet.tools.pdf.book.io.FileExtensionConstants;
 import net.mitnet.tools.pdf.book.io.FileHelper;
 import net.mitnet.tools.pdf.book.io.FileNameHelper;
 import net.mitnet.tools.pdf.book.model.toc.Toc;
@@ -33,7 +34,6 @@ import net.mitnet.tools.pdf.book.openoffice.converter.OpenOfficeDocConverter;
 import net.mitnet.tools.pdf.book.openoffice.net.OpenOfficeServerContext;
 import net.mitnet.tools.pdf.book.openoffice.reports.OpenOfficeReportBuilder;
 import net.mitnet.tools.pdf.book.pdf.builder.PdfBookBuilder;
-import net.mitnet.tools.pdf.book.util.FileExtensionConstants;
 import net.mitnet.tools.pdf.book.util.ProgressMonitor;
 
 import org.apache.commons.io.FileUtils;
@@ -214,10 +214,10 @@ public class BookPublisher {
 			if (isVerbose()) {
 				debug("Merging TOC with book");
 			}
-			String firstPdfName = FileNameHelper.rewriteFileNameSuffix(tocSourceFile,FileExtensionConstants.PDF_DOC_EXTENSION);
+			String firstPdfName = FileNameHelper.rewriteFileNameSuffix(tocSourceFile,FileExtensionConstants.PDF_EXTENSION);
 			File firstPdf = new File(tempDir,firstPdfName);
 			File secondPdf = outputBookFile;
-			String concatName = FileNameHelper.rewriteFileNameSuffix(outputBookFile,"-plus-toc",FileExtensionConstants.PDF_DOC_EXTENSION);
+			String concatName = FileNameHelper.rewriteFileNameSuffix(outputBookFile,"-plus-toc",FileExtensionConstants.PDF_EXTENSION);
 			File concatPdf = new File(outputBookFile.getParent(),concatName);
 			concatPdf(firstPdf, secondPdf, concatPdf);
 			if (concatPdf.exists()) {
@@ -233,7 +233,7 @@ public class BookPublisher {
 	}
 	
 	private String getTempTocFileName() {
-		return "toc" + FileExtensionConstants.OO_PRESENTATION_DOC_EXTENSION; 
+		return "toc" + FileExtensionConstants.OO_TEXT_DOC_EXTENSION; 
 	}
 
 	private File getTocTemplateFile() throws IOException {

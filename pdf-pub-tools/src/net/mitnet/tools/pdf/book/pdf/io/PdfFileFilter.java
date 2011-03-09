@@ -17,8 +17,8 @@
 
 package net.mitnet.tools.pdf.book.pdf.io;
 
+import net.mitnet.tools.pdf.book.io.FileExtensionConstants;
 import net.mitnet.tools.pdf.book.io.FileNameSuffixFileFilter;
-import net.mitnet.tools.pdf.book.util.FileExtensionConstants;
 
 
 /**
@@ -29,7 +29,7 @@ import net.mitnet.tools.pdf.book.util.FileExtensionConstants;
 public class PdfFileFilter extends FileNameSuffixFileFilter {
 	
 	public PdfFileFilter() {
-		super( FileExtensionConstants.PDF_DOC_EXTENSION );
+		super( FileExtensionConstants.PDF_EXTENSION );
 	}
 
 }

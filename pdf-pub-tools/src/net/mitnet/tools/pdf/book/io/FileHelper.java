@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import net.mitnet.tools.pdf.book.util.FileExtensionConstants;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -57,11 +56,11 @@ public class FileHelper {
 	}
 	
 	public static List<File> findPdfFiles( File startDir ) {
-		return findFilesByExtension( startDir, FileExtensionConstants.PDF_DOC_EXTENSION_NAME, false );
+		return findFilesByExtension( startDir, FileExtensionConstants.PDF_EXTENSION_NAME, false );
 	}
 
 	public static List<File> findPdfFiles( File startDir, boolean recursive ) {
-		return findFilesByExtension( startDir, FileExtensionConstants.PDF_DOC_EXTENSION_NAME, recursive );
+		return findFilesByExtension( startDir, FileExtensionConstants.PDF_EXTENSION_NAME, recursive );
 	}
 	
 	public static List<File> findFilesByExtension( File startDir, final String fileSuffixName ) {

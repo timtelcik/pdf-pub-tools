@@ -19,6 +19,7 @@ package net.mitnet.tools.pdf.book.publisher.ui.cli;
 
 import java.io.File;
 
+import net.mitnet.tools.pdf.book.io.FileExtensionConstants;
 import net.mitnet.tools.pdf.book.openoffice.converter.OpenOfficeDocConverter;
 import net.mitnet.tools.pdf.book.openoffice.net.OpenOfficeServerContext;
 import net.mitnet.tools.pdf.book.openoffice.ui.cli.OpenOfficeDocConverterCLI;
@@ -59,7 +60,7 @@ import com.lowagie.text.Rectangle;
  */
 public class BookPublisherCLI {
 	
-	private static final File DEFAULT_OUTPUT_FILE = new File( "my-book" + PdfBookBuilder.PDF_FILE_EXTENSION );
+	private static final File DEFAULT_OUTPUT_FILE = new File( "my-book" + FileExtensionConstants.PDF_EXTENSION );
 	
 
 	private static final Options OPTIONS = initOptions();

@@ -26,8 +26,8 @@ import java.util.Map;
 
 import net.mitnet.tools.pdf.book.io.FileHelper;
 import net.mitnet.tools.pdf.book.model.toc.Toc;
-import net.mitnet.tools.pdf.book.model.toc.TocEntry;
-import net.mitnet.tools.pdf.book.model.toc.TocEntryListener;
+import net.mitnet.tools.pdf.book.model.toc.TocRow;
+import net.mitnet.tools.pdf.book.model.toc.TocRowChangeListener;
 import net.mitnet.tools.pdf.book.pdf.itext.PdfReaderHelper;
 import net.mitnet.tools.pdf.book.util.MathHelper;
 import net.mitnet.tools.pdf.book.util.ProgressMonitor;
@@ -62,9 +62,6 @@ import com.lowagie.text.pdf.PdfWriter;
  * @see Section
  */
 public class PdfBookBuilder {
-	
-	public static final String PDF_FILE_EXTENSION_NAME = "pdf";
-	public static final String PDF_FILE_EXTENSION = "." + PDF_FILE_EXTENSION_NAME;
 	
 	// TOOD - default page size based on Locale
 	// private static final Rectangle DEFAULT_DOCUMENT_PAGE_SIZE = PageSize.A4;
@@ -137,7 +134,7 @@ public class PdfBookBuilder {
 		this.metaAuthor = metaAuthor;
 	}
 
-	public void buildBook( File sourceDir, File outputFile, ProgressMonitor progresMonitor, TocEntryListener tocListener ) throws Exception {
+	public void buildBook( File sourceDir, File outputFile, ProgressMonitor progresMonitor, TocRowChangeListener tocListener ) throws Exception {
 
 		if (isVerboseEnabled()) {
 			System.out.println( "-- sourceDir: " + sourceDir);
@@ -155,7 +152,7 @@ public class PdfBookBuilder {
 		}
 	}
 
-	public void buildBook( List<File> sourceFileList, File outputFile, ProgressMonitor progresMonitor, TocEntryListener tocListener ) {
+	public void buildBook( List<File> sourceFileList, File outputFile, ProgressMonitor progresMonitor, TocRowChangeListener tocListener ) {
 		
 		try {
 
@@ -262,8 +259,8 @@ public class PdfBookBuilder {
 						if (firstPageOfCurrentSource) {
 							int firstPageOfCurrentSourceInOutput = outputPageCount;
 							if (tocListener != null) {
-								TocEntry tocEntry = new TocEntry( currentSourcePdfTitle, firstPageOfCurrentSourceInOutput );
-								tocListener.addTocEntry(tocEntry);
+								TocRow tocEntry = new TocRow( currentSourcePdfTitle, firstPageOfCurrentSourceInOutput );
+								tocListener.addTocRow(tocEntry);
 								if (isVerboseEnabled()) {
 									System.out.println("-- Added TOC entry " + tocEntry + " to listener");
 								}

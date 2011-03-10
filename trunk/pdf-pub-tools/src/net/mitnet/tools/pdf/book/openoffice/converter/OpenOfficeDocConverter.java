@@ -54,7 +54,7 @@ import com.artofsolving.jodconverter.openoffice.converter.OpenOfficeDocumentConv
 public class OpenOfficeDocConverter {
 	
 	public static final String OUTPUT_FORMAT_PDF = "pdf";
-	public static final String OUTPUT_FORMAT_OPEN_OFFICE = "odt";
+	public static final String OUTPUT_FORMAT_OPEN_DOC_TEXT = "odt";
 	public static final String DEFAULT_OUTPUT_FORMAT = OUTPUT_FORMAT_PDF;
 
 	private OpenOfficeServerContext serverContext = null;

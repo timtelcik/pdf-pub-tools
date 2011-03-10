@@ -23,7 +23,7 @@ package net.mitnet.tools.pdf.book.model.toc;
  * 
  * @author Tim Telcik <telcik@gmail.com>
  */
-public class TocBuilder implements TocEntryListener {
+public class TocBuilder implements TocRowChangeListener {
 	
 	private Toc toc = new Toc();
 
@@ -32,8 +32,8 @@ public class TocBuilder implements TocEntryListener {
 	}
 	
 	@Override
-	public void addTocEntry(TocEntry tocEntry) {
-		toc.addTocEntry(tocEntry);
+	public void addTocRow(TocRow tocRow) {
+		toc.addTocRow(tocRow);
 	}
 	
 	public Toc getToc() {

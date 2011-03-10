@@ -22,28 +22,30 @@ package net.mitnet.tools.pdf.book.io;
  * File Extension Constants.
  * 
  * @author Tim Telcik <telcik@gmail.com>
+ * 
+ * @see http://en.wikipedia.org/wiki/OpenDocument
  */
 public class FileExtensionConstants {
 	
 	public static final String FILE_EXTENSION_SEP = ".";
 
-	public static final String OO_TEXT_DOC_EXTENSION_NAME = "odt";
-	public static final String OO_TEXT_DOC_EXTENSION = FILE_EXTENSION_SEP + OO_TEXT_DOC_EXTENSION_NAME;
+	public static final String OPEN_DOC_TEXT_EXTENSION_NAME = "odt";
+	public static final String OPEN_DOC_TEXT_EXTENSION = FILE_EXTENSION_SEP + OPEN_DOC_TEXT_EXTENSION_NAME;
 	
-	public static final String OO_PRESENTATION_EXTENSION_NAME = "odp";
-	public static final String OO_PRESENTATION_EXTENSION = FILE_EXTENSION_SEP + OO_PRESENTATION_EXTENSION_NAME;
+	public static final String OPEN_DOC_PRESENTATION_EXTENSION_NAME = "odp";
+	public static final String OPEN_DOC_PRESENTATION_EXTENSION = FILE_EXTENSION_SEP + OPEN_DOC_PRESENTATION_EXTENSION_NAME;
 	
 	public static final String PDF_EXTENSION_NAME = "pdf";
 	public static final String PDF_EXTENSION = FILE_EXTENSION_SEP + PDF_EXTENSION_NAME;
 	
-	public static final String PLAIN_TEXT_DOC_EXTENSION_NAME = "txt";
-	public static final String PLAIN_TEXT_DOC_EXTENSION = FILE_EXTENSION_SEP + PLAIN_TEXT_DOC_EXTENSION_NAME;
+	public static final String PLAIN_TEXT_EXTENSION_NAME = "txt";
+	public static final String PLAIN_TEXT_EXTENSION = FILE_EXTENSION_SEP + PLAIN_TEXT_EXTENSION_NAME;
 	
-	public static final String[] SUPPORTED_OO_FILE_EXTENSIONS = new String[] { 
-		FileExtensionConstants.OO_TEXT_DOC_EXTENSION_NAME,
-		FileExtensionConstants.OO_PRESENTATION_EXTENSION_NAME, 
+	public static final String[] OPEN_DOC_EXTENSIONS = new String[] { 
+		FileExtensionConstants.OPEN_DOC_TEXT_EXTENSION_NAME,
+		FileExtensionConstants.OPEN_DOC_PRESENTATION_EXTENSION_NAME, 
 		FileExtensionConstants.PDF_EXTENSION_NAME,
-		FileExtensionConstants.PLAIN_TEXT_DOC_EXTENSION_NAME,
+		FileExtensionConstants.PLAIN_TEXT_EXTENSION_NAME,
 	};
 
 }

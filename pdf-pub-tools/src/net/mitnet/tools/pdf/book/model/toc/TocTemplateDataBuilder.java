@@ -33,6 +33,7 @@ import net.sf.jooreports.templates.DocumentTemplateException;
  * NOTE: JODReports template data contains <tt>[#list items as item]</tt>
  * 
  * TODO: validate and prevent NPE
+ * TODO: rename sections to rows
  * 
  * @author Tim Telcik <telcik@gmail.com>
  */
@@ -41,11 +42,13 @@ public class TocTemplateDataBuilder {
 	public static final String KEY_TOC = "toc";
 	
 	public static final String KEY_SECTION = "section";
-	// public static final String KEY_SECTION = "tocEntry";
+	// public static final String KEY_TOC_ROW = "tocRow";
 	
 	public static final String KEY_SECTION_TITLE = "title";
+	// public static final String KEY_TOC_ROW_TITLE = "title";
 	
 	public static final String KEY_SECTION_PAGE_NUMBER = "pageNumber";
+	// public static final String KEY_TOC_ROW_PAGE_NUMBER = "pageNumber";
 	
 	
 	public static Map buildTocTemplateData( Toc toc ) throws IOException, DocumentTemplateException {
@@ -58,27 +61,27 @@ public class TocTemplateDataBuilder {
 		List sectionList = new ArrayList();
 		tocMap.put(KEY_SECTION, sectionList);
 		
-		Iterator<TocEntry> tocIter = toc.iterator();
+		Iterator<TocRow> tocRowIter = toc.rowIterator();
 		
-		while (tocIter.hasNext()) {
-			TocEntry tocEntry = tocIter.next();
-			Map tocEntryMap = createTocSectionData( tocEntry );
-			sectionList.add( tocEntryMap );
+		while (tocRowIter.hasNext()) {
+			TocRow tocRow = tocRowIter.next();
+			Map tocRowMap = createTocSectionData( tocRow );
+			sectionList.add( tocRowMap );
 		}
 		
 		return dataMap;
 	}
 	
-	public static Map createTocSectionData( TocEntry tocEntry ) {
-		Map tocEntryMap = createTocSectionData( tocEntry.getTitle(), tocEntry.getPageNumber() );
-		return tocEntryMap;
+	public static Map createTocSectionData( TocRow tocRow ) {
+		Map tocRowMap = createTocSectionData( tocRow.getTitle(), tocRow.getPageNumber() );
+		return tocRowMap;
 	}
 	
 	public static Map createTocSectionData( String title, int pageNumber ) {
-		Map tocEntryMap = new HashMap();
-		tocEntryMap.put(KEY_SECTION_TITLE,title);
-		tocEntryMap.put(KEY_SECTION_PAGE_NUMBER, new Integer(pageNumber));
-		return tocEntryMap;
+		Map tocRowMap = new HashMap();
+		tocRowMap.put(KEY_SECTION_TITLE,title);
+		tocRowMap.put(KEY_SECTION_PAGE_NUMBER, new Integer(pageNumber));
+		return tocRowMap;
 	}
 
 }

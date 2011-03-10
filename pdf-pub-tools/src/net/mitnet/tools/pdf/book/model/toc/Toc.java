@@ -29,31 +29,41 @@ import java.util.List;
  */
 public class Toc {
 	
-	private List<TocEntry> tocEntryList = new ArrayList<TocEntry>();
+	private List<TocRow> tocRowList = new ArrayList<TocRow>();
 	
 	
 	public Toc() {
 	}
 	
-	public Toc( List<TocEntry> tocEntries ) {
-		this.tocEntryList = tocEntries;
+	public Toc( List<TocRow> tocEntries ) {
+		this.tocRowList = tocEntries;
 	}
 	
-	public void addTocEntry( TocEntry tocEntry ) {
-		tocEntryList.add( tocEntry );
+	public void addTocRow( TocRow tocRow ) {
+		tocRowList.add( tocRow );
 	}
 	
-	public int getTocEntryCount() {
-		return tocEntryList.size();
+	public int getTocRowCount() {
+		return this.tocRowList.size();
 	}
 	
-	public Iterator<TocEntry> iterator() {
-		return tocEntryList.iterator();
+	public List<TocRow> getTocRowList() {
+		return this.tocRowList;
+	}
+	
+	public Iterator<TocRow> rowIterator() {
+		return tocRowList.iterator();
 	}
 
 	@Override
 	public String toString() {
-		return "Toc [tocEntryList=" + tocEntryList + "]";
+		StringBuffer buffer = new StringBuffer();
+		buffer.append( "[" + this.getClass().getName() + "]" );
+		buffer.append( "(" );
+		buffer.append( "tocRowCount=" + getTocRowCount() );
+		buffer.append( ", tocRowList=" + getTocRowList() );
+		buffer.append( ")" );
+		return buffer.toString();
 	}
 
 }

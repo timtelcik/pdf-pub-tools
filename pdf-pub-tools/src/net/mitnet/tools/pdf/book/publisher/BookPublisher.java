@@ -199,7 +199,7 @@ public class BookPublisher {
 			Toc toc = tocBuilder.getToc();
 			if (isVerbose()) {
 				debug("Output PDF Table Of Contents is " + toc );
-				debug("Output PDF Table Of Contents contains " + toc.getTocEntryCount() + " entries" );
+				debug("Output PDF Table Of Contents contains " + toc.getTocRowCount() + " entries" );
 				TocTracer.traceToc(toc);
 			}
 			
@@ -233,7 +233,7 @@ public class BookPublisher {
 	}
 	
 	private String getTempTocFileName() {
-		return "toc" + FileExtensionConstants.OO_TEXT_DOC_EXTENSION; 
+		return "toc" + FileExtensionConstants.OPEN_DOC_TEXT_EXTENSION; 
 	}
 
 	private File getTocTemplateFile() throws IOException {

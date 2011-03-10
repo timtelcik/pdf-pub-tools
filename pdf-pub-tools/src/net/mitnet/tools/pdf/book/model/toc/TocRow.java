@@ -19,20 +19,20 @@ package net.mitnet.tools.pdf.book.model.toc;
 
 
 /**
- * Table Of Contents Entry.
+ * Table Of Contents Row.
  * 
  * @author Tim Telcik <telcik@gmail.com>
  */
-public class TocEntry {
+public class TocRow {
 	
 	private String title;
 	private int pageNumber;
 	
 	
-	public TocEntry() {	
+	public TocRow() {	
 	}
 	
-	public TocEntry( String title, int pageNumber ) {
+	public TocRow( String title, int pageNumber ) {
 		this.title = title;
 		this.pageNumber = pageNumber;
 	}
@@ -40,20 +40,28 @@ public class TocEntry {
 	public String getTitle() {
 		return title;
 	}
+	
 	public void setTitle(String title) {
 		this.title = title;
 	}
+	
 	public int getPageNumber() {
 		return pageNumber;
 	}
+	
 	public void setPageNumber(int pageNumber) {
 		this.pageNumber = pageNumber;
 	}
 
 	@Override
 	public String toString() {
-		return "TocEntry [title=" + title + ", pageNumber="
-				+ pageNumber + "]";
-	}
+		StringBuffer buffer = new StringBuffer();
+		buffer.append( "[" + this.getClass().getName() + "]" );
+		buffer.append( "(" );
+		buffer.append( "title=" + getTitle() );
+		buffer.append( ", pageNumber=" + getPageNumber() );
+		buffer.append( ")" );
+		return buffer.toString();
+	}	
 
 }

@@ -30,9 +30,9 @@ public class TocTracer {
 	public static void traceToc( Toc toc ) {
 		if (toc != null) {
 			System.out.println("--- Begin Table Of Contents");
-			Iterator<TocEntry> tocIter = toc.iterator();
+			Iterator<TocRow> tocIter = toc.rowIterator();
 			while (tocIter.hasNext()) {
-				TocEntry tocEntry = tocIter.next();
+				TocRow tocEntry = tocIter.next();
 				String title = tocEntry.getTitle();
 				int pageNumber = tocEntry.getPageNumber();
 				System.out.println( title + " ... Page " + pageNumber );

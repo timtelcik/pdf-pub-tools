@@ -43,16 +43,16 @@ public class FileHelper {
 	}
 
 	public static List<File> findOpenOfficeFiles( File startDir, boolean recursive ) {
-		String[] fileExtensions = FileExtensionConstants.SUPPORTED_OO_FILE_EXTENSIONS;
+		String[] fileExtensions = FileExtensionConstants.OPEN_DOC_EXTENSIONS;
 		return findFilesByExtensions( startDir, fileExtensions, recursive );
 	}
 	
 	public static List<File> findOpenOfficeTextDocFiles( File startDir ) {
-		return findFilesByExtension( startDir, FileExtensionConstants.OO_TEXT_DOC_EXTENSION_NAME, false );
+		return findFilesByExtension( startDir, FileExtensionConstants.OPEN_DOC_TEXT_EXTENSION_NAME, false );
 	}
 
 	public static List<File> findOpenOfficeTextDocFiles( File startDir, boolean recursive ) {
-		return findFilesByExtension( startDir, FileExtensionConstants.OO_TEXT_DOC_EXTENSION_NAME, recursive );
+		return findFilesByExtension( startDir, FileExtensionConstants.OPEN_DOC_TEXT_EXTENSION_NAME, recursive );
 	}
 	
 	public static List<File> findPdfFiles( File startDir ) {

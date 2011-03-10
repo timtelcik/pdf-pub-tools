@@ -32,6 +32,7 @@ import javax.swing.JProgressBar;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
+import net.mitnet.tools.pdf.book.io.FileExtensionConstants;
 import net.mitnet.tools.pdf.book.openoffice.converter.OpenOfficeDocConverter;
 import net.mitnet.tools.pdf.book.openoffice.net.OpenOfficeServerContext;
 import net.mitnet.tools.pdf.book.pdf.builder.PdfBookBuilder;
@@ -285,7 +286,7 @@ public class BookPublisherGUI extends JFrame {
 		File sourceDir = getSourceDir();
 		File outputDir = getOutputDir();
 		File outputBookDir = getOutputDir().getParentFile();
-		String outputBookName = FilenameUtils.getBaseName(outputDir.getName()) + "-book" + PdfBookBuilder.PDF_FILE_EXTENSION;
+		String outputBookName = FilenameUtils.getBaseName(outputDir.getName()) + "-book" + FileExtensionConstants.PDF_EXTENSION;
 		File outputBookFile = new File( outputBookDir, outputBookName );
 		
 		System.out.println( "Source dir is " + sourceDir );

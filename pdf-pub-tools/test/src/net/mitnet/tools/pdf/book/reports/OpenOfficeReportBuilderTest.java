@@ -25,7 +25,7 @@ import java.util.Map;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import net.mitnet.tools.pdf.book.model.toc.Toc;
-import net.mitnet.tools.pdf.book.model.toc.TocEntry;
+import net.mitnet.tools.pdf.book.model.toc.TocRow;
 import net.mitnet.tools.pdf.book.model.toc.TocTemplateDataBuilder;
 import net.mitnet.tools.pdf.book.openoffice.reports.OpenOfficeReportBuilder;
 import net.sf.jooreports.templates.DocumentTemplateException;
@@ -164,16 +164,16 @@ public class OpenOfficeReportBuilderTest extends TestCase {
 		
 		Toc toc = new Toc();
 		
-		TocEntry tocEntry = null;
+		TocRow tocEntry = null;
 		
-		tocEntry = new TocEntry( "TITLE AAA", 100 );
-		toc.addTocEntry(tocEntry);
+		tocEntry = new TocRow( "TITLE AAA", 100 );
+		toc.addTocRow(tocEntry);
 		
-		tocEntry = new TocEntry( "TITLE BBB", 200 );
-		toc.addTocEntry(tocEntry);
+		tocEntry = new TocRow( "TITLE BBB", 200 );
+		toc.addTocRow(tocEntry);
 		
-		tocEntry = new TocEntry( "TITLE CCC", 300 );
-		toc.addTocEntry(tocEntry);
+		tocEntry = new TocRow( "TITLE CCC", 300 );
+		toc.addTocRow(tocEntry);
 		
 		System.out.println("toc: " + toc);
 		

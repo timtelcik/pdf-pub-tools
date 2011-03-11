@@ -9,13 +9,11 @@
    * Import pdf-pub-tools project into Eclipse IDE as an existing Java project.
    * Build project.
 
-  
-
 == Usage ==
 
    * Start Open Office in "headless" mode
-   * Run Book Publisher or related tool using Eclipse launchers.
+   * Run Book Publisher GUI or CLI using Eclipse IDE launchers.
 
-Note: Some tools require OO in headless mode, some do not.
+Note: The Book Publisher tool requires Open Office to be running in "headless" mode to perform the document to PDF conversion.
 
 See [Usage]

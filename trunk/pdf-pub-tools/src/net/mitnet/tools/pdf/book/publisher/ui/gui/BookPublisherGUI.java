@@ -35,7 +35,6 @@ import javax.swing.WindowConstants;
 import net.mitnet.tools.pdf.book.io.FileExtensionConstants;
 import net.mitnet.tools.pdf.book.openoffice.converter.OpenOfficeDocConverter;
 import net.mitnet.tools.pdf.book.openoffice.net.OpenOfficeServerContext;
-import net.mitnet.tools.pdf.book.pdf.builder.PdfBookBuilder;
 import net.mitnet.tools.pdf.book.publisher.BookPublisher;
 import net.mitnet.tools.pdf.book.ui.gui.ProgressBarMonitor;
 import net.mitnet.tools.pdf.book.util.ProgressMonitor;
@@ -268,7 +267,8 @@ public class BookPublisherGUI extends JFrame {
 				OpenOfficeDocConverter docConverter = new OpenOfficeDocConverter(serverContext);
 				boolean verbose = true;
 				docConverter.setTraceEnabled(verbose);
-				docConverter.convertDocuments( sourceDir, outputDir, OpenOfficeDocConverter.OUTPUT_FORMAT_PDF, progressMonitor );
+				docConverter.setProgressMonitor(progressMonitor);
+				docConverter.convertDocuments( sourceDir, outputDir, OpenOfficeDocConverter.OUTPUT_FORMAT_PDF );
 				setStatusMessage("Finished converting documents.");
 			} catch (Exception ex) {
 				setStatusMessage("Error publishing book: " + ex.getMessage());
@@ -307,7 +307,8 @@ public class BookPublisherGUI extends JFrame {
 				*/
 				boolean verbose = true;
 				bookPublisher.setVerbose(verbose);
-				bookPublisher.publish( sourceDir, outputDir, outputBookFile, progressMonitor );
+				bookPublisher.setProgressMonitor(progressMonitor);
+				bookPublisher.publish( sourceDir, outputDir, outputBookFile );
 				setStatusMessage("Finished publishing book.");
 				
 			} catch (Exception ex) {

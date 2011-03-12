@@ -23,6 +23,7 @@ import net.mitnet.tools.pdf.book.model.toc.Toc;
 import net.mitnet.tools.pdf.book.model.toc.TocBuilder;
 import net.mitnet.tools.pdf.book.model.toc.TocTracer;
 import net.mitnet.tools.pdf.book.pdf.builder.PdfBookBuilder;
+import net.mitnet.tools.pdf.book.pdf.event.PdfPageEventLogger;
 import net.mitnet.tools.pdf.book.ui.cli.CliConstants;
 import net.mitnet.tools.pdf.book.ui.cli.CommandLineHelper;
 import net.mitnet.tools.pdf.book.ui.cli.ConsoleProgressMonitor;
@@ -38,6 +39,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Rectangle;
+import com.lowagie.text.pdf.PdfPageEvent;
 
 
 /**
@@ -128,12 +130,16 @@ public class PdfBookBuilderCLI {
 			}
 
 			ProgressMonitor progressMonitor = new ConsoleProgressMonitor();
+			PdfPageEvent pdfPageEventListener = new PdfPageEventLogger();
 			TocBuilder tocBuilder = new TocBuilder();
 			PdfBookBuilder pdfBookBuilder = new PdfBookBuilder(pageSize);
 			pdfBookBuilder.setMetaTitle(metaTitle);
 			pdfBookBuilder.setMetaAuthor(metaAuthor);
 			pdfBookBuilder.setVerbose(verbose);
-			pdfBookBuilder.buildBook(sourceDir, outputBookFile, progressMonitor, tocBuilder);
+			pdfBookBuilder.setProgressMonitor(progressMonitor);
+			pdfBookBuilder.setTocRowChangeListener(tocBuilder);
+			pdfBookBuilder.setPdfPageEventListener(pdfPageEventListener);
+			pdfBookBuilder.buildBook(sourceDir, outputBookFile);
 			
 			if (verbose) {
 				Toc toc = tocBuilder.getToc();

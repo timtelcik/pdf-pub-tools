@@ -130,7 +130,8 @@ public class OpenOfficeDocConverterCLI {
 			ProgressMonitor progressMonitor = new ConsoleProgressMonitor();
 			OpenOfficeDocConverter docConverter = new OpenOfficeDocConverter(openOfficeHost,openOfficePort);
 			docConverter.setTraceEnabled(verbose);
-			docConverter.convertDocuments( sourceDir, outputDir, outputFormat, progressMonitor );
+			docConverter.setProgressMonitor(progressMonitor);
+			docConverter.convertDocuments( sourceDir, outputDir, outputFormat );
 		} finally {
 			if (verbose) {
 				System.out.println("-- disconnecting");

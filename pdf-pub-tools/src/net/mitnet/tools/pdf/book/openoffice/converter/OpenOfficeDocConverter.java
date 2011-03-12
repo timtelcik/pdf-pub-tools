@@ -60,6 +60,7 @@ public class OpenOfficeDocConverter {
 	private OpenOfficeServerContext serverContext = null;
 	private boolean traceEnabled = false;
 	private boolean debugEnabled = false;
+	private ProgressMonitor progressMonitor = null;
 	
 
 	public OpenOfficeDocConverter( OpenOfficeServerContext serverContext ) throws Exception {
@@ -86,12 +87,21 @@ public class OpenOfficeDocConverter {
 		return this.debugEnabled;
 	}
 
-	public void convertDocuments( File sourceDir, File outputDir, String outputFormat, ProgressMonitor progresMonitor ) throws Exception {
+	public ProgressMonitor getProgressMonitor() {
+		return progressMonitor;
+	}
+
+	public void setProgressMonitor(ProgressMonitor progressMonitor) {
+		this.progressMonitor = progressMonitor;
+	}	
+
+	public void convertDocuments( File sourceDir, File outputDir, String outputFormat ) throws Exception {
 
 		if (isTraceEnabled()) {
 			trace( "sourceDir: " + sourceDir);
 			trace( "outputDir: " + outputDir);
 			trace( "outputFormat: " + outputFormat);
+			trace( "progressMonitor: " + getProgressMonitor());
 		}
 		
 		List<File> sourceFileList = FileHelper.findOpenOfficeFiles(sourceDir,true);
@@ -101,11 +111,11 @@ public class OpenOfficeDocConverter {
 		}
 		
 		if (!sourceFileList.isEmpty()) {
-			convertDocuments( sourceDir, sourceFileList, outputDir, outputFormat, progresMonitor );			
+			convertDocuments( sourceDir, sourceFileList, outputDir, outputFormat );			
 		}
 	}
 
-	public void convertDocuments( File sourceDir, List<File> sourceFileList, File outputDir, String outputFormat, ProgressMonitor progresMonitor ) throws Exception {
+	public void convertDocuments( File sourceDir, List<File> sourceFileList, File outputDir, String outputFormat ) throws Exception {
 
 		if (isTraceEnabled()) {
 			trace( "sourceDir: " + sourceDir);
@@ -147,9 +157,9 @@ public class OpenOfficeDocConverter {
 				String outputFileName =  baseInputFileName + "." + outputFormat;
 				File outputFile = new File( baseOutputFilePath, outputFileName );
 				convertDocument( converter, inputFile, outputFile );
-				if (progresMonitor != null) {
+				if (getProgressMonitor() != null) {
 					int progressPercentage = MathHelper.calculatePercentage( currentItemIndex, maxItemIndex );
-					progresMonitor.setProgressPercentage(progressPercentage);
+					getProgressMonitor().setProgressPercentage(progressPercentage);
 				}
 			}
 
@@ -161,11 +171,11 @@ public class OpenOfficeDocConverter {
 		}
 	}
 	
-	public void convertDocument( File sourceFile, File outputDir, String outputFormat, ProgressMonitor progresMonitor ) throws Exception {
+	public void convertDocument( File sourceFile, File outputDir, String outputFormat ) throws Exception {
 		List<File> sourceFiles = new ArrayList<File>();
 		sourceFiles.add( sourceFile );
 		File sourceDir = sourceFile.getParentFile();
-		convertDocuments( sourceDir, sourceFiles, outputDir, outputFormat, progresMonitor );
+		convertDocuments( sourceDir, sourceFiles, outputDir, outputFormat );
 	}
 	
 	private void convertDocument( DocumentConverter converter, File inputFile, File outputFile  ) throws IOException {

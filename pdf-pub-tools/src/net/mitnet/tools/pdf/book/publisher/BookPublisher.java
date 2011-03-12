@@ -34,6 +34,7 @@ import net.mitnet.tools.pdf.book.openoffice.converter.OpenOfficeDocConverter;
 import net.mitnet.tools.pdf.book.openoffice.net.OpenOfficeServerContext;
 import net.mitnet.tools.pdf.book.openoffice.reports.OpenOfficeReportBuilder;
 import net.mitnet.tools.pdf.book.pdf.builder.PdfBookBuilder;
+import net.mitnet.tools.pdf.book.pdf.event.PdfPageEventLogger;
 import net.mitnet.tools.pdf.book.util.ProgressMonitor;
 
 import org.apache.commons.io.FileUtils;
@@ -42,6 +43,7 @@ import org.apache.commons.lang.StringUtils;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfCopyFields;
+import com.lowagie.text.pdf.PdfPageEvent;
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.SimpleBookmark;
 import com.lowagie.toolbox.plugins.HtmlBookmarks;
@@ -76,6 +78,7 @@ public class BookPublisher {
 	// private boolean buildTocEnabled = false;
 	private boolean buildTocEnabled = true;
 	private String tocTemplatePath = null;
+	private ProgressMonitor progressMonitor = null;
 	
 	
 	public BookPublisher( Rectangle pageSize ) {
@@ -139,6 +142,14 @@ public class BookPublisher {
 	public String getTocTemplatePath() {
 		return tocTemplatePath;
 	}
+	
+	public ProgressMonitor getProgressMonitor() {
+		return progressMonitor;
+	}
+
+	public void setProgressMonitor(ProgressMonitor progressMonitor) {
+		this.progressMonitor = progressMonitor;
+	}
 
 
 	/**
@@ -154,13 +165,13 @@ public class BookPublisher {
 	 * @param progresMonitor
 	 * @throws Exception
 	 */
-	public void publish( File sourceDir, File outputDir, File outputBookFile, ProgressMonitor progresMonitor ) throws Exception {
+	public void publish( File sourceDir, File outputDir, File outputBookFile ) throws Exception {
 		
 		if (isVerbose()) {
 			debug("sourceDir: " + sourceDir);
 			debug("outputDir: " + outputDir);
 			debug("outputBookFile: " + outputBookFile);
-			debug("progresMonitor: " + progresMonitor);
+			debug("progressMonitor: " + getProgressMonitor());
 		}
 		
 		// Init
@@ -172,7 +183,8 @@ public class BookPublisher {
 		// Convert Open Office documents to PDF
 		OpenOfficeDocConverter openOfficeDocConverter = new OpenOfficeDocConverter(this.serverContext);
 		openOfficeDocConverter.setTraceEnabled(isVerbose());
-		openOfficeDocConverter.convertDocuments(sourceDir, outputDir, OpenOfficeDocConverter.OUTPUT_FORMAT_PDF, progresMonitor);
+		openOfficeDocConverter.setProgressMonitor(getProgressMonitor());
+		openOfficeDocConverter.convertDocuments(sourceDir, outputDir, OpenOfficeDocConverter.OUTPUT_FORMAT_PDF );
 
 		// Prepare TOC ?
 		TocBuilder tocBuilder = null;
@@ -184,12 +196,16 @@ public class BookPublisher {
 		}
 		
 		// Build PDF book
+		PdfPageEvent pdfPageEventListener = new PdfPageEventLogger();
 		File pdfSourceDir = outputDir;
 		PdfBookBuilder pdfBookBuilder = new PdfBookBuilder(getPageSize());
 		pdfBookBuilder.setVerbose(isVerbose());
 		pdfBookBuilder.setMetaTitle(getMetaTitle());
 		pdfBookBuilder.setMetaAuthor(getMetaAuthor());
-		pdfBookBuilder.buildBook( pdfSourceDir, outputBookFile, progresMonitor, tocBuilder );
+		pdfBookBuilder.setProgressMonitor(progressMonitor);
+		pdfBookBuilder.setTocRowChangeListener(tocBuilder);
+		pdfBookBuilder.setPdfPageEventListener(pdfPageEventListener);
+		pdfBookBuilder.buildBook( pdfSourceDir, outputBookFile );
 
 		// Build TOC doc
 		// TODO: refactor to PdfTocPageBuilder
@@ -208,7 +224,7 @@ public class BookPublisher {
 			File tocOutputFile = new File( tempDir, getTempTocFileName() );
 			buildTocDoc( tocTemplateFile, toc, tocOutputFile );
 			File tocSourceFile = tocOutputFile;
-			openOfficeDocConverter.convertDocument(tocSourceFile, tempDir, OpenOfficeDocConverter.OUTPUT_FORMAT_PDF, progresMonitor);
+			openOfficeDocConverter.convertDocument(tocSourceFile, tempDir, OpenOfficeDocConverter.OUTPUT_FORMAT_PDF);
 			
 			// Merge TOC PDF with book PDF
 			if (isVerbose()) {

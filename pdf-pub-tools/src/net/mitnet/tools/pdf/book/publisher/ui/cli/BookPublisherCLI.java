@@ -163,7 +163,8 @@ public class BookPublisherCLI {
 			bookPublisher.setMetaTitle(metaTitle);
 			bookPublisher.setMetaAuthor(metaAuthor);
 			bookPublisher.setVerbose(verbose);
-			bookPublisher.publish( sourceDir, outputDir, outputBookFile, progressMonitor );
+			bookPublisher.setProgressMonitor(progressMonitor);
+			bookPublisher.publish( sourceDir, outputDir, outputBookFile );
 
 		} catch (Exception e) {
 			e.printStackTrace(System.err);

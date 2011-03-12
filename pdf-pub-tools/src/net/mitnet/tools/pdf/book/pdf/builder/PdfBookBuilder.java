@@ -28,6 +28,7 @@ import net.mitnet.tools.pdf.book.io.FileHelper;
 import net.mitnet.tools.pdf.book.model.toc.Toc;
 import net.mitnet.tools.pdf.book.model.toc.TocRow;
 import net.mitnet.tools.pdf.book.model.toc.TocRowChangeListener;
+import net.mitnet.tools.pdf.book.pdf.event.PdfPageEventLogger;
 import net.mitnet.tools.pdf.book.pdf.itext.PdfReaderHelper;
 import net.mitnet.tools.pdf.book.util.MathHelper;
 import net.mitnet.tools.pdf.book.util.ProgressMonitor;
@@ -44,6 +45,7 @@ import com.lowagie.text.Section;
 import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfImportedPage;
+import com.lowagie.text.pdf.PdfPageEvent;
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfWriter;
 
@@ -77,6 +79,10 @@ public class PdfBookBuilder {
 	private String metaAuthor = null;
 	private boolean verbose = false;
 	private boolean debug = false;
+	
+	private ProgressMonitor progressMonitor = null;
+	private TocRowChangeListener tocRowChangeListener = null;
+	private PdfPageEvent pdfPageEventListener = null;
 	
 
 	public PdfBookBuilder() {
@@ -133,14 +139,38 @@ public class PdfBookBuilder {
 	public void setMetaAuthor(String metaAuthor) {
 		this.metaAuthor = metaAuthor;
 	}
+	
+	public ProgressMonitor getProgressMonitor() {
+		return progressMonitor;
+	}
 
-	public void buildBook( File sourceDir, File outputFile, ProgressMonitor progresMonitor, TocRowChangeListener tocListener ) throws Exception {
+	public void setProgressMonitor(ProgressMonitor progresMonitor) {
+		this.progressMonitor = progresMonitor;
+	}
+
+	public TocRowChangeListener getTocRowChangeListener() {
+		return tocRowChangeListener;
+	}
+
+	public void setTocRowChangeListener(TocRowChangeListener tocRowChangeListener) {
+		this.tocRowChangeListener = tocRowChangeListener;
+	}
+
+	public PdfPageEvent getPdfPageEventListener() {
+		return pdfPageEventListener;
+	}
+
+	public void setPdfPageEventListener(PdfPageEvent pdfPageEventListener) {
+		this.pdfPageEventListener = pdfPageEventListener;
+	}
+
+	public void buildBook( File sourceDir, File outputFile ) throws Exception {
 
 		if (isVerboseEnabled()) {
 			System.out.println( "-- sourceDir: " + sourceDir);
 			System.out.println( "-- outputFile: " + outputFile);
-			System.out.println( "-- progresMonitor: " + progresMonitor);
-			System.out.println( "-- tocListener: " + tocListener);
+			System.out.println( "-- progressMonitor: " + getProgressMonitor());
+			System.out.println( "-- tocRowChangeListener: " + getTocRowChangeListener());
 		}
 		
 		List<File> sourceFileList = FileHelper.findPdfFiles(sourceDir,true);
@@ -148,11 +178,11 @@ public class PdfBookBuilder {
 		System.out.println( "-- sourceFileList: " + sourceFileList);
 		
 		if (!sourceFileList.isEmpty()) {
-			buildBook( sourceFileList, outputFile, progresMonitor, tocListener );
+			buildBook( sourceFileList, outputFile );
 		}
 	}
 
-	public void buildBook( List<File> sourceFileList, File outputFile, ProgressMonitor progresMonitor, TocRowChangeListener tocListener ) {
+	public void buildBook( List<File> sourceFileList, File outputFile ) {
 		
 		try {
 
@@ -178,6 +208,9 @@ public class PdfBookBuilder {
 			// Document outputDocument = new Document( getPageSize(), marginLeft, marginRight, marginTop, marginBottom );
 			
 			PdfWriter pdfWriter = PdfWriter.getInstance(outputDocument, new FileOutputStream(outputFile));
+			
+			PdfPageEventLogger pdfPageEventLogger = new PdfPageEventLogger();
+			pdfWriter.setPageEvent(pdfPageEventLogger);
 			
 			outputDocument.open();
 			
@@ -258,9 +291,9 @@ public class PdfBookBuilder {
 						// add first page of current source to TOC listener
 						if (firstPageOfCurrentSource) {
 							int firstPageOfCurrentSourceInOutput = outputPageCount;
-							if (tocListener != null) {
+							if (tocRowChangeListener != null) {
 								TocRow tocEntry = new TocRow( currentSourcePdfTitle, firstPageOfCurrentSourceInOutput );
-								tocListener.addTocRow(tocEntry);
+								tocRowChangeListener.addTocRow(tocEntry);
 								if (isVerboseEnabled()) {
 									System.out.println("-- Added TOC entry " + tocEntry + " to listener");
 								}
@@ -322,9 +355,9 @@ public class PdfBookBuilder {
 					}
 
 					// update progress
-					if (progresMonitor != null) {
+					if (getProgressMonitor() != null) {
 						int fileProgressPercentage = MathHelper.calculatePercentage(currentSourceFileIndex, maxSourceFileIndex);
-						progresMonitor.setProgressPercentage(fileProgressPercentage);
+						getProgressMonitor().setProgressPercentage(fileProgressPercentage);
 					}
 				}
 			}
@@ -378,5 +411,5 @@ public class PdfBookBuilder {
 	private String getSystemUserName() {
 		return System.getProperty( "user.name" );
 	}
-	
+
 }

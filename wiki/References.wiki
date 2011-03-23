@@ -3,4 +3,10 @@
 
 = References =
 
+  * [http://code.google.com/p/jodconverter/ JODConverter]
+
+  * [http://jodreports.sourceforge.net/ JODReports]
+
+  * [http://itextpdf.com/ iText]
+
   * [http://wiki.services.openoffice.org/wiki/Documentation/DevGuide/AdvUNO/Implementing_UNO_Language_Bindings Open Office UNO Language Bindings]

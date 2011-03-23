@@ -1,5 +1,5 @@
+#summary PDF publishing tools overview.
 #labels Java,PDF
-#PDF publishing tools overview.
 
 = Overview =
 

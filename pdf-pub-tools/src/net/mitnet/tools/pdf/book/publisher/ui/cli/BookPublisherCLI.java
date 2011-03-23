@@ -26,6 +26,7 @@ import net.mitnet.tools.pdf.book.openoffice.ui.cli.OpenOfficeDocConverterCLI;
 import net.mitnet.tools.pdf.book.pdf.builder.PdfBookBuilder;
 import net.mitnet.tools.pdf.book.pdf.builder.ui.cli.PdfBookBuilderCLI;
 import net.mitnet.tools.pdf.book.publisher.BookPublisher;
+import net.mitnet.tools.pdf.book.publisher.BookPublisherConfig;
 import net.mitnet.tools.pdf.book.ui.cli.CliConstants;
 import net.mitnet.tools.pdf.book.ui.cli.CommandLineHelper;
 import net.mitnet.tools.pdf.book.ui.cli.ConsoleProgressMonitor;
@@ -158,12 +159,19 @@ public class BookPublisherCLI {
 				System.out.println( "-- Publishing PDF book " + outputBookFile + " ...");
 			}
 
+			BookPublisherConfig config = new BookPublisherConfig();
+			
 			ProgressMonitor progressMonitor = new ConsoleProgressMonitor();
-			BookPublisher bookPublisher = new BookPublisher(serverContext, pageSize);
-			bookPublisher.setMetaTitle(metaTitle);
-			bookPublisher.setMetaAuthor(metaAuthor);
-			bookPublisher.setVerbose(verbose);
-			bookPublisher.setProgressMonitor(progressMonitor);
+			config.setProgressMonitor(progressMonitor);
+			config.setMetaTitle(metaTitle);
+			config.setMetaAuthor(metaAuthor);
+			config.setDebugEnabled(true);
+			config.setVerbose(verbose);
+			config.setPageSize(pageSize);
+			config.setServerContext(serverContext);
+			
+			BookPublisher bookPublisher = new BookPublisher();
+			bookPublisher.setConfig(config);
 			bookPublisher.publish( sourceDir, outputDir, outputBookFile );
 
 		} catch (Exception e) {

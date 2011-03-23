@@ -36,6 +36,7 @@ import net.mitnet.tools.pdf.book.io.FileExtensionConstants;
 import net.mitnet.tools.pdf.book.openoffice.converter.OpenOfficeDocConverter;
 import net.mitnet.tools.pdf.book.openoffice.net.OpenOfficeServerContext;
 import net.mitnet.tools.pdf.book.publisher.BookPublisher;
+import net.mitnet.tools.pdf.book.publisher.BookPublisherConfig;
 import net.mitnet.tools.pdf.book.ui.gui.ProgressBarMonitor;
 import net.mitnet.tools.pdf.book.util.ProgressMonitor;
 
@@ -43,7 +44,6 @@ import org.apache.commons.io.FilenameUtils;
 import org.jdesktop.layout.GroupLayout;
 import org.jdesktop.layout.LayoutStyle;
 
-import com.lowagie.text.PageSize;
 import com.lowagie.text.Rectangle;
 
 
@@ -296,18 +296,11 @@ public class BookPublisherGUI extends JFrame {
 		if (sourceDir.isDirectory() && outputDir.isDirectory()) {
 			try {
 				setStatusMessage("Publishing book ...");
-				ProgressMonitor progressMonitor = new ProgressBarMonitor(getProgressBar());
 				System.out.println( "Processing files in source dir " + sourceDir + " ..." );
-				OpenOfficeServerContext serverContext = new OpenOfficeServerContext();
-				Rectangle pageSize = PageSize.A4;
-				BookPublisher bookPublisher = new BookPublisher(serverContext, pageSize);
-				/*
-				bookPublisher.setMetaTitle(metaTitle);
-				bookPublisher.setMetaAuthor(metaAuthor);
-				*/
-				boolean verbose = true;
-				bookPublisher.setVerbose(verbose);
-				bookPublisher.setProgressMonitor(progressMonitor);
+
+				BookPublisherConfig config = buildConfig();
+				BookPublisher bookPublisher = new BookPublisher();
+				bookPublisher.setConfig( config );
 				bookPublisher.publish( sourceDir, outputDir, outputBookFile );
 				setStatusMessage("Finished publishing book.");
 				
@@ -345,6 +338,29 @@ public class BookPublisherGUI extends JFrame {
 	
 	private File getOutputDir() {
 		return new File( getOutputDirName() );
+	}
+	
+	private BookPublisherConfig buildConfig() {
+		
+		BookPublisherConfig config = new BookPublisherConfig();
+		
+		ProgressMonitor progressMonitor = new ProgressBarMonitor(getProgressBar());
+		config.setProgressMonitor(progressMonitor);
+		
+		OpenOfficeServerContext serverContext = new OpenOfficeServerContext();
+		config.setServerContext(serverContext);
+		
+		Rectangle pageSize = BookPublisherConfig.DEFAULT_DOCUMENT_PAGE_SIZE;
+		config.setPageSize(pageSize);
+
+		/*
+		config.setMetaTitle(metaTitle);
+		config.setMetaAuthor(metaAuthor);
+		*/
+		boolean verbose = true;
+		config.setVerbose(verbose);
+		
+		return config;
 	}
 
 	public static void main(String args[]) {

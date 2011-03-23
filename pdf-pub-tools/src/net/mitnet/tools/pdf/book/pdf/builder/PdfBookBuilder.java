@@ -39,13 +39,11 @@ import org.apache.commons.lang.StringUtils;
 import com.lowagie.text.Chapter;
 import com.lowagie.text.ChapterAutoNumber;
 import com.lowagie.text.Document;
-import com.lowagie.text.PageSize;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.Section;
 import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfImportedPage;
-import com.lowagie.text.pdf.PdfPageEvent;
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfWriter;
 
@@ -65,24 +63,9 @@ import com.lowagie.text.pdf.PdfWriter;
  */
 public class PdfBookBuilder {
 	
-	// TOOD - default page size based on Locale
-	// private static final Rectangle DEFAULT_DOCUMENT_PAGE_SIZE = PageSize.A4;
-	private static final Rectangle DEFAULT_DOCUMENT_PAGE_SIZE = PageSize.LETTER;
+	// private Rectangle pageSize = DEFAULT_DOCUMENT_PAGE_SIZE;
 	
-	// private static final String DELICIOUS_ROMAN_FONT = "lib/Delicious-Roman.ttf";
-	private static final String DELICIOUS_ROMAN_FONT = "Delicious-Roman.ttf";
-	private static final String DEFAULT_FONT = DELICIOUS_ROMAN_FONT;
-	private static final int DEFAULT_FONT_SIZE = 14;
-
-	private Rectangle pageSize = DEFAULT_DOCUMENT_PAGE_SIZE;
-	private String metaTitle = null;
-	private String metaAuthor = null;
-	private boolean verbose = false;
-	private boolean debug = false;
-	
-	private ProgressMonitor progressMonitor = null;
-	private TocRowChangeListener tocRowChangeListener = null;
-	private PdfPageEvent pdfPageEventListener = null;
+	private PdfBookBuilderConfig config = new PdfBookBuilderConfig();
 	
 
 	public PdfBookBuilder() {
@@ -93,84 +76,29 @@ public class PdfBookBuilder {
 		if ( pageSize == null ) { 
 			throw new IllegalStateException( "Page size must be non-null" );
 		}
-		this.pageSize = pageSize;
+		getConfig().setPageSize(pageSize) ;
 	}
 	
-	public void setVerbose( boolean value ) {
-		this.verbose = value;
-	}
-
-	public boolean isVerboseEnabled() {
-		return this.verbose;
-	}
-	
-	public void setDebug( boolean value ) {
-		this.debug = value;
+	public void setConfig(PdfBookBuilderConfig config) {
+		if (config == null) {
+			this.config = new PdfBookBuilderConfig();
+		} else {
+			this.config = config;
+		}
 	}
 	
-	public boolean isDebugEnabled() {
-		return this.debug;
+	public PdfBookBuilderConfig getConfig() {
+		return this.config;
 	}
 	
-	public Rectangle getPageSize() {
-		return this.pageSize;
-	}
-
-	public float getPageWidth() {
-		return this.pageSize.getWidth();
-	}
-	
-	public float getPageHeight() {
-		return this.pageSize.getHeight();
-	}
-
-	public String getMetaTitle() {
-		return metaTitle;
-	}
-
-	public void setMetaTitle(String metaTitle) {
-		this.metaTitle = metaTitle;
-	}
-
-	public String getMetaAuthor() {
-		return metaAuthor;
-	}
-
-	public void setMetaAuthor(String metaAuthor) {
-		this.metaAuthor = metaAuthor;
-	}
-	
-	public ProgressMonitor getProgressMonitor() {
-		return progressMonitor;
-	}
-
-	public void setProgressMonitor(ProgressMonitor progresMonitor) {
-		this.progressMonitor = progresMonitor;
-	}
-
-	public TocRowChangeListener getTocRowChangeListener() {
-		return tocRowChangeListener;
-	}
-
-	public void setTocRowChangeListener(TocRowChangeListener tocRowChangeListener) {
-		this.tocRowChangeListener = tocRowChangeListener;
-	}
-
-	public PdfPageEvent getPdfPageEventListener() {
-		return pdfPageEventListener;
-	}
-
-	public void setPdfPageEventListener(PdfPageEvent pdfPageEventListener) {
-		this.pdfPageEventListener = pdfPageEventListener;
-	}
 
 	public void buildBook( File sourceDir, File outputFile ) throws Exception {
 
 		if (isVerboseEnabled()) {
 			System.out.println( "-- sourceDir: " + sourceDir);
 			System.out.println( "-- outputFile: " + outputFile);
-			System.out.println( "-- progressMonitor: " + getProgressMonitor());
-			System.out.println( "-- tocRowChangeListener: " + getTocRowChangeListener());
+			System.out.println( "-- progressMonitor: " + getConfig().getProgressMonitor());
+			System.out.println( "-- tocRowChangeListener: " + getConfig().getTocRowChangeListener());
 		}
 		
 		List<File> sourceFileList = FileHelper.findPdfFiles(sourceDir,true);
@@ -186,8 +114,8 @@ public class PdfBookBuilder {
 		
 		try {
 
-			float pageWidth = getPageWidth();
-			float pageHeight = getPageHeight();
+			float pageWidth = getConfig().getPageWidth();
+			float pageHeight = getConfig().getPageHeight();
 			
 			// Create new Document
 			
@@ -204,19 +132,25 @@ public class PdfBookBuilder {
 			
 			// TableOfContents toc = new TableOfContents();
 			
-			Document outputDocument = new Document( getPageSize() );
+			ProgressMonitor progressMonitor = getConfig().getProgressMonitor();
+			TocRowChangeListener tocRowChangeListener = getConfig().getTocRowChangeListener();
+			
+			Document outputDocument = new Document( getConfig().getPageSize() );
 			// Document outputDocument = new Document( getPageSize(), marginLeft, marginRight, marginTop, marginBottom );
 			
 			PdfWriter pdfWriter = PdfWriter.getInstance(outputDocument, new FileOutputStream(outputFile));
 			
+			// TODO - review PDF page event forwarder
 			PdfPageEventLogger pdfPageEventLogger = new PdfPageEventLogger();
 			pdfWriter.setPageEvent(pdfPageEventLogger);
 			
 			outputDocument.open();
 			
+			String metaTitle = getConfig().getMetaTitle();
 			if (!StringUtils.isEmpty(metaTitle)) {
 				outputDocument.addTitle(metaTitle);
 			}
+			String metaAuthor = getConfig().getMetaAuthor();
 			if (!StringUtils.isEmpty(metaAuthor)) {
 				outputDocument.addAuthor(metaAuthor);
 			}
@@ -228,7 +162,7 @@ public class PdfBookBuilder {
 			int currentSourceFileIndex = 0;
 			int maxSourceFileIndex = sourceFileList.size();
 			
-			BaseFont pageLabelFont = BaseFont.createFont( DEFAULT_FONT, BaseFont.CP1250, BaseFont.EMBEDDED );
+			BaseFont pageLabelFont = BaseFont.createFont( PdfBookBuilderConfig.DEFAULT_FONT, BaseFont.CP1250, BaseFont.EMBEDDED );
 			if (isVerboseEnabled()) {
 				System.out.println("-- Using page label font " + pageLabelFont);
 			}
@@ -290,9 +224,9 @@ public class PdfBookBuilder {
 						
 						// add first page of current source to TOC listener
 						if (firstPageOfCurrentSource) {
-							int firstPageOfCurrentSourceInOutput = outputPageCount;
+							int currentPageIndex = outputPageCount;
 							if (tocRowChangeListener != null) {
-								TocRow tocEntry = new TocRow( currentSourcePdfTitle, firstPageOfCurrentSourceInOutput );
+								TocRow tocEntry = new TocRow( currentSourcePdfTitle, currentPageIndex );
 								tocRowChangeListener.addTocRow(tocEntry);
 								if (isVerboseEnabled()) {
 									System.out.println("-- Added TOC entry " + tocEntry + " to listener");
@@ -345,7 +279,7 @@ public class PdfBookBuilder {
 						// Add current page number to page footer
 						String pageCountLabel = "Page " + outputPageCount;
 						pdfContent.beginText();
-						pdfContent.setFontAndSize( pageLabelFont, DEFAULT_FONT_SIZE );
+						pdfContent.setFontAndSize( pageLabelFont, PdfBookBuilderConfig.DEFAULT_FONT_SIZE );
 						pdfContent.showTextAligned( PdfContentByte.ALIGN_CENTER, pageCountLabel, (pageWidth / 2), 40, 0 );
 						pdfContent.endText();
 					}
@@ -355,9 +289,9 @@ public class PdfBookBuilder {
 					}
 
 					// update progress
-					if (getProgressMonitor() != null) {
+					if (progressMonitor != null) {
 						int fileProgressPercentage = MathHelper.calculatePercentage(currentSourceFileIndex, maxSourceFileIndex);
-						getProgressMonitor().setProgressPercentage(fileProgressPercentage);
+						progressMonitor.setProgressPercentage(fileProgressPercentage);
 					}
 				}
 			}
@@ -383,12 +317,20 @@ public class PdfBookBuilder {
 	
 	// TODO - fix Locale logic
 	private Rectangle getPageSizeForLocale() {
-		return PageSize.A4;
+		return PdfBookBuilderConfig.DEFAULT_DOCUMENT_PAGE_SIZE;
 	}
 	
 	// TODO - fix Locale logic
 	private Rectangle getPageSizeForLocale( Locale locale ) {
-		return PageSize.A4;
+		return PdfBookBuilderConfig.DEFAULT_DOCUMENT_PAGE_SIZE;
+	}
+	
+	private boolean isVerboseEnabled() {
+		return getConfig().isVerbose();
+	}
+	
+	private boolean isDebugEnabled() {
+		return getConfig().isDebugEnabled();
 	}
 	
 	private void trace( String msg ) {

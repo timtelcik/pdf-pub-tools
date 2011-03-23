@@ -34,13 +34,14 @@ import net.mitnet.tools.pdf.book.openoffice.converter.OpenOfficeDocConverter;
 import net.mitnet.tools.pdf.book.openoffice.net.OpenOfficeServerContext;
 import net.mitnet.tools.pdf.book.openoffice.reports.OpenOfficeReportBuilder;
 import net.mitnet.tools.pdf.book.pdf.builder.PdfBookBuilder;
+import net.mitnet.tools.pdf.book.pdf.builder.PdfBookBuilderConfig;
 import net.mitnet.tools.pdf.book.pdf.event.PdfPageEventLogger;
-import net.mitnet.tools.pdf.book.util.ProgressMonitor;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 
 import com.lowagie.text.DocumentException;
+import com.lowagie.text.PageSize;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfCopyFields;
 import com.lowagie.text.pdf.PdfPageEvent;
@@ -68,87 +69,33 @@ import com.lowagie.toolbox.plugins.XML2Bookmarks;
  */
 public class BookPublisher {
 	
-	public static final String DEFAULT_TOC_TEMPLATE_PATH = "resources/reports/templates/toc-template.odt";
+	private BookPublisherConfig config = new BookPublisherConfig();
 	
-	private OpenOfficeServerContext serverContext = null;
-	private boolean verbose = false;
-	private Rectangle pageSize = null;
-	private String metaTitle = null;
-	private String metaAuthor = null;
-	// private boolean buildTocEnabled = false;
-	private boolean buildTocEnabled = true;
-	private String tocTemplatePath = null;
-	private ProgressMonitor progressMonitor = null;
-	
+	public BookPublisher() {
+		getConfig().setServerContext(new OpenOfficeServerContext());
+		getConfig().setPageSize(PageSize.A4);
+	}
 	
 	public BookPublisher( Rectangle pageSize ) {
-		this.serverContext = new OpenOfficeServerContext();
-		this.pageSize = pageSize;
+		getConfig().setServerContext(new OpenOfficeServerContext());
+		getConfig().setPageSize(pageSize);
 	}
 	
 	public BookPublisher( OpenOfficeServerContext serverContext, Rectangle pageSize ) {
-		this.serverContext = serverContext;
-		this.pageSize = pageSize;
-	}
-
-	public void setVerbose( boolean value ) {
-		this.verbose = value;
-	}
-
-	public boolean isVerbose() {
-		return this.verbose;
+		getConfig().setServerContext(serverContext);
+		getConfig().setPageSize(pageSize);
 	}
 	
-	public Rectangle getPageSize() {
-		return this.pageSize;
-	}
-
-	public float getPageWidth() {
-		return this.pageSize.getWidth();
-	}
-	
-	public float getPageHeight() {
-		return this.pageSize.getHeight();
+	public void setConfig(BookPublisherConfig config) {
+		if (config == null) {
+			this.config = new BookPublisherConfig();
+		} else {
+			this.config = config;
+		}
 	}
 	
-	public String getMetaTitle() {
-		return metaTitle;
-	}
-
-	public void setMetaTitle(String metaTitle) {
-		this.metaTitle = metaTitle;
-	}
-
-	public String getMetaAuthor() {
-		return metaAuthor;
-	}
-
-	public void setMetaAuthor(String metaAuthor) {
-		this.metaAuthor = metaAuthor;
-	}
-	
-	public boolean isBuildTocEnabled() {
-		return buildTocEnabled;
-	}
-
-	public void setBuildTocEnabled(boolean buildTocEnabled) {
-		this.buildTocEnabled = buildTocEnabled;
-	}
-
-	public void setTocTemplatePath(String tocTemplatePath) {
-		this.tocTemplatePath = tocTemplatePath;
-	}
-	
-	public String getTocTemplatePath() {
-		return tocTemplatePath;
-	}
-	
-	public ProgressMonitor getProgressMonitor() {
-		return progressMonitor;
-	}
-
-	public void setProgressMonitor(ProgressMonitor progressMonitor) {
-		this.progressMonitor = progressMonitor;
+	public BookPublisherConfig getConfig() {
+		return this.config;
 	}
 
 
@@ -171,7 +118,7 @@ public class BookPublisher {
 			debug("sourceDir: " + sourceDir);
 			debug("outputDir: " + outputDir);
 			debug("outputBookFile: " + outputBookFile);
-			debug("progressMonitor: " + getProgressMonitor());
+			debug("progressMonitor: " + getConfig().getProgressMonitor());
 		}
 		
 		// Init
@@ -181,14 +128,14 @@ public class BookPublisher {
 		}
 		
 		// Convert Open Office documents to PDF
-		OpenOfficeDocConverter openOfficeDocConverter = new OpenOfficeDocConverter(this.serverContext);
+		OpenOfficeDocConverter openOfficeDocConverter = new OpenOfficeDocConverter(getConfig().getServerContext());
 		openOfficeDocConverter.setTraceEnabled(isVerbose());
-		openOfficeDocConverter.setProgressMonitor(getProgressMonitor());
+		openOfficeDocConverter.setProgressMonitor(getConfig().getProgressMonitor());
 		openOfficeDocConverter.convertDocuments(sourceDir, outputDir, OpenOfficeDocConverter.OUTPUT_FORMAT_PDF );
 
 		// Prepare TOC ?
 		TocBuilder tocBuilder = null;
-		if (isBuildTocEnabled()) {
+		if (getConfig().isBuildTocEnabled()) {
 			tocBuilder = new TocBuilder();
 			if (isVerbose()) {
 				debug("tocBuilder: " + tocBuilder);
@@ -196,20 +143,25 @@ public class BookPublisher {
 		}
 		
 		// Build PDF book
+		PdfBookBuilderConfig pdfConfig = new PdfBookBuilderConfig();
 		PdfPageEvent pdfPageEventListener = new PdfPageEventLogger();
+
 		File pdfSourceDir = outputDir;
-		PdfBookBuilder pdfBookBuilder = new PdfBookBuilder(getPageSize());
-		pdfBookBuilder.setVerbose(isVerbose());
-		pdfBookBuilder.setMetaTitle(getMetaTitle());
-		pdfBookBuilder.setMetaAuthor(getMetaAuthor());
-		pdfBookBuilder.setProgressMonitor(progressMonitor);
-		pdfBookBuilder.setTocRowChangeListener(tocBuilder);
-		pdfBookBuilder.setPdfPageEventListener(pdfPageEventListener);
+		PdfBookBuilder pdfBookBuilder = new PdfBookBuilder();
+		pdfConfig.setPageSize(getConfig().getPageSize());
+		pdfConfig.setVerbose(getConfig().isVerbose());
+		pdfConfig.setMetaTitle(getConfig().getMetaTitle());
+		pdfConfig.setMetaAuthor(getConfig().getMetaAuthor());
+		pdfConfig.setProgressMonitor(getConfig().getProgressMonitor());
+		pdfConfig.setTocRowChangeListener(tocBuilder);
+		pdfConfig.setPdfPageEventListener(pdfPageEventListener);
+		
+		pdfBookBuilder.setConfig(pdfConfig);
 		pdfBookBuilder.buildBook( pdfSourceDir, outputBookFile );
 
 		// Build TOC doc
 		// TODO: refactor to PdfTocPageBuilder
-		if (isBuildTocEnabled()) {
+		if (getConfig().isBuildTocEnabled()) {
 			
 			// Trace TOC
 			Toc toc = tocBuilder.getToc();
@@ -255,9 +207,9 @@ public class BookPublisher {
 	private File getTocTemplateFile() throws IOException {
 		
 		File tocTemplateFile = null;
-		String templatePath = getTocTemplatePath();
+		String templatePath = getConfig().getTocTemplatePath();
 		if (StringUtils.isEmpty(templatePath)) {
-			templatePath = DEFAULT_TOC_TEMPLATE_PATH;
+			templatePath = BookPublisherConfig.DEFAULT_TOC_TEMPLATE_PATH;
 			URL tocTemplateUrl = getClass().getClassLoader().getResource(templatePath);
 			if (tocTemplateUrl != null) {
 				tocTemplateFile = new File(tocTemplateUrl.getFile());
@@ -310,6 +262,10 @@ public class BookPublisher {
 		copy.addDocument(firstReader);
 		copy.addDocument(secondReader);
 		copy.close();
+	}
+	
+	private boolean isVerbose() {
+		return getConfig().isVerbose();
 	}
 	
 	private void debug( String msg ) {

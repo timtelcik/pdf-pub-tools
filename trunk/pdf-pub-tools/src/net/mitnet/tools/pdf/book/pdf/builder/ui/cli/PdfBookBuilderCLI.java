@@ -23,6 +23,7 @@ import net.mitnet.tools.pdf.book.model.toc.Toc;
 import net.mitnet.tools.pdf.book.model.toc.TocBuilder;
 import net.mitnet.tools.pdf.book.model.toc.TocTracer;
 import net.mitnet.tools.pdf.book.pdf.builder.PdfBookBuilder;
+import net.mitnet.tools.pdf.book.pdf.builder.PdfBookBuilderConfig;
 import net.mitnet.tools.pdf.book.pdf.event.PdfPageEventLogger;
 import net.mitnet.tools.pdf.book.ui.cli.CliConstants;
 import net.mitnet.tools.pdf.book.ui.cli.CommandLineHelper;
@@ -129,16 +130,25 @@ public class PdfBookBuilderCLI {
 				System.out.println( "-- Building PDF book " + outputBookFile + " ...");
 			}
 
+			PdfBookBuilderConfig config = new PdfBookBuilderConfig();
+			
 			ProgressMonitor progressMonitor = new ConsoleProgressMonitor();
+			config.setProgressMonitor(progressMonitor);
+			
 			PdfPageEvent pdfPageEventListener = new PdfPageEventLogger();
+			config.setPdfPageEventListener(pdfPageEventListener);
+			
+			config.setPageSize(pageSize);
+			config.setMetaTitle(metaTitle);
+			config.setMetaAuthor(metaAuthor);
+			config.setVerbose(verbose);
+			
+			config.setBuildTocEnabled(true);
 			TocBuilder tocBuilder = new TocBuilder();
-			PdfBookBuilder pdfBookBuilder = new PdfBookBuilder(pageSize);
-			pdfBookBuilder.setMetaTitle(metaTitle);
-			pdfBookBuilder.setMetaAuthor(metaAuthor);
-			pdfBookBuilder.setVerbose(verbose);
-			pdfBookBuilder.setProgressMonitor(progressMonitor);
-			pdfBookBuilder.setTocRowChangeListener(tocBuilder);
-			pdfBookBuilder.setPdfPageEventListener(pdfPageEventListener);
+			config.setTocRowChangeListener(tocBuilder);
+			
+			PdfBookBuilder pdfBookBuilder = new PdfBookBuilder();
+			pdfBookBuilder.setConfig(config);
 			pdfBookBuilder.buildBook(sourceDir, outputBookFile);
 			
 			if (verbose) {
@@ -150,7 +160,7 @@ public class PdfBookBuilderCLI {
 
 			// TODO - output TOC data ???
 			/*
-			if (isBuildTableOfContentsEnabled()) {
+			if (config.isBuildTocEnabled()) {
 				// TODO - create TOC PDF page using collected TOC data
 				// Map tocTemplateData = buildTocTemplateData( toc );
 				// OpenOfficeReportBuilder reportBuilder = new OpenOfficeReportBuilder();

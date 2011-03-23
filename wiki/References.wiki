@@ -1,0 +1,6 @@
+#summary References
+#labels references,links
+
+= References =
+
+  * [http://wiki.services.openoffice.org/wiki/Documentation/DevGuide/AdvUNO/Implementing_UNO_Language_Bindings Open Office UNO Language Bindings]

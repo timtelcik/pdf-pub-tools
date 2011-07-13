@@ -173,7 +173,9 @@ public class BookPublisher {
 			
 			// Build TOC PDF
 			File tocTemplateFile = getTocTemplateFile();
+			debug("tocTemplateFile: " + tocTemplateFile);
 			File tocOutputFile = new File( tempDir, getTempTocFileName() );
+			debug("tocOutputFile: " + tocOutputFile);
 			buildTocDoc( tocTemplateFile, toc, tocOutputFile );
 			File tocSourceFile = tocOutputFile;
 			openOfficeDocConverter.convertDocument(tocSourceFile, tempDir, OpenOfficeDocConverter.OUTPUT_FORMAT_PDF);
@@ -207,15 +209,30 @@ public class BookPublisher {
 	private File getTocTemplateFile() throws IOException {
 		
 		File tocTemplateFile = null;
+		
 		String templatePath = getConfig().getTocTemplatePath();
+		if (isVerbose()) {
+			debug("templatePath: " + templatePath);
+		}
+
 		if (StringUtils.isEmpty(templatePath)) {
 			templatePath = BookPublisherConfig.DEFAULT_TOC_TEMPLATE_PATH;
+			if (isVerbose()) {
+				debug("templatePath: " + templatePath);
+			}
 			URL tocTemplateUrl = getClass().getClassLoader().getResource(templatePath);
+			if (isVerbose()) {
+				debug("tocTemplateUrl: " + tocTemplateUrl);
+			}			
 			if (tocTemplateUrl != null) {
 				tocTemplateFile = new File(tocTemplateUrl.getFile());
 			}
 		} else {
 			tocTemplateFile = new File( templatePath );
+		}
+		
+		if (isVerbose()) {
+			debug("tocTemplateFile: " + tocTemplateFile);
 		}
 		
 		return tocTemplateFile;
@@ -227,6 +244,14 @@ public class BookPublisher {
 			debug("Building TOC doc" );
 			debug("Template file is " + tocTemplateFile);
 			debug("TOC output file is " + tocOutputFile);
+		}
+		
+		// assertions
+		if (tocTemplateFile == null) {
+			throw new Exception("TOC template file is null");
+		}
+		if (tocOutputFile == null) {
+			throw new Exception("TOC output file is null");
 		}
 		
 		if ((tocTemplateFile != null) && (tocOutputFile != null)) {

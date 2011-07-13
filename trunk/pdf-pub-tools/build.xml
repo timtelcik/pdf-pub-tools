@@ -10,9 +10,11 @@
 	<property name="bin.etc.dir" location="${etc.dir}/bin" />
 	<property name="lib.dir" location="${basedir}/lib" />
 	<property name="src.dir" location="${basedir}/src" />
+	<property name="resources.src.dir" location="${src.dir}/resources" />
 	<property name="build.dir" location="${basedir}/build" />
 	<property name="classes.build.dir" location="${build.dir}/classes" />
 	<property name="lib.build.dir" location="${build.dir}/lib" />
+	<property name="resources.build.dir" location="${classes.build.dir}/resources" />	
 	<property name="dist.dir" location="${basedir}/dist" />
 	<property name="deploy.dir" location="${basedir}/deploy" />	
 	<property name="bin.deploy.dir" location="${deploy.dir}/bin" />	
@@ -34,11 +36,17 @@
 		<mkdir dir="${classes.build.dir}" />
 		<mkdir dir="${lib.build.dir}" />
 		<mkdir dir="${deploy.dir}" />
-		<mkdir dir="${deploy.lib.dir}" />
+		<mkdir dir="${bin.deploy.dir}" />
+		<mkdir dir="${lib.deploy.dir}" />
 	</target>
 
 	<target name="compile" depends="init" description="compile the source ">
 		<javac srcdir="${src.dir}" destdir="${classes.build.dir}" classpathref="classpath.path" />
+
+		<mkdir dir="${resources.build.dir}" />
+		<copy todir="${resources.build.dir}">
+			<fileset dir="${resources.src.dir}" />
+  		</copy>
 	</target>
 
 	<target name="dist-x" depends="compile" description="generate the distribution">

@@ -1,49 +1,89 @@
-<project name="pdf-pub-tools" default="dist" basedir=".">
+<project name="pdf-pub-tools" default="deploy" basedir=".">
 
 	<description>
         Apache Ant build script for PDF Publishing Tools project.
-		See "https://code.google.com/p/pdf-pub-tools/".
-    </description>
+	See "https://code.google.com/p/pdf-pub-tools/".
+	</description>
 
 	<!-- set global properties for this build -->
+	<property name="etc.dir" location="${basedir}/etc" />
+	<property name="bin.etc.dir" location="${etc.dir}/bin" />
 	<property name="lib.dir" location="${basedir}/lib" />
 	<property name="src.dir" location="${basedir}/src" />
 	<property name="build.dir" location="${basedir}/build" />
 	<property name="classes.build.dir" location="${build.dir}/classes" />
+	<property name="lib.build.dir" location="${build.dir}/lib" />
 	<property name="dist.dir" location="${basedir}/dist" />
+	<property name="deploy.dir" location="${basedir}/deploy" />	
+	<property name="bin.deploy.dir" location="${deploy.dir}/bin" />	
+	<property name="lib.deploy.dir" location="${deploy.dir}/lib" />	
+	<property name="project.lib.jar" location="${lib.build.dir}/${ant.project.name}.jar" />
 
 
-    <path id="classpath.path">
-      <pathelement path="${classpath}"/>
-      <fileset dir="${lib.dir}">
-        <include name="**/*.jar"/>
-      </fileset>
-      <pathelement location="classes"/>
-    </path>
-	
+	<path id="classpath.path">
+		<pathelement path="${classpath}" />
+		<fileset dir="${lib.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+		<pathelement location="${classes.build.dir}" />
+	</path>
+
 	<target name="init">
-		<!-- Create the time stamp -->
 		<tstamp />
-		<!-- Create the build directory structure used by compile -->
 		<mkdir dir="${build.dir}" />
+		<mkdir dir="${classes.build.dir}" />
+		<mkdir dir="${lib.build.dir}" />
+		<mkdir dir="${deploy.dir}" />
+		<mkdir dir="${deploy.lib.dir}" />
 	</target>
 
 	<target name="compile" depends="init" description="compile the source ">
-		<!-- Compile the java code from ${src} into ${build} -->
-		<javac srcdir="${src.dir}" destdir="${build.dir}" classpathref="classpath.path" />
+		<javac srcdir="${src.dir}" destdir="${classes.build.dir}" classpathref="classpath.path" />
 	</target>
 
-	<target name="dist" depends="compile" description="generate the distribution">
-		<!-- Create the distribution directory -->
+	<target name="dist-x" depends="compile" description="generate the distribution">
 		<mkdir dir="${dist.dir}/lib" />
-
-		<!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
 		<jar jarfile="${dist.dir}/lib/${ant.project.name}-${DSTAMP}.jar" basedir="${build.dir}" />
 	</target>
 
+	<target name="lib" depends="compile" description="builds the runtime library">
+		<mkdir dir="${lib.build.dir}" />
+		<!--
+		<jar jarfile="${lib.build.dir}/${ant.project.name}-${DSTAMP}.jar" basedir="${classes.build.dir}" />
+		-->
+		<jar jarfile="${project.lib.jar}" basedir="${classes.build.dir}" />
+	</target>
+
+	<target name="deploy" depends="lib" description="deploys the runtime libraries">
+		<mkdir dir="${bin.deploy.dir}" />
+		<mkdir dir="${lib.deploy.dir}" />
+
+		<copy file="${project.lib.jar}" todir="${lib.deploy.dir}" />
+
+		<copy todir="${lib.deploy.dir}">
+			<fileset dir="${lib.dir}"
+				includes="**/*.jar" />
+  		</copy>
+
+		<copy todir="${bin.deploy.dir}">
+			<fileset dir="${bin.etc.dir}"
+				includes="**/*.sh" />
+  		</copy>
+
+		<chmod perm="777">
+			<fileset dir="${bin.deploy.dir}">
+				<include name="**/.sh" />
+			</fileset>
+		</chmod>
+	</target>
+
 	<target name="clean" description="clean up">
-		<!-- Delete the ${build} and ${dist} directory trees -->
 		<delete dir="${build.dir}" />
 		<delete dir="${dist.dist}" />
 	</target>
+	
+	<target name="purge" depends="clean" description="purge">
+		<delete dir="${deploy.dir}" />
+	</target>	
 </project>
+

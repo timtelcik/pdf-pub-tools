@@ -11,6 +11,7 @@
 	<property name="lib.dir" location="${basedir}/lib" />
 	<property name="src.dir" location="${basedir}/src" />
 	<property name="resources.src.dir" location="${src.dir}/resources" />
+	<property name="resources.dir" location="${basedir}/resources" />
 	<property name="build.dir" location="${basedir}/build" />
 	<property name="classes.build.dir" location="${build.dir}/classes" />
 	<property name="lib.build.dir" location="${build.dir}/lib" />
@@ -19,6 +20,7 @@
 	<property name="deploy.dir" location="${basedir}/deploy" />	
 	<property name="bin.deploy.dir" location="${deploy.dir}/bin" />	
 	<property name="lib.deploy.dir" location="${deploy.dir}/lib" />	
+	<property name="resources.deploy.dir" location="${deploy.dir}/resources" />	
 	<property name="project.lib.jar" location="${lib.build.dir}/${ant.project.name}.jar" />
 
 
@@ -41,7 +43,7 @@
 	</target>
 
 	<target name="compile" depends="init" description="compile the source ">
-		<javac srcdir="${src.dir}" destdir="${classes.build.dir}" classpathref="classpath.path" />
+		<javac srcdir="${src.dir}" destdir="${classes.build.dir}" classpathref="classpath.path" debug="on" />
 
 		<mkdir dir="${resources.build.dir}" />
 		<copy todir="${resources.build.dir}">
@@ -65,6 +67,7 @@
 	<target name="deploy" depends="lib" description="deploys the runtime libraries">
 		<mkdir dir="${bin.deploy.dir}" />
 		<mkdir dir="${lib.deploy.dir}" />
+		<mkdir dir="${resources.deploy.dir}" />
 
 		<copy file="${project.lib.jar}" todir="${lib.deploy.dir}" />
 
@@ -83,6 +86,10 @@
 				<include name="**/.sh" />
 			</fileset>
 		</chmod>
+
+		<copy todir="${resources.deploy.dir}">
+			<fileset dir="${resources.src.dir}" />
+  		</copy>
 	</target>
 
 	<target name="clean" description="clean up">

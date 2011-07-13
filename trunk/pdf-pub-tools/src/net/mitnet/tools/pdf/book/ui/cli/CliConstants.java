@@ -56,6 +56,9 @@ public class CliConstants {
 	
 	public static final Option OPTION_OUTPUT_FORMAT = 
 		new Option("f","output-format", true, "output format (e.g. pdf)");
+	
+	public static final Option OPTION_TOC_TEMPLATE_PATH = 
+		new Option("tocp","toc-template-path", true, "TOC tamplte path (e.g. /opt/toc-template.odt)");
 
 	public static final int EXIT_CODE_ERROR = 1;
 

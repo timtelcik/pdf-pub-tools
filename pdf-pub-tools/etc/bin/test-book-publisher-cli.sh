@@ -7,6 +7,8 @@ indir="/Users/tim.telcik/spool/test/6.0ee-sp1-dev/slides/input"
 #outdir="/Users/tim.telcik/spool/test/6.0ee-sp1-dev/slides/output/pdf"
 outdir="/Users/tim.telcik/spool/test/6.0ee-sp1-dev/slides/output/pdf2"
 
+template=./resources/reports/templates/toc-template.odt
+
 #outbook="/Users/tim.telcik/spool/test/6.0ee-sp1-dev/slides/output/dev-training-book.pdf"
 outbook="/Users/tim.telcik/spool/test/6.0ee-sp1-dev/slides/output/dev-training-book2.pdf"
 
@@ -14,6 +16,8 @@ echo $0
 echo "indir: $indir"
 echo "outdir: $outdir"
 echo "outbook: $outbook"
+echo "template: $template"
 
 ./bin/run-book-publisher-cli.sh $indir $outdir $outbook
+#./bin/run-book-publisher-cli.sh -v -toc-template-path=$template $indir $outdir $outbook
 

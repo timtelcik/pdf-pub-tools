@@ -206,6 +206,7 @@ public class BookPublisher {
 		return "toc" + FileExtensionConstants.OPEN_DOC_TEXT_EXTENSION; 
 	}
 
+	// TODO - review template file resolution and temp file allocation
 	private File getTocTemplateFile() throws IOException {
 		
 		File tocTemplateFile = null;
@@ -225,7 +226,10 @@ public class BookPublisher {
 				debug("tocTemplateUrl: " + tocTemplateUrl);
 			}			
 			if (tocTemplateUrl != null) {
-				tocTemplateFile = new File(tocTemplateUrl.getFile());
+				// tocTemplateFile = new File(tocTemplateUrl.getFile());
+				tocTemplateFile = File.createTempFile("toc-template", FileExtensionConstants.OPEN_DOC_TEXT_EXTENSION);
+				tocTemplateFile.deleteOnExit();
+				FileUtils.copyURLToFile(tocTemplateUrl, tocTemplateFile); 
 			}
 		} else {
 			tocTemplateFile = new File( templatePath );

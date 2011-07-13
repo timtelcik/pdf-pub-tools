@@ -77,6 +77,7 @@ public class BookPublisherCLI {
 		options.addOption(CliConstants.OPTION_META_AUTHOR);
 		options.addOption(CliConstants.OPTION_OPEN_OFFICE_HOST);
 		options.addOption(CliConstants.OPTION_OPEN_OFFICE_PORT);
+		options.addOption(CliConstants.OPTION_TOC_TEMPLATE_PATH);
 		return options;
 	}
 
@@ -105,7 +106,7 @@ public class BookPublisherCLI {
 			showHelp();
 			System.exit(CliConstants.EXIT_CODE_ERROR);
 		}
-		File outputBookFile = commandLineHelper.getOptionValueAsFile(CliConstants.OPTION_OUTPUT_BOOK_FILE);;
+		File outputBookFile = commandLineHelper.getOptionValueAsFile(CliConstants.OPTION_OUTPUT_BOOK_FILE);
 		
 		OpenOfficeServerContext serverContext = new OpenOfficeServerContext();
 
@@ -120,6 +121,8 @@ public class BookPublisherCLI {
 			openOfficePort = commandLineHelper.getOptionValueAsInt(CliConstants.OPTION_OPEN_OFFICE_PORT);
 			serverContext.setPort(openOfficePort);
 		}
+		
+		// TODO - default page size using Locale
 
 		Rectangle pageSize = PageSize.A4;
 		if (commandLineHelper.hasOption(CliConstants.OPTION_PAGE_SIZE)) {
@@ -134,6 +137,11 @@ public class BookPublisherCLI {
 		boolean verbose = false;
 		if (commandLineHelper.hasOption(CliConstants.OPTION_VERBOSE)) {
 			verbose = true;
+		}
+		
+		File tocTemplatePath = null;
+		if (commandLineHelper.hasOption(CliConstants.OPTION_TOC_TEMPLATE_PATH)) {
+			tocTemplatePath = commandLineHelper.getOptionValueAsFile(CliConstants.OPTION_TOC_TEMPLATE_PATH);
 		}
 		
 		String metaTitle = FilenameUtils.getBaseName( outputBookFile.getName() );
@@ -156,6 +164,9 @@ public class BookPublisherCLI {
 				System.out.println( "-- Output dir is " + outputDir );
 				System.out.println( "-- Output file is " + outputBookFile );
 				System.out.println( "-- Page size is " + pageSize );
+				if (tocTemplatePath != null) {
+					System.out.println( "-- TOC template path is " + tocTemplatePath);
+				}
 				System.out.println( "-- Publishing PDF book " + outputBookFile + " ...");
 			}
 
@@ -169,6 +180,9 @@ public class BookPublisherCLI {
 			config.setVerbose(verbose);
 			config.setPageSize(pageSize);
 			config.setServerContext(serverContext);
+			if (tocTemplatePath != null) {
+				config.setTocTemplatePath(tocTemplatePath.getCanonicalPath());
+			}
 			
 			BookPublisher bookPublisher = new BookPublisher();
 			bookPublisher.setConfig(config);

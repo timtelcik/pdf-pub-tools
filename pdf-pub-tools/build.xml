@@ -1,25 +1,50 @@
+<!--
+    Copyright (C) 2010-2011  Tim Telcik <telcik@gmail.com>
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+	
 <project name="pdf-pub-tools" default="deploy" basedir=".">
 
 	<description>
         Apache Ant build script for PDF Publishing Tools project.
-	See "https://code.google.com/p/pdf-pub-tools/".
+		See "https://code.google.com/p/pdf-pub-tools/".
 	</description>
 
 	<!-- set global properties for this build -->
 	<property name="etc.dir" location="${basedir}/etc" />
-	<property name="bin.etc.dir" location="${etc.dir}/bin" />
 	<property name="lib.dir" location="${basedir}/lib" />
 	<property name="src.dir" location="${basedir}/src" />
+	<property name="bin.src.dir" location="${src.dir}/bin" />
 	<property name="resources.src.dir" location="${src.dir}/resources" />
+	<property name="fonts.src.dir" location="${resources.src.dir}/fonts" />
+	<property name="reports.src.dir" location="${resources.src.dir}/reports" />
+	<!--
 	<property name="resources.dir" location="${basedir}/resources" />
+	-->
 	<property name="build.dir" location="${basedir}/build" />
 	<property name="classes.build.dir" location="${build.dir}/classes" />
 	<property name="lib.build.dir" location="${build.dir}/lib" />
-	<property name="resources.build.dir" location="${classes.build.dir}/resources" />	
+	<!--
+	<property name="resources.build.dir" location="${classes.build.dir}/resources" />
+	-->	
+	<property name="resources.build.dir" location="${classes.build.dir}" />	
 	<property name="dist.dir" location="${basedir}/dist" />
 	<property name="deploy.dir" location="${basedir}/deploy" />	
 	<property name="bin.deploy.dir" location="${deploy.dir}/bin" />	
 	<property name="lib.deploy.dir" location="${deploy.dir}/lib" />	
+	<property name="resources.deploy.dir" location="${deploy.dir}/resources" />	
 	<property name="resources.deploy.dir" location="${deploy.dir}/resources" />	
 	<property name="project.lib.jar" location="${lib.build.dir}/${ant.project.name}.jar" />
 
@@ -45,7 +70,9 @@
 	<target name="compile" depends="init" description="compile the source ">
 		<javac srcdir="${src.dir}" destdir="${classes.build.dir}" classpathref="classpath.path" debug="on" />
 
+		<!--
 		<mkdir dir="${resources.build.dir}" />
+		-->
 		<copy todir="${resources.build.dir}">
 			<fileset dir="${resources.src.dir}" />
   		</copy>
@@ -77,7 +104,7 @@
   		</copy>
 
 		<copy todir="${bin.deploy.dir}">
-			<fileset dir="${bin.etc.dir}"
+			<fileset dir="${bin.src.dir}"
 				includes="**/*.sh" />
   		</copy>
 
@@ -101,4 +128,3 @@
 		<delete dir="${deploy.dir}" />
 	</target>	
 </project>
-

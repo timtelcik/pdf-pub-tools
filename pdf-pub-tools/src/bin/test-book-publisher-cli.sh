@@ -1,23 +1,20 @@
 #! /bin/sh
 
-# -v -indir "/Users/tim.telcik/spool/test/6.0ee-sp1-dev/slides/input" -outdir "/Users/tim.telcik/spool/test/6.0ee-sp1-dev/slides/output/pdf" -outbook "/Users/tim.telcik/spool/test/6.0ee-sp1-dev/slides/output/dev-training-book.pdf"
+INDIR="$HOME/spool/test/6.0ee-sp1-dev/slides/input"
 
-indir="/Users/tim.telcik/spool/test/6.0ee-sp1-dev/slides/input"
+#OUTDIR="$HOME/spool/test/6.0ee-sp1-dev/slides/output/pdf"
+OUTDIR="$HOME/spool/test/6.0ee-sp1-dev/slides/output/pdf2"
 
-#outdir="/Users/tim.telcik/spool/test/6.0ee-sp1-dev/slides/output/pdf"
-outdir="/Users/tim.telcik/spool/test/6.0ee-sp1-dev/slides/output/pdf2"
+TEMPLATE=./resources/reports/templates/toc-template.odt
 
-template=./resources/reports/templates/toc-template.odt
-
-#outbook="/Users/tim.telcik/spool/test/6.0ee-sp1-dev/slides/output/dev-training-book.pdf"
-outbook="/Users/tim.telcik/spool/test/6.0ee-sp1-dev/slides/output/dev-training-book2.pdf"
+#OUTBOOK="$HOME/spool/test/6.0ee-sp1-dev/slides/output/dev-training-book.pdf"
+OUTBOOK="$HOME/spool/test/6.0ee-sp1-dev/slides/output/dev-training-book2.pdf"
 
 echo $0
-echo "indir: $indir"
-echo "outdir: $outdir"
-echo "outbook: $outbook"
-echo "template: $template"
+echo "INDIR: $INDIR"
+echo "OUTDIR: $OUTDIR"
+echo "OUTBOOK: $OUTBOOK"
+echo "TEMPLATE: $TEMPLATE"
 
-./bin/run-book-publisher-cli.sh $indir $outdir $outbook
-#./bin/run-book-publisher-cli.sh -v -toc-template-path=$template $indir $outdir $outbook
+./bin/run-book-publisher-cli.sh $INDIR $OUTDIR $OUTBOOK
 

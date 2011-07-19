@@ -19,7 +19,7 @@
 
 	<description>
         Apache Ant build script for PDF Publishing Tools project.
-		See "https://code.google.com/p/pdf-pub-tools/".
+        See "https://code.google.com/p/pdf-pub-tools/".
 	</description>
 
 	<!-- set global properties for this build -->
@@ -83,6 +83,19 @@
 		<jar jarfile="${dist.dir}/lib/${ant.project.name}-${DSTAMP}.jar" basedir="${build.dir}" />
 	</target>
 
+	<target name="dist" depends="deploy" description="Build the distribution">
+		<mkdir dir="${dist.dir}" />
+		<jar jarfile="${dist.dir}/lib/${ant.project.name}-${DSTAMP}.jar" basedir="${build.dir}" />
+		<zip destfile="${dist.dir}/${ant.project.name}-${DSTAMP}.zip">
+			<zipfileset dir="${bin.deploy.dir}/" prefix="bin" filemode="755" />
+			<zipfileset dir="${lib.deploy.dir}/" prefix="lib" />
+			<zipfileset dir="${resources.deploy.dir}/" prefix="resources" />
+			<!--
+			<zipfileset dir="." includes="ChangeLog.txt"/>
+			-->
+		</zip>
+	</target>
+
 	<target name="lib" depends="compile" description="builds the runtime library">
 		<mkdir dir="${lib.build.dir}" />
 		<!--
@@ -104,11 +117,12 @@
   		</copy>
 
 		<copy todir="${bin.deploy.dir}">
-			<fileset dir="${bin.src.dir}"
-				includes="**/*.sh" />
+			<fileset dir="${bin.src.dir}">
+				<include name="**/*.sh" />
+			</fileset>
   		</copy>
 
-		<chmod perm="777">
+		<chmod perm="755">
 			<fileset dir="${bin.deploy.dir}">
 				<include name="**/.sh" />
 			</fileset>

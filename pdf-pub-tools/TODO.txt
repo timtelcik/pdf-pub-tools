@@ -1,11 +1,5 @@
 = TODO =
 
-o Copy sample docs to test/docs/sample
-
-o Revise dist task to package deploy folder into dist/pdf-pub-tools-VERSION.zip
-
-o Create setclasspath.sh to setup classpath for CLI runtime
-
 o Create wrapper scripts for all pub tools
 
 o Refactor run-book-builder-cli.sh as run-tool.sh

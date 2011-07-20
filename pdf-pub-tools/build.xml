@@ -30,21 +30,17 @@
 	<property name="resources.src.dir" location="${src.dir}/resources" />
 	<property name="fonts.src.dir" location="${resources.src.dir}/fonts" />
 	<property name="reports.src.dir" location="${resources.src.dir}/reports" />
-	<!--
-	<property name="resources.dir" location="${basedir}/resources" />
-	-->
 	<property name="build.dir" location="${basedir}/build" />
 	<property name="classes.build.dir" location="${build.dir}/classes" />
 	<property name="lib.build.dir" location="${build.dir}/lib" />
 	<!--
-	<property name="resources.build.dir" location="${classes.build.dir}/resources" />
-	-->	
+	<property name="resources.build.dir" location="${build.dir}/resources" />	
+	-->
 	<property name="resources.build.dir" location="${classes.build.dir}" />	
 	<property name="dist.dir" location="${basedir}/dist" />
 	<property name="deploy.dir" location="${basedir}/deploy" />	
 	<property name="bin.deploy.dir" location="${deploy.dir}/bin" />	
 	<property name="lib.deploy.dir" location="${deploy.dir}/lib" />	
-	<property name="resources.deploy.dir" location="${deploy.dir}/resources" />	
 	<property name="resources.deploy.dir" location="${deploy.dir}/resources" />	
 	<property name="project.lib.jar" location="${lib.build.dir}/${ant.project.name}.jar" />
 
@@ -65,6 +61,7 @@
 		<mkdir dir="${deploy.dir}" />
 		<mkdir dir="${bin.deploy.dir}" />
 		<mkdir dir="${lib.deploy.dir}" />
+		<mkdir dir="${resources.deploy.dir}" />
 	</target>
 
 	<target name="compile" depends="init" description="compile the source ">
@@ -122,9 +119,12 @@
 			</fileset>
   		</copy>
 
-		<chmod perm="755">
+		<chmod perm="755" verbose="true">
 			<fileset dir="${bin.deploy.dir}">
+				<!--
 				<include name="**/.sh" />
+				-->
+				<include name="**/*" />
 			</fileset>
 		</chmod>
 

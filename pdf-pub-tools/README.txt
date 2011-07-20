@@ -16,10 +16,10 @@ This project is currently hosted by Google at "https://code.google.com/p/pdf-pub
 See related notes in the "docs" folder.
 
 
-== Checkout Source ==
+== Checkout Source from Trunk ==
 
 % mkdir -p pdf-pub-tools/trunk
-% pdf-pub-tools/trunk
+% cd pdf-pub-tools/trunk
 % svn co https://code.google.com/p/pdf-pub-tools/trunk
 
 
@@ -35,7 +35,9 @@ This will create a "deploy" folder with runtime libraries and resources, includi
 
 4/ cd deploy
 
-5/ Review runtime wrapper scripts.
+5/ Review and use relevant runtime wrapper script.
+
+   eg. 
 
    deploy/bin/run-book-builder-cli.sh
    deploy/bin/run-book-builder-gui.sh
@@ -49,7 +51,8 @@ This will create a "deploy" folder with runtime libraries and resources, includi
 
 Import "pdf-pub-tools" folder into Eclipse IDE 3.6+ as an existing Java project.
 
-Eclipse will also configure the launch configs and make them available for running some of the test cases.
+Eclipse will also configure the launch configs (src/*.launch) and make them available for running some of the 
+test cases.
 
 
 == Usage ==

@@ -1,18 +1,25 @@
- = PDF Publishing Tools - TODO =
+= PDF Publishing Tools - TODO =
  
 Created: 20-Nov-2010, Tim Telcik <tim.telcik@permeance.com.au>
 Modified: 30-Nov-2010, Tim Telcik <tim.telcik@permeance.com.au>
 Modified: 1-Mar-2011, Tim Telcik <telcik@gmail.com>
+Modified: 20-Jul-2011, Tim Telcik <telcik@gmail.com>
  
  
- == TODO ==
+== TODO ==
  
- * Integrate OpenOfficeReportBuilder with BookPublisher
- ** Use OpenOfficeReportBuilder to build Table Of Contents page
- ** Merge Table Of Contents page with published book PDF
- ** Generate PDF Bookmarks in output PDF file
+* Integrate OpenOfficeReportBuilder with BookPublisher
+** Use OpenOfficeReportBuilder to build Table Of Contents page
+** Merge Table Of Contents page with published book PDF
+** Generate PDF Bookmarks in output PDF file
  
- * Review performance (eg. threading).
+* Review performance (eg. threading).
 
- * Review license model
+* Review license model
  
+* Create wrapper scripts for all pub CLI tools
+
+* Refactor run-book-builder-cli.sh as run-tool.sh or run-cli-tool.sh
+
+* Revise verbose and debug logging. Use log4j ?
+

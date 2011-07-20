@@ -1,7 +1,7 @@
 #! /bin/sh
 ############
 ##
-## Purpose: Wrapper for Book Publisher GUI application.
+## Purpose: Wrapper for Open Office Doc Converter CLI application.
 ##
 ## @author: Tim Telcik <telcik@gmail.com>
 ##
@@ -27,20 +27,17 @@ echo "PDF_PUB_TOOLS_LIB_DIR: $PDF_PUB_TOOLS_LIB_DIR"
 
 INDIR=$1
 OUTDIR=$2
-OUTBOOK=$3
+CLI_OPTS="-v"
 
 echo "INDIR: $INDIR"
 echo "OUTDIR: $OUTDIR"
-echo "OUTBOOK: $OUTBOOK"
+echo "CLI_OPTS: $CLI_OPTS"
 
-MAIN_CLASS=net/mitnet/tools/pdf/book/publisher/ui/gui/BookPublisherGUI
+MAIN_CLASS=net/mitnet/tools/pdf/book/openoffice/ui/cli/OpenOfficeDocConverterCLI
 
 . $PDF_PUB_TOOLS_BIN_DIR/setclasspath.sh
 
 echo "CLASSPATH: $CLASSPATH"
 
-CLI_OPTS="-v"
-
-#java -cp $CLASSPATH $MAIN_CLASS $CLI_OPTS -indir $INDIR -outdir $OUTDIR -outbook $OUTBOOK
-java -cp $CLASSPATH $MAIN_CLASS
+java -cp $CLASSPATH $MAIN_CLASS $CLI_OPTS -indir $INDIR -outdir $OUTDIR
 

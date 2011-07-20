@@ -1,7 +1,7 @@
 #! /bin/sh
 ############
 ##
-## Purpose: Wrapper for CLI application.
+## Purpose: Wrapper for PDF Book Builder CLI application.
 ##
 ## @author: Tim Telcik <telcik@gmail.com>
 ##

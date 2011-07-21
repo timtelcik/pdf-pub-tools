@@ -1,4 +1,4 @@
-= PDF Publishing Tools - Release Notes =
+= PDF Publishing Tools - Usage =
  
 Created: 20-Nov-2010, Tim Telcik <tim.telcik@permeance.com.au>
 Modified: 30-Nov-2010, Tim Telcik <tim.telcik@permeance.com.au>

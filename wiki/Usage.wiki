@@ -35,7 +35,7 @@ soffice -headless -accept="socket,host=127.0.0.1,port=8100;urp;" -nofirststartwi
 Sample Bourne Shell script.
 
 {{{
-% PDF_PUB_TOOLS_BIN/run-book-publisher-cli.sh  start-open-office-headless.sh
+% $PDF_PUB_TOOLS_BIN/run-book-publisher-cli.sh  start-open-office-headless.sh
 }}}
 
 
@@ -56,7 +56,7 @@ net.mitnet.tools.pdf.book.publisher.ui.cli.BookPublisherCLI
 Usage: 
 
 {{{
-% PDF_PUB_TOOLS_BIN/run-book-publisher-cli.sh -indir <input-dir> -ooutdir <output-dir> -outbook <output-pdf-book>
+% $PDF_PUB_TOOLS_BIN/run-book-publisher-cli.sh -indir <input-dir> -ooutdir <output-dir> -outbook <output-pdf-book>
 }}}
 
 ==== Open Office Doc Converter CLI ====
@@ -109,5 +109,5 @@ net.mitnet.tools.pdf.book.publisher.ui.gui.BookPublisherGUI
 Usage: 
 
 {{{
-% PDF_PUB_TOOLS_BIN/run-book-publisher-gui.sh -indir <input-dir> -ooutdir <output-dir> -outbook <output-pdf-book>
+% $PDF_PUB_TOOLS_BIN/run-book-publisher-gui.sh -indir <input-dir> -ooutdir <output-dir> -outbook <output-pdf-book>
 }}}

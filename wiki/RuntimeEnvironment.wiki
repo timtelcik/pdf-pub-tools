@@ -10,8 +10,4 @@ The following environment variables are required to run the CLI tools in the she
 
 Default values for these environment variables are defined in script "pdf-pub-tools/deploy/bin/set-env.sh".
 
-  * PDF_PUB_TOOLS_HOME - PDF Publishing Tools home folder.
-  * PDF_PUB_TOOLS_BIN - PDF Publishing Tools binaries and scripts folder.
-  * PDF_PUB_TOOLS_LIB - PDF Publishing Tools libraries folder.
-
 NOTE: Initial paths are relative to the "bin" folder which contains the "set-env.sh" script.

@@ -8,9 +8,9 @@ Checkout, build and deploy the PDF Publishing tools.
 
 Basic workflow:
 
-*Start Open Office in "headless" (aka. server) mode.
-*Run required publishing tool (eg. book publisher, pdf publisher)
-*Stop Open Office
+  * Start Open Office in "headless" (aka. server) mode.
+  * Run required publishing tool (eg. book publisher, pdf publisher)
+  * Stop Open Office
 
 = Dependency =
 

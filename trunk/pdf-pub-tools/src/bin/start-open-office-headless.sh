@@ -1,4 +1,4 @@
-#! /bin/sh -x
+#! /bin/sh
 #
 # Start OpenOffice in server (headless) mode
 #

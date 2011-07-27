@@ -18,7 +18,7 @@ Basic workflow:
 
 Start Open Office in "headless" mode.
 
-See [OpenOfficeHeadlessMode].
+See [Open Office Headless Mode].
 
 
 == Tools ==

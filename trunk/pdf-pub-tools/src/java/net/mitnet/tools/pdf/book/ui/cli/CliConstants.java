@@ -59,6 +59,15 @@ public class CliConstants {
 	
 	public static final Option OPTION_TOC_TEMPLATE_PATH = 
 		new Option("tocp","toc-template-path", true, "TOC tamplte path (e.g. /opt/toc-template.odt)");
+	
+	public static final Option OPTION_SOURCE_TEMPLATE_FILE = new Option("intemplate",
+			"input-template-file", true, "input source template file");
+
+	public static final Option OPTION_SOURCE_DATA_FILE = new Option("indata",
+			"input-data-file", true, "input source data file");
+	
+	public static final Option OPTION_OUTPUT_REPORT_FILE = new Option("outreport",
+			"output-report-file-file", true, "output report file");
 
 	public static final int EXIT_CODE_ERROR = 1;
 

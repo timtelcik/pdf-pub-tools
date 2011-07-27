@@ -143,7 +143,7 @@ public class OpenOfficeDocConverterCLI {
 
 	private static void showHelp() {
 		String syntax = OpenOfficeDocConverterCLI.class.getName()
-				+ " [options] -i <input-dir> -o <output-dir>\n";
+				+ " [options] -indir <input-dir> -outdir <output-dir>\n";
 		HelpFormatter helpFormatter = new HelpFormatter();
 		helpFormatter.printHelp(syntax, OPTIONS);
 		System.exit(CliConstants.EXIT_CODE_TOO_FEW_ARGS);

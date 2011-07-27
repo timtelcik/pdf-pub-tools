@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src/resources"/>
+	<classpathentry kind="src" path="test/src/resources/eclipse-ide/launch"/>
 	<classpathentry kind="src" path="test/src/java"/>
 	<classpathentry kind="src" path="src/java"/>
 	<classpathentry kind="src" path="test/data"/>

@@ -16,27 +16,9 @@ Basic workflow:
 
 == Open Office ==
 
-Start Open Office in "headless" mode on localhost, listen on port 8100 :
+Start Open Office in "headless" mode.
 
-=== Mac OS X ===
-
-{{{
-/Applications/OpenOffice.org.app/Contents/MacOS/soffice.bin -headless -accept="socket,host=127.0.0.1,port=8100;urp;" -nofirststartwizard
-}}}
-
-=== Windows XP/Vista/7 ===
-
-{{{
-soffice -headless -accept="socket,host=127.0.0.1,port=8100;urp;" -nofirststartwizard
-}}}
-
-=== Start Open Office Script ===
-
-Sample Bourne Shell script.
-
-{{{
-% $PDF_PUB_TOOLS_BIN/run-book-publisher-cli.sh  start-open-office-headless.sh
-}}}
+See [OpenOfficeHeadlessMode].
 
 
 == Tools ==

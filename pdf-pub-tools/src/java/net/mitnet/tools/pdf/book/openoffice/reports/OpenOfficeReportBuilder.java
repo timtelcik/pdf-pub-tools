@@ -65,18 +65,27 @@ import freemarker.template.Configuration;
  */
 public class OpenOfficeReportBuilder {
 	
-	private boolean verbose = false;
+	private boolean debugEnabled = false;
+	private boolean verboseEnabled = false;
 	
 	
 	public OpenOfficeReportBuilder() {
 	}
 	
-	public void setVerbose( boolean value ) {
-		this.verbose = value;
+	public boolean isDebugEnabled() {
+		return debugEnabled;
 	}
 
-	public boolean isVerbose() {
-		return this.verbose;
+	public void setDebugEnabled(boolean debugEnabled) {
+		this.debugEnabled = debugEnabled;
+	}
+	
+	public void setVerboseEnabled( boolean value ) {
+		this.verboseEnabled = value;
+	}
+
+	public boolean isVerboseEnabled() {
+		return this.verboseEnabled;
 	}
 	
 	public void buildReport( String templateFile, Toc toc, String outputFile ) throws Exception {
@@ -110,7 +119,7 @@ public class OpenOfficeReportBuilder {
 	
 	public void buildReport( File templateFile, Object templateData, File outputFile ) throws Exception {
       
-		if (isVerbose()) {
+		if (isDebugEnabled()) {
 			debug( "templateFile:" + templateFile );
 			debug( "templateData:" + templateData );
 			debug( "outputFile:" + outputFile );
@@ -122,12 +131,16 @@ public class OpenOfficeReportBuilder {
         
         DocumentTemplate docTemplate = documentTemplateFactory.getTemplate(templateFile);
         
-		if (isVerbose()) {
+		if (isDebugEnabled()) {
 	        debug( "documentTemplateFactory:" + documentTemplateFactory );
 	        debug( "freemarkerConfig:" + freemarkerConfig );
 	        debug( "docTemplate:" + docTemplate );
 		}
-        
+
+		if (isVerboseEnabled()) {
+			verbose( "Building report file \"" + outputFile + "\" ..." );
+		}
+
         docTemplate.createDocument(templateData, new FileOutputStream(outputFile));
     }
 	
@@ -138,8 +151,14 @@ public class OpenOfficeReportBuilder {
 	}
 	
 	private void debug( String msg ) {
-		if (isVerbose()) {
+		if (isDebugEnabled()) {
 			System.out.println("-- " + msg);
+		}
+	}
+	
+	private void verbose( String msg ) {
+		if (isVerboseEnabled()) {
+			System.out.println(msg);
 		}
 	}
 

@@ -58,7 +58,7 @@ public class OpenOfficeDocConverter {
 	public static final String DEFAULT_OUTPUT_FORMAT = OUTPUT_FORMAT_PDF;
 
 	private OpenOfficeServerContext serverContext = null;
-	private boolean traceEnabled = false;
+	private boolean verboseEnabled = false;
 	private boolean debugEnabled = false;
 	private ProgressMonitor progressMonitor = null;
 	
@@ -71,15 +71,15 @@ public class OpenOfficeDocConverter {
 		this.serverContext = new OpenOfficeServerContext( openOfficeHost, openOfficePort );
 	}
 
-	public void setTraceEnabled( boolean value ) {
-		this.traceEnabled = value;
+	public void setVerboseEnabled( boolean value ) {
+		this.verboseEnabled = value;
 	}
 
-	public boolean isTraceEnabled() {
-		return this.traceEnabled;
+	public boolean isVerboseEnabled() {
+		return this.verboseEnabled;
 	}
 	
-	public void setDebug( boolean value ) {
+	public void setDebugEnabled( boolean value ) {
 		this.debugEnabled = value;
 	}
 	
@@ -97,17 +97,17 @@ public class OpenOfficeDocConverter {
 
 	public void convertDocuments( File sourceDir, File outputDir, String outputFormat ) throws Exception {
 
-		if (isTraceEnabled()) {
-			trace( "sourceDir: " + sourceDir);
-			trace( "outputDir: " + outputDir);
-			trace( "outputFormat: " + outputFormat);
-			trace( "progressMonitor: " + getProgressMonitor());
+		if (isVerboseEnabled()) {
+			verbose( "sourceDir: " + sourceDir);
+			verbose( "outputDir: " + outputDir);
+			verbose( "outputFormat: " + outputFormat);
+			verbose( "progressMonitor: " + getProgressMonitor());
 		}
 		
 		List<File> sourceFileList = FileHelper.findOpenOfficeFiles(sourceDir,true);
 		if (isDebugEnabled()) {
-			trace( "sourceFileList.size: " + sourceFileList.size());
-			trace( "sourceFileList: " + sourceFileList);
+			verbose( "sourceFileList.size: " + sourceFileList.size());
+			verbose( "sourceFileList: " + sourceFileList);
 		}
 		
 		if (!sourceFileList.isEmpty()) {
@@ -117,25 +117,32 @@ public class OpenOfficeDocConverter {
 
 	public void convertDocuments( File sourceDir, List<File> sourceFileList, File outputDir, String outputFormat ) throws Exception {
 
-		if (isTraceEnabled()) {
-			trace( "sourceDir: " + sourceDir);
-			trace( "sourceFileList: " + sourceFileList);
-			trace( "outputDir: " + outputDir);
-			trace( "outputFormat: " + outputFormat);
-			trace("converting " + sourceFileList.size() + " document(s)");
-			trace("output dir is " + outputDir);
-			trace("output format is " + outputFormat);
-			trace("connecting to OpenOffice server " + this.serverContext);
+		if (isVerboseEnabled()) {
+			if (sourceFileList != null) {
+				System.out.println("Converting " + sourceFileList.size() + " doucments to " + outputFormat + " ..." );				
+			}
 		}
+		
+		if (isDebugEnabled()) {
+			verbose( "sourceDir: " + sourceDir);
+			verbose( "sourceFileList: " + sourceFileList);
+			verbose( "outputDir: " + outputDir);
+			verbose( "outputFormat: " + outputFormat);
+			verbose("converting " + sourceFileList.size() + " document(s)");
+			verbose("output dir is " + outputDir);
+			verbose("output format is " + outputFormat);
+			verbose("connecting to OpenOffice server " + this.serverContext);
+		}
+		
 		OpenOfficeConnection connection = openConnection(serverContext);
-		if (isTraceEnabled()) {
-			trace("connection is " + connection );
+		if (isDebugEnabled()) {
+			verbose("connection is " + connection );
 		}
 
 		try {
 			DocumentConverter converter = new OpenOfficeDocumentConverter(connection);
-			if (isTraceEnabled()) {
-				trace("converter is " + converter );
+			if (isDebugEnabled()) {
+				verbose("converter is " + converter );
 			}
 			
 			int currentItemIndex = 0;
@@ -164,8 +171,8 @@ public class OpenOfficeDocConverter {
 			}
 
 		} finally {
-			if (isTraceEnabled()) {
-				trace("disconnecting");
+			if (isDebugEnabled()) {
+				verbose("disconnecting");
 			}
 			connection.disconnect();
 		}
@@ -192,13 +199,13 @@ public class OpenOfficeDocConverter {
 		}
 		
 		if (sameExtension) {
-			if (isTraceEnabled()) {
-				trace("input and output file have same extension - copying " + inputFile + " to " + outputFile);
+			if (isVerboseEnabled()) {
+				verbose("input and output file have same extension - copying " + inputFile + " to " + outputFile);
 			}
 			FileUtils.copyFile(inputFile, outputFile);
 		} else {
-			if (isTraceEnabled()) {
-				trace("converting " + inputFile + " to " + outputFile);
+			if (isVerboseEnabled()) {
+				verbose("converting " + inputFile + " to " + outputFile);
 			}
 			converter.convert(inputFile, outputFile);
 			// converter.convert(inputFile, inputFormat, outputFile, outputFormat);
@@ -209,8 +216,8 @@ public class OpenOfficeDocConverter {
 
 		OpenOfficeConnection connection = OpenOfficeConnectionFactory.createConnection(serverContext);
 		try {
-			if (isTraceEnabled()) {
-				trace("connecting to OpenOffice using server context " + serverContext);
+			if (isVerboseEnabled()) {
+				verbose("connecting to OpenOffice using server context " + serverContext);
 			}
 			connection.connect();
 		} catch (ConnectException ce) {
@@ -223,8 +230,8 @@ public class OpenOfficeDocConverter {
 		return connection;
 	}
 	
-	private void trace( String msg ) {
-		if (isTraceEnabled()) {
+	private void verbose( String msg ) {
+		if (isVerboseEnabled()) {
 			System.out.println( "" + msg );
 		}
 	}

@@ -10,21 +10,16 @@
 PRG="$0"
 echo "PRG: $PRG"
 
-PRGDIR=`dirname "$PRG"`
-echo "PRGDIR: $PRGDIR"
+PRG_DIR=`dirname "$PRG"`
+echo "PRG_DIR: $PRG_DIR"
 
-# Only set PDF_PUB_TOOLS_HOME if not already set
-if [ -z "$PDF_PUB_TOOLS_HOME" ]; then
-   PDF_PUB_TOOLS_HOME=`cd "$PRGDIR/.." >/dev/null; pwd`
-fi
-echo "PDF_PUB_TOOLS_HOME: $PDF_PUB_TOOLS_HOME"
-
-. $PDF_PUB_TOOLS_HOME/bin/set-env.sh
+. $PRG_DIR/set-env.sh
 
 MAIN_CLASS=net/mitnet/tools/pdf/book/openoffice/ui/cli/OpenOfficeDocConverterCLI
+echo "MAIN_CLASS: $MAIN_CLASS"
 
 echo
-echo "Running ..."
+echo "Running $MAIN_CLASS ..."
 echo
 echo "$PDF_PUB_TOOLS_BIN/run-tool.sh $MAIN_CLASS $@"
 echo

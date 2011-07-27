@@ -34,8 +34,8 @@ public class BaseConfig implements Config {
 	public static final Rectangle DEFAULT_DOCUMENT_PAGE_SIZE = PageSize.A4;
 	// public static final Rectangle DEFAULT_DOCUMENT_PAGE_SIZE = PageSize.LETTER;
 	
-	private boolean verbose = false;
-	private boolean debug = false;
+	private boolean verboseEnabled = false;
+	private boolean debugEnabled = false;
 	private String metaAuthor = null;
 	private String metaTitle = null;
 	private Rectangle pageSize = DEFAULT_DOCUMENT_PAGE_SIZE;
@@ -46,20 +46,20 @@ public class BaseConfig implements Config {
 	public BaseConfig() {	
 	}
 	
-	public void setVerbose( boolean value ) {
-		this.verbose = value;
+	public void setVerboseEnabled( boolean value ) {
+		this.verboseEnabled = value;
 	}
 
-	public boolean isVerbose() {
-		return this.verbose;
+	public boolean isVerboseEnabled() {
+		return this.verboseEnabled;
 	}
 	
 	public void setDebugEnabled( boolean value ) {
-		this.debug = value;
+		this.debugEnabled = value;
 	}
 
 	public boolean isDebugEnabled() {
-		return this.debug;
+		return this.debugEnabled;
 	}
 	
 	public void setMetaAuthor(String metaAuthor) {

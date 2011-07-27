@@ -114,7 +114,11 @@ public class BookPublisher {
 	 */
 	public void publish( File sourceDir, File outputDir, File outputBookFile ) throws Exception {
 		
-		if (isVerbose()) {
+		if (isVerboseEnabled()) {
+			verbose("Publishing from \"" + sourceDir + " to \"" + outputDir + "\" as book \"" + outputBookFile + "\" ...");
+		}
+		
+		if (isDebugEnabled()) {
 			debug("sourceDir: " + sourceDir);
 			debug("outputDir: " + outputDir);
 			debug("outputBookFile: " + outputBookFile);
@@ -123,21 +127,22 @@ public class BookPublisher {
 		
 		// Init
 		File tempDir = FileHelper.getSystemTempDir();
-		if (isVerbose()) {
+		if (isDebugEnabled()) {
 			debug("tempDir: " + tempDir);
 		}
 		
 		// Convert Open Office documents to PDF
 		OpenOfficeDocConverter openOfficeDocConverter = new OpenOfficeDocConverter(getConfig().getServerContext());
-		openOfficeDocConverter.setTraceEnabled(isVerbose());
+		openOfficeDocConverter.setDebugEnabled(isDebugEnabled());
+		openOfficeDocConverter.setVerboseEnabled(isVerboseEnabled());
 		openOfficeDocConverter.setProgressMonitor(getConfig().getProgressMonitor());
-		openOfficeDocConverter.convertDocuments(sourceDir, outputDir, OpenOfficeDocConverter.OUTPUT_FORMAT_PDF );
+		openOfficeDocConverter.convertDocuments(sourceDir, outputDir, OpenOfficeDocConverter.OUTPUT_FORMAT_PDF);
 
-		// Prepare TOC ?
+		// Prepare TOC container ?
 		TocBuilder tocBuilder = null;
 		if (getConfig().isBuildTocEnabled()) {
 			tocBuilder = new TocBuilder();
-			if (isVerbose()) {
+			if (isDebugEnabled()) {
 				debug("tocBuilder: " + tocBuilder);
 			}
 		}
@@ -149,7 +154,7 @@ public class BookPublisher {
 		File pdfSourceDir = outputDir;
 		PdfBookBuilder pdfBookBuilder = new PdfBookBuilder();
 		pdfConfig.setPageSize(getConfig().getPageSize());
-		pdfConfig.setVerbose(getConfig().isVerbose());
+		pdfConfig.setVerboseEnabled(getConfig().isVerboseEnabled());
 		pdfConfig.setMetaTitle(getConfig().getMetaTitle());
 		pdfConfig.setMetaAuthor(getConfig().getMetaAuthor());
 		pdfConfig.setProgressMonitor(getConfig().getProgressMonitor());
@@ -164,10 +169,12 @@ public class BookPublisher {
 		if (getConfig().isBuildTocEnabled()) {
 			
 			// Trace TOC
-			Toc toc = tocBuilder.getToc();
-			if (isVerbose()) {
+			Toc toc = 	tocBuilder.getToc();
+			if (isVerboseEnabled()) {
+				verbose("Output PDF Table Of Contents contains " + toc.getTocRowCount() + " entries" );
+			}
+			if (isDebugEnabled()) {
 				debug("Output PDF Table Of Contents is " + toc );
-				debug("Output PDF Table Of Contents contains " + toc.getTocRowCount() + " entries" );
 				TocTracer.traceToc(toc);
 			}
 			
@@ -181,8 +188,8 @@ public class BookPublisher {
 			openOfficeDocConverter.convertDocument(tocSourceFile, tempDir, OpenOfficeDocConverter.OUTPUT_FORMAT_PDF);
 			
 			// Merge TOC PDF with book PDF
-			if (isVerbose()) {
-				debug("Merging TOC with book");
+			if (isVerboseEnabled()) {
+				verbose("Merging TOC with book");
 			}
 			String firstPdfName = FileNameHelper.rewriteFileNameSuffix(tocSourceFile,FileExtensionConstants.PDF_EXTENSION);
 			File firstPdf = new File(tempDir,firstPdfName);
@@ -212,17 +219,17 @@ public class BookPublisher {
 		File tocTemplateFile = null;
 		
 		String templatePath = getConfig().getTocTemplatePath();
-		if (isVerbose()) {
+		if (isDebugEnabled()) {
 			debug("templatePath: " + templatePath);
 		}
 
 		if (StringUtils.isEmpty(templatePath)) {
 			templatePath = BookPublisherConfig.DEFAULT_TOC_TEMPLATE_PATH;
-			if (isVerbose()) {
+			if (isDebugEnabled()) {
 				debug("templatePath: " + templatePath);
 			}
 			URL tocTemplateUrl = getClass().getClassLoader().getResource(templatePath);
-			if (isVerbose()) {
+			if (isDebugEnabled()) {
 				debug("tocTemplateUrl: " + tocTemplateUrl);
 			}			
 			if (tocTemplateUrl != null) {
@@ -235,7 +242,7 @@ public class BookPublisher {
 			tocTemplateFile = new File( templatePath );
 		}
 		
-		if (isVerbose()) {
+		if (isDebugEnabled()) {
 			debug("tocTemplateFile: " + tocTemplateFile);
 		}
 		
@@ -244,10 +251,10 @@ public class BookPublisher {
 	
 	private void buildTocDoc( File tocTemplateFile, Toc toc, File tocOutputFile ) throws Exception {
 		
-		if (isVerbose()) {
-			debug("Building TOC doc" );
-			debug("Template file is " + tocTemplateFile);
-			debug("TOC output file is " + tocOutputFile);
+		if (isVerboseEnabled()) {
+			verbose("Building TOC doc" );
+			verbose("Template file is " + tocTemplateFile);
+			verbose("TOC output file is " + tocOutputFile);
 		}
 		
 		// assertions
@@ -261,12 +268,13 @@ public class BookPublisher {
 		if ((tocTemplateFile != null) && (tocOutputFile != null)) {
 			if (tocTemplateFile.exists()) {
 				Map tocTemplateDataMap = TocTemplateDataBuilder.buildTocTemplateData(toc);
-				if (isVerbose()) {
+				if (isDebugEnabled()) {
 					debug("tocTemplateDataMap: " + tocTemplateDataMap);
 					debug("Generating TOC report" );
 				}
 				OpenOfficeReportBuilder reportBuilder = new OpenOfficeReportBuilder();
-				reportBuilder.setVerbose(isVerbose());
+				reportBuilder.setDebugEnabled(isDebugEnabled());
+				reportBuilder.setVerboseEnabled(isVerboseEnabled());
 				reportBuilder.buildReport(tocTemplateFile, tocTemplateDataMap, tocOutputFile);
 			} else {
 				System.err.println("Template file " + tocTemplateFile + " does not exist - skipping TOC build phase");
@@ -278,7 +286,7 @@ public class BookPublisher {
 	 * TODO: review concat process and compare to PdfCopy.
 	 */
 	public void concatPdf( File firstPdf, File secondPdf, File concatPdf ) throws IOException, DocumentException {
-		if (isVerbose()) {
+		if (isDebugEnabled()) {
 			debug("firstPdf: " + firstPdf);
 			debug("secondPdf: " + secondPdf);
 			debug("concatPdf: " + concatPdf);
@@ -293,14 +301,24 @@ public class BookPublisher {
 		copy.close();
 	}
 	
-	private boolean isVerbose() {
-		return getConfig().isVerbose();
+	private boolean isDebugEnabled() {
+		return getConfig().isDebugEnabled();
+	}
+	
+	private boolean isVerboseEnabled() {
+		return getConfig().isVerboseEnabled();
 	}
 	
 	private void debug( String msg ) {
-		if (isVerbose()) {
+		if (isDebugEnabled()) {
 			System.out.println("-- " + msg);
 		}
 	}
 
+	private void verbose( String msg ) {
+		if (isVerboseEnabled()) {
+			System.out.println( msg );
+		}
+	}
+	
 }

@@ -61,6 +61,7 @@ public class OpenOfficeDocConverterCLI {
 		options.addOption(CliConstants.OPTION_OUTPUT_FORMAT);
 		options.addOption(CliConstants.OPTION_OPEN_OFFICE_HOST);
 		options.addOption(CliConstants.OPTION_OPEN_OFFICE_PORT);
+		options.addOption(CliConstants.OPTION_DEBUG);
 		options.addOption(CliConstants.OPTION_VERBOSE);
 		return options;
 	}
@@ -123,13 +124,15 @@ public class OpenOfficeDocConverterCLI {
 			System.exit(CliConstants.EXIT_CODE_CONNECTION_FAILED);
 		}
 		try {
-			System.out.println( "Source dir is " + sourceDir );
-			System.out.println( "Output dir is " + outputDir );
-			System.out.println( "Output format is " + outputFormat );
-			System.out.println( "Converting files ...");
+			if (verbose) {
+				System.out.println( "Source dir is " + sourceDir );
+				System.out.println( "Output dir is " + outputDir );
+				System.out.println( "Output format is " + outputFormat );
+				System.out.println( "Converting files ...");
+			}
 			ProgressMonitor progressMonitor = new ConsoleProgressMonitor();
 			OpenOfficeDocConverter docConverter = new OpenOfficeDocConverter(openOfficeHost,openOfficePort);
-			docConverter.setTraceEnabled(verbose);
+			docConverter.setVerboseEnabled(verbose);
 			docConverter.setProgressMonitor(progressMonitor);
 			docConverter.convertDocuments( sourceDir, outputDir, outputFormat );
 		} finally {

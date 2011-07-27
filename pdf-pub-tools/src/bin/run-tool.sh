@@ -9,26 +9,26 @@
 ##
 ############
 
-echo
-echo "This script was called with $# arguments"
-echo "All arguments ..."
-echo $*
-echo
-echo "All arguments with spaces ..."
-echo $@
-echo
+#echo
+#echo "This script was called with $# arguments"
+#echo "All arguments ..."
+#echo $*
+#echo
+#echo "All arguments with spaces ..."
+#echo $@
+#echo
 
 # TODO - validate argument count; need at least 1 (MAIN_CLASS)
 
 PRG="$0"
 echo "PRG: $PRG"
 
-PRGDIR=`dirname "$PRG"`
-echo "PRGDIR: $PRGDIR"
+PRG_DIR=`dirname "$PRG"`
+echo "PRG_DIR: $PRG_DIR"
 
 # Only set PDF_PUB_TOOLS_HOME if not already set
 if [ -z "$PDF_PUB_TOOLS_HOME" ]; then
-   PDF_PUB_TOOLS_HOME=`cd "$PRGDIR/.." >/dev/null; pwd`
+   PDF_PUB_TOOLS_HOME=`cd "$PRG_DIR/.." >/dev/null; pwd`
 fi
 echo "PDF_PUB_TOOLS_HOME: $PDF_PUB_TOOLS_HOME"
 
@@ -43,10 +43,10 @@ echo "MAIN_CLASS: $MAIN_CLASS"
 
 shift
 
-echo
-echo "main class arguments ..."
-echo "$@"
-echo
+#echo
+#echo "main class arguments ..."
+#echo "$@"
+#echo
 
 if [ ! -z "$PDF_PUB_TOOLS_BIN" ]; then
    echo "Using $PDF_PUB_TOOLS_BIN/set-env.sh
@@ -64,8 +64,9 @@ fi
 # echo "CLASSPATH: $CLASSPATH"
 
 echo
-echo "Running ..."
-echo "java -cp $CLASSPATH $MAIN_CLASS $@"
+echo "Running $MAIN_CLASS ..."
+echo
+#echo "java -cp $CLASSPATH $MAIN_CLASS $@"
 echo
 
 java -cp $CLASSPATH $MAIN_CLASS $@

@@ -18,27 +18,16 @@
 package net.mitnet.tools.pdf.book.openoffice.ui.cli;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.util.Properties;
 
 import net.mitnet.tools.pdf.book.openoffice.reports.OpenOfficeReportBuilder;
 import net.mitnet.tools.pdf.book.ui.cli.CliConstants;
 import net.mitnet.tools.pdf.book.ui.cli.CommandLineHelper;
-import net.mitnet.tools.pdf.book.ui.cli.ConsoleProgressMonitor;
-import net.mitnet.tools.pdf.book.util.ProgressMonitor;
-import net.sf.jooreports.templates.DocumentTemplate;
-import net.sf.jooreports.templates.DocumentTemplateFactory;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.PosixParser;
-import org.apache.commons.io.FilenameUtils;
-
-import freemarker.ext.dom.NodeModel;
-import freemarker.template.Configuration;
 
 
 /**
@@ -63,6 +52,7 @@ public class OpenOfficeReportBuilderCLI {
 		options.addOption(CliConstants.OPTION_OUTPUT_FORMAT);
 		options.addOption(CliConstants.OPTION_OPEN_OFFICE_HOST);
 		options.addOption(CliConstants.OPTION_OPEN_OFFICE_PORT);
+		options.addOption(CliConstants.OPTION_DEBUG);
 		options.addOption(CliConstants.OPTION_VERBOSE);
 		return options;
 	}

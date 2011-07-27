@@ -266,7 +266,7 @@ public class BookPublisherGUI extends JFrame {
 				OpenOfficeServerContext serverContext = new OpenOfficeServerContext();
 				OpenOfficeDocConverter docConverter = new OpenOfficeDocConverter(serverContext);
 				boolean verbose = true;
-				docConverter.setTraceEnabled(verbose);
+				docConverter.setVerboseEnabled(verbose);
 				docConverter.setProgressMonitor(progressMonitor);
 				docConverter.convertDocuments( sourceDir, outputDir, OpenOfficeDocConverter.OUTPUT_FORMAT_PDF );
 				setStatusMessage("Finished converting documents.");
@@ -358,7 +358,7 @@ public class BookPublisherGUI extends JFrame {
 		config.setMetaAuthor(metaAuthor);
 		*/
 		boolean verbose = true;
-		config.setVerbose(verbose);
+		config.setVerboseEnabled(verbose);
 		
 		return config;
 	}

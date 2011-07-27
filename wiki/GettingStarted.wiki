@@ -6,16 +6,32 @@
 
    * Checkout source for this project. See http://code.google.com/p/pdf-pub-tools/source/checkout
 
+eg.
+{{{
+% md -p $HOME/work/project/pdf-pub-tools/trunk
+% cd $HOME/work/project/pdf-pub-tools/trunk
+% svn  checkout  https://pdf-pub-tools.googlecode.com/svn/trunk/pdf-pub-tools
+}}}
+
+
 == Build Tools ==
+
+=== Bourne Shell CLI ===
+
+eg.
+
+{{{
+% cd $HOME/work/project/pdf-pub-tools/trunk
+% ant clean deploy
+}}}
+
+The runtime items (eg. scripts, libraries) are built and deployed to the "deploy" folder.
+
+=== Eclipse IDE ===
 
    * Import pdf-pub-tools project into Eclipse IDE as an existing Java project.
    * Build project.
 
 == Usage ==
-
-   * Start Open Office in "headless" mode
-   * Run Book Publisher GUI or CLI using Eclipse IDE launchers.
-
-Note: The Book Publisher tool requires Open Office to be running in "headless" mode to perform the document to PDF conversion.
 
 See [Usage]

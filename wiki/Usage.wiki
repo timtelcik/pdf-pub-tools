@@ -1,8 +1,9 @@
 #summary Usage
 
-= Pre-Requisite =
+= Pre-Requisites =
 
-Checkout, build and deploy the PDF Publishing tools.
+  * See [GettingStarted].
+  * Setup [RuntimeEnvironment].
 
 = Usage =
 

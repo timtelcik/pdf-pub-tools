@@ -55,8 +55,25 @@ net.mitnet.tools.pdf.openoffice.ui.cli.OpenOfficeDocConverterCLI
 *Usage*
 
 {{{
-% $PDF_PUB_TOOLS_BIN/run-oo-doc-conv-cli.sh  -indir <input-dir>  -outbook <output-book-file>
+% $PDF_PUB_TOOLS_BIN/run-oo-doc-converter-cli.sh  -indir <input-dir>  -outbook <output-book-file>
 }}}
+
+==== Open Office Report Builder CLI ====
+
+*Purpose*
+
+Builds a report using a report template and data file.
+
+*Java Class*
+
+net.mitnet.tools.pdf.openoffice.ui.cli.OpenOfficeReportBuilderrCLI
+
+*Usage*
+
+{{{
+% $PDF_PUB_TOOLS_BIN/run-oo-report-builder-cli.sh  -template <template-file>  -data <report-data-file> -report <report-file>
+}}}
+
 
 
 ==== Pdf Book Builder CLI ====

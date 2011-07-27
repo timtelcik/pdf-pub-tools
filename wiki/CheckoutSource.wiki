@@ -1,4 +1,5 @@
-#labels checkout,source
+#summary Checkout source
+
 = Checkout Source =
 
    * Checkout source for this project using details at http://code.google.com/p/pdf-pub-tools/source/checkout

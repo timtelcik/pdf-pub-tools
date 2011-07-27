@@ -27,15 +27,15 @@ See [OpenOfficeHeadlessMode].
 
 ==== Book Publisher CLI ====
 
-Purpose: 
+*Purpose*
 
 Exports Open Office docs to PDF and assembled into PDF book with a Table of Contents (TOC).
 
-Java Class: 
+*Java Class*
 
 net.mitnet.tools.pdf.book.publisher.ui.cli.BookPublisherCLI
 
-Usage: 
+*Usage*
 
 {{{
 % $PDF_PUB_TOOLS_BIN/run-book-publisher-cli.sh -indir <input-dir> -ooutdir <output-dir> -outbook <output-pdf-book>
@@ -43,15 +43,15 @@ Usage:
 
 ==== Open Office Doc Converter CLI ====
 
-Purpose: 
+*Purpose*
 
 Converts Open Office docs (eg. *.odt) to PDF (by default)
 
-Java Cass 
+*Java Class*
 
 net.mitnet.tools.pdf.openoffice.ui.cli.OpenOfficeDocConverterCLI
 
-Usage: 
+*Usage*
 
 {{{
 % $PDF_PUB_TOOLS_BIN/run-oo-doc-conv-cli.sh  -indir <input-dir>  -outbook <output-book-file>
@@ -60,17 +60,15 @@ Usage:
 
 ==== Pdf Book Builder CLI ====
 
-Purpose: 
+*Purpose*
 
 Assembles a set of PDF files into a 2up PDF book.
 
-Java Class: 
+*Java Class*
 
 net.mitnet.tools.pdf.pdf.builder.ui.cli.PdfBookBuilderCLI
 
-Usage: 
-
-
+*Usage*
 
 {{{
 % $PDF_PUB_TOOLS_BIN/run-pdf-book-builder-cli.sh  -indir <input-dir>  -outbook <output-book-file>
@@ -80,15 +78,15 @@ Usage:
 
 ==== Book Publisher GUI ====
 
-Purpose: 
+*Purpose*
 
 Graphical interface to the Book Publisher tools. The GUI is equivalent to the Book Publisher CLI 
 
-Java Class: 
+*Java Class*
 
 net.mitnet.tools.pdf.book.publisher.ui.gui.BookPublisherGUI
 
-Usage: 
+*Usage*
 
 {{{
 % $PDF_PUB_TOOLS_BIN/run-book-publisher-gui.sh -indir <input-dir> -ooutdir <output-dir> -outbook <output-pdf-book>

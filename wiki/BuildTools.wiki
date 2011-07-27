@@ -4,7 +4,7 @@
 
 == Dependency ==
 
-See [CheckoutSource].
+[CheckoutSource].
 
 
 == Bourne Shell CLI ==

@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/sh -x
 
 INDIR="$HOME/spool/test/6.0ee-sp1-dev/slides/input"
 
@@ -16,5 +16,9 @@ echo "OUTDIR: $OUTDIR"
 echo "OUTBOOK: $OUTBOOK"
 echo "TEMPLATE: $TEMPLATE"
 
-./bin/run-book-publisher-cli.sh $INDIR $OUTDIR $OUTBOOK
+# ./bin/run-book-publisher-cli2.sh $INDIR $OUTDIR $OUTBOOK
+
+# java -cp $CLASSPATH $MAIN_CLASS $CLI_OPTS -indir $INDIR -outdir $OUTDIR -outbook $OUTBOOK
+
+./bin/run-book-publisher-cli2.sh -v -indir $INDIR -outdir $OUTDIR -outbook $OUTBOOK
 

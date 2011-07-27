@@ -19,27 +19,17 @@ if [ -z "$PDF_PUB_TOOLS_HOME" ]; then
 fi
 echo "PDF_PUB_TOOLS_HOME: $PDF_PUB_TOOLS_HOME"
 
-PDF_PUB_TOOLS_BIN=$PDF_PUB_TOOLS_HOME/bin
-echo "PDF_PUB_TOOLS_BIN: $PDF_PUB_TOOLS_BIN"
-
-PDF_PUB_TOOLS_LIB=$PDF_PUB_TOOLS_HOME/lib
-echo "PDF_PUB_TOOLS_LIB: $PDF_PUB_TOOLS_LIB"
-
-INDIR=$1
-OUTDIR=$2
-OUTBOOK=$3
-CLI_OPTS="-v"
-
-echo "INDIR: $INDIR"
-echo "OUTDIR: $OUTDIR"
-echo "OUTBOOK: $OUTBOOK"
-echo "CLI_OPTS: $CLI_OPTS"
+. $PDF_PUB_TOOLS_HOME/bin/set-env.sh
 
 MAIN_CLASS=net/mitnet/tools/pdf/book/publisher/ui/cli/BookPublisherCLI
 
-. $PDF_PUB_TOOLS_BIN/set-classpath.sh
+# java -cp $CLASSPATH $MAIN_CLASS $CLI_OPTS -indir $INDIR -outdir $OUTDIR -outbook $OUTBOOK
 
-echo "CLASSPATH: $CLASSPATH"
+echo
+echo "Running ..."
+echo
+echo "$PDF_PUB_TOOLS_BIN/run-tool.sh $MAIN_CLASS $@"
+echo
 
-java -cp $CLASSPATH $MAIN_CLASS $CLI_OPTS -indir $INDIR -outdir $OUTDIR -outbook $OUTBOOK
+$PDF_PUB_TOOLS_BIN/run-tool.sh $MAIN_CLASS $@
 

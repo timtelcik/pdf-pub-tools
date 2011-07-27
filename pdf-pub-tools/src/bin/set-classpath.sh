@@ -37,8 +37,8 @@ do
    PPT_CP=$PPT_CP:$f
 done
 
-echo "PPT_CP: $PPT_CP"
+# echo "PPT_CP: $PPT_CP"
 
 CLASSPATH=$CLASSPATH:$PPT_CP
-echo "CLASSPATH: $CLASSPATH"
+# echo "CLASSPATH: $CLASSPATH"
 

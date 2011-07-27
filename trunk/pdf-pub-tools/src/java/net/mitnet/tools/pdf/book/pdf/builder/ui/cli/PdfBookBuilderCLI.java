@@ -63,6 +63,7 @@ public class PdfBookBuilderCLI {
 		options.addOption(CliConstants.OPTION_SOURCE_DIR);
 		options.addOption(CliConstants.OPTION_OUTPUT_BOOK_FILE);
 		options.addOption(CliConstants.OPTION_PAGE_SIZE);
+		options.addOption(CliConstants.OPTION_DEBUG);
 		options.addOption(CliConstants.OPTION_VERBOSE);
 		options.addOption(CliConstants.OPTION_META_TITLE);
 		options.addOption(CliConstants.OPTION_META_AUTHOR);
@@ -90,6 +91,7 @@ public class PdfBookBuilderCLI {
 		File outputBookFile = commandLineHelper.getOptionValueAsFile(CliConstants.OPTION_OUTPUT_BOOK_FILE);
 
 		Rectangle pageSize = PageSize.A4;
+		// Rectangle pageSize = PageSize.LETTER;
 		if (commandLineHelper.hasOption(CliConstants.OPTION_PAGE_SIZE)) {
 			String pageSizeString = commandLineHelper.getOptionValue(CliConstants.OPTION_PAGE_SIZE);
 			if (!StringUtils.isEmpty(pageSizeString)) {
@@ -97,6 +99,11 @@ public class PdfBookBuilderCLI {
 					pageSize = PageSize.LETTER;
 				}
 			}
+		}
+
+		boolean debug = false;
+		if (commandLineHelper.hasOption(CliConstants.OPTION_DEBUG)) {
+			debug = true;
 		}
 
 		boolean verbose = false;
@@ -117,23 +124,23 @@ public class PdfBookBuilderCLI {
 			metaAuthor = commandLineHelper.getOptionValue(CliConstants.OPTION_META_AUTHOR);
 		}
 
-		if (verbose) {
-			System.out.println("-- Building PDF book " + outputBookFile);
-		}
+		System.out.println( "Building PDF book \"" + outputBookFile + "\" from files in source folder \"" + sourceDir + "\" ..." );
 
 		try {
 
 			if (verbose) {
-				System.out.println( "-- Source dir is " + sourceDir );
-				System.out.println( "-- Output file is " + outputBookFile );
-				System.out.println( "-- Page size is " + pageSize );
-				System.out.println( "-- Building PDF book " + outputBookFile + " ...");
+				verbose( "Source dir is \"" + sourceDir + "\"" );
+				verbose( "Output book file is \"" + outputBookFile + "\"" );
+				verbose( "Page size is " + pageSize );
+				verbose( "Building PDF book \"" + outputBookFile + "\" ...");
 			}
 
 			PdfBookBuilderConfig config = new PdfBookBuilderConfig();
 			
-			ProgressMonitor progressMonitor = new ConsoleProgressMonitor();
-			config.setProgressMonitor(progressMonitor);
+			if (verbose) {
+				ProgressMonitor progressMonitor = new ConsoleProgressMonitor();
+				config.setProgressMonitor(progressMonitor);
+			}
 			
 			PdfPageEvent pdfPageEventListener = new PdfPageEventLogger();
 			config.setPdfPageEventListener(pdfPageEventListener);
@@ -141,7 +148,8 @@ public class PdfBookBuilderCLI {
 			config.setPageSize(pageSize);
 			config.setMetaTitle(metaTitle);
 			config.setMetaAuthor(metaAuthor);
-			config.setVerbose(verbose);
+			config.setDebugEnabled(debug);
+			config.setVerboseEnabled(verbose);
 			
 			config.setBuildTocEnabled(true);
 			TocBuilder tocBuilder = new TocBuilder();
@@ -151,11 +159,14 @@ public class PdfBookBuilderCLI {
 			pdfBookBuilder.setConfig(config);
 			pdfBookBuilder.buildBook(sourceDir, outputBookFile);
 			
+			Toc toc = tocBuilder.getToc();
 			if (verbose) {
-				Toc toc = tocBuilder.getToc();
-				System.out.println( "-- Output PDF Table Of Contents is " + toc );
-				System.out.println( "-- Output PDF Table Of Contents contains " + toc.getTocRowCount() + " entries" );
-				TocTracer.traceToc(toc);
+				// System.out.println( "Output PDF Table Of Contents is " + toc );
+				System.out.println( "Output PDF Table Of Contents contains " + toc.getTocRowCount() + " entries" );
+
+			}
+			if (debug) {
+				TocTracer.traceToc(toc);					
 			}
 
 			// TODO - output TOC data ???
@@ -177,10 +188,7 @@ public class PdfBookBuilderCLI {
 			throw new Exception( msg, e );
 		}
 
-
-		if (verbose) {
-			System.out.println( "-- Finished building PDF book " + outputBookFile + ".");
-		}
+		System.out.println( "Finished building PDF book \"" + outputBookFile + "\".");
 	}
 
 	private static void showHelp() {
@@ -189,6 +197,14 @@ public class PdfBookBuilderCLI {
 		HelpFormatter helpFormatter = new HelpFormatter();
 		helpFormatter.printHelp(syntax, OPTIONS);
 		System.exit(CliConstants.EXIT_CODE_TOO_FEW_ARGS);
+	}
+	
+	private static void verbose( String msg ) {
+		System.out.println( msg );
+	}
+	
+	private static void debug( String msg ) {
+		System.out.println( "-- " + msg );
 	}
 
 }

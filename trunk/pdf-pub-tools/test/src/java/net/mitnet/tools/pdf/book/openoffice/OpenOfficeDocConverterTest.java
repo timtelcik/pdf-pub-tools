@@ -70,7 +70,7 @@ public class OpenOfficeDocConverterTest extends TestCase {
 			ProgressMonitor progressMonitor = new ConsoleProgressMonitor();
 			OpenOfficeDocConverter docConverter = new OpenOfficeDocConverter(serverContext);
 			// docConverter.convertDocuments( sourceFileList, outputDir, PublisherConstants.OUTPUT_FORMAT_PDF, progressMonitor );
-			docConverter.setTraceEnabled(true);
+			docConverter.setVerboseEnabled(true);
 			docConverter.setProgressMonitor(progressMonitor);
 			docConverter.convertDocuments( sourceDir, outputDir, OpenOfficeDocConverter.OUTPUT_FORMAT_PDF );
 		}

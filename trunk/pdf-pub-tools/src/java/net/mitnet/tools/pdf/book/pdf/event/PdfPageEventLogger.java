@@ -21,7 +21,6 @@ import com.lowagie.text.pdf.PdfPageEvent;
 import com.lowagie.text.pdf.PdfPageEventHelper;
 
 
-
 /**
  * PDF Page Event Logger.
  * 

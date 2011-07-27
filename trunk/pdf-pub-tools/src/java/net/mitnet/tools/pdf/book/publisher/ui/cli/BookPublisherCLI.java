@@ -72,11 +72,12 @@ public class BookPublisherCLI {
 		options.addOption(CliConstants.OPTION_OUTPUT_DIR);
 		options.addOption(CliConstants.OPTION_OUTPUT_BOOK_FILE);
 		options.addOption(CliConstants.OPTION_PAGE_SIZE);
-		options.addOption(CliConstants.OPTION_VERBOSE);
+		options.addOption(CliConstants.OPTION_DEBUG);
 		options.addOption(CliConstants.OPTION_META_TITLE);
 		options.addOption(CliConstants.OPTION_META_AUTHOR);
 		options.addOption(CliConstants.OPTION_OPEN_OFFICE_HOST);
 		options.addOption(CliConstants.OPTION_OPEN_OFFICE_PORT);
+		options.addOption(CliConstants.OPTION_VERBOSE);
 		options.addOption(CliConstants.OPTION_TOC_TEMPLATE_PATH);
 		return options;
 	}
@@ -125,6 +126,7 @@ public class BookPublisherCLI {
 		// TODO - default page size using Locale
 
 		Rectangle pageSize = PageSize.A4;
+		// Rectangle pageSize = PageSize.LETTER;
 		if (commandLineHelper.hasOption(CliConstants.OPTION_PAGE_SIZE)) {
 			String pageSizeString = commandLineHelper.getOptionValue(CliConstants.OPTION_PAGE_SIZE);
 			if (!StringUtils.isEmpty(pageSizeString)) {
@@ -134,9 +136,14 @@ public class BookPublisherCLI {
 			}
 		}
 
-		boolean verbose = false;
+		boolean debugEnabled = false;
+		if (commandLineHelper.hasOption(CliConstants.OPTION_DEBUG)) {
+			debugEnabled = true;
+		}
+		
+		boolean verboseEnabled = false;
 		if (commandLineHelper.hasOption(CliConstants.OPTION_VERBOSE)) {
-			verbose = true;
+			verboseEnabled = true;
 		}
 		
 		File tocTemplatePath = null;
@@ -159,25 +166,29 @@ public class BookPublisherCLI {
 
 		try {
 
-			if (verbose) {
-				System.out.println( "-- Source dir is " + sourceDir );
-				System.out.println( "-- Output dir is " + outputDir );
-				System.out.println( "-- Output file is " + outputBookFile );
-				System.out.println( "-- Page size is " + pageSize );
+			if (verboseEnabled) {
+				verbose( "Source dir is \"" + sourceDir + "\"" );
+				verbose( "Output dir is \"" + outputDir + "\"" );
+				verbose( "Output file is \"" + outputBookFile + "\"" );
+				verbose( "Page size is " + pageSize );
 				if (tocTemplatePath != null) {
-					System.out.println( "-- TOC template path is " + tocTemplatePath);
+					verbose( "-- TOC template path is \"" + tocTemplatePath + "\"" );
 				}
-				System.out.println( "-- Publishing PDF book " + outputBookFile + " ...");
 			}
+			
+			System.out.println( "Publishing PDF book \"" + outputBookFile + "\" from files in source folder \"" + sourceDir + "\" ..." );
 
 			BookPublisherConfig config = new BookPublisherConfig();
 			
-			ProgressMonitor progressMonitor = new ConsoleProgressMonitor();
-			config.setProgressMonitor(progressMonitor);
+			if (verboseEnabled) {
+				ProgressMonitor progressMonitor = new ConsoleProgressMonitor();
+				config.setProgressMonitor(progressMonitor);
+			}
+			
 			config.setMetaTitle(metaTitle);
 			config.setMetaAuthor(metaAuthor);
-			config.setDebugEnabled(true);
-			config.setVerbose(verbose);
+			config.setDebugEnabled(debugEnabled);
+			config.setVerboseEnabled(verboseEnabled);
 			config.setPageSize(pageSize);
 			config.setServerContext(serverContext);
 			if (tocTemplatePath != null) {
@@ -190,14 +201,12 @@ public class BookPublisherCLI {
 
 		} catch (Exception e) {
 			e.printStackTrace(System.err);
-			String msg = "Error publishing book " + outputBookFile + " : " + e.getMessage();
+			String msg = "Error publishing book \"" + outputBookFile + "\" : " + e.getMessage();
 			System.err.println( msg );
 			throw new Exception( msg, e );
 		}
 		
-		if (verbose) {
-			System.out.println( "-- Finished publishing book " + outputBookFile + ".");
-		}
+		System.out.println( "Finished publishing book \"" + outputBookFile + "\"." );
 	}
 
 	private static void showHelp() {
@@ -208,5 +217,13 @@ public class BookPublisherCLI {
 		helpFormatter.printHelp(syntax, OPTIONS);
 		System.exit(CliConstants.EXIT_CODE_TOO_FEW_ARGS);
 	}
+	
+	private static void verbose( String msg ) {
+		System.out.println( msg );
+	}
+	
+	private static void debug( String msg ) {
+		System.out.println( "-- " + msg );
+	}	
 
 }

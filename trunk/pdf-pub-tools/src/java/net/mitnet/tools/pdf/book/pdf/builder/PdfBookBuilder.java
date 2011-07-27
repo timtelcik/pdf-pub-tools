@@ -95,15 +95,24 @@ public class PdfBookBuilder {
 	public void buildBook( File sourceDir, File outputFile ) throws Exception {
 
 		if (isVerboseEnabled()) {
-			System.out.println( "-- sourceDir: " + sourceDir);
-			System.out.println( "-- outputFile: " + outputFile);
-			System.out.println( "-- progressMonitor: " + getConfig().getProgressMonitor());
-			System.out.println( "-- tocRowChangeListener: " + getConfig().getTocRowChangeListener());
+			verbose( "Building book \"" + outputFile + "\" from source folder \"" + sourceDir + "\" ..." );
+		}
+
+		if (isDebugEnabled()) {
+			debug( "-- sourceDir: " + sourceDir);
+			debug( "-- outputFile: " + outputFile);
+			debug( "-- progressMonitor: " + getConfig().getProgressMonitor());
+			debug( "-- tocRowChangeListener: " + getConfig().getTocRowChangeListener());
 		}
 		
 		List<File> sourceFileList = FileHelper.findPdfFiles(sourceDir,true);
-		System.out.println( "-- sourceFileList.size: " + sourceFileList.size());
-		System.out.println( "-- sourceFileList: " + sourceFileList);
+		if (isDebugEnabled()) {
+			debug( "-- sourceFileList contains " + sourceFileList.size() + " items");
+		}
+		if (isDebugEnabled()) {
+			debug( "-- sourceFileList.size: " + sourceFileList.size());
+			debug( "-- sourceFileList: " + sourceFileList);
+		}
 		
 		if (!sourceFileList.isEmpty()) {
 			buildBook( sourceFileList, outputFile );
@@ -127,7 +136,7 @@ public class PdfBookBuilder {
 			*/
 			
 			if (isVerboseEnabled()) {
-				System.out.println("-- Building output PDF file " + outputFile);
+				verbose("Building output PDF file " + outputFile);
 			}
 			
 			// TableOfContents toc = new TableOfContents();
@@ -165,7 +174,7 @@ public class PdfBookBuilder {
 			// BaseFont pageLabelFont = BaseFont.createFont( PdfBookBuilderConfig.DEFAULT_FONT, BaseFont.CP1250, BaseFont.EMBEDDED );
 			BaseFont pageLabelFont = BaseFont.createFont( PdfBookBuilderConfig.DEFAULT_FONT_PATH, BaseFont.CP1250, BaseFont.EMBEDDED );
 			if (isVerboseEnabled()) {
-				System.out.println("-- Using page label font " + pageLabelFont);
+				verbose("Using page label font " + pageLabelFont);
 			}
 
 			for (File sourceFile : sourceFileList) {
@@ -178,7 +187,7 @@ public class PdfBookBuilder {
 				if (sourceFile.isFile()) {
 					
 					if (isVerboseEnabled()) {
-						System.out.println("-- Reading source PDF file " + sourceFile);
+						verbose("Reading source PDF file " + sourceFile);
 					}
 
 					int sourcePageIndex = 0;
@@ -186,22 +195,22 @@ public class PdfBookBuilder {
 					PdfReader sourcePdfReader = new PdfReader(sourceFile.getCanonicalPath());
 					PdfReaderHelper sourcePdfReaderHelper = new PdfReaderHelper( sourcePdfReader );
 					if (isVerboseEnabled()) {
-						System.out.println("-- PDF reader is " + sourcePdfReader);
-						System.out.println("-- PDF reader helper is " + sourcePdfReaderHelper);
+						verbose("PDF reader is " + sourcePdfReader);
+						verbose("PDF reader helper is " + sourcePdfReaderHelper);
 					}
 					
 					String currentSourcePdfTitle = FilenameUtils.getBaseName(sourceFile.getName());
 					String currentSourcePdfAuthor = getSystemUserName();
 					if (isVerboseEnabled()) {
-						System.out.println("-- PDF title is " + currentSourcePdfTitle);
-						System.out.println("-- PDF author is " + currentSourcePdfAuthor);
+						verbose("PDF title is " + currentSourcePdfTitle);
+						verbose("PDF author is " + currentSourcePdfAuthor);
 					}
 					
 					currentSourcePdfTitle = sourcePdfReaderHelper.getDocumentTitle( currentSourcePdfTitle );
 					currentSourcePdfAuthor = sourcePdfReaderHelper.getDocumentTitle( currentSourcePdfAuthor );
 					if (isVerboseEnabled()) {
-						System.out.println("-- PDF info title is " + currentSourcePdfTitle);
-						System.out.println("-- PDF info author is " + currentSourcePdfAuthor);
+						verbose("PDF info title is " + currentSourcePdfTitle);
+						verbose("PDF info author is " + currentSourcePdfAuthor);
 					}
 
 					
@@ -209,7 +218,7 @@ public class PdfBookBuilder {
 					
 					int maxSourcePages = sourcePdfReader.getNumberOfPages();
 					if (isVerboseEnabled()) {
-						System.out.println("-- There are " + maxSourcePages + " page(s) in source PDF file " + sourceFile);
+						verbose("There are " + maxSourcePages + " page(s) in source PDF file " + sourceFile);
 					}
 
 					// process all pages from source doc ...
@@ -220,7 +229,7 @@ public class PdfBookBuilder {
 						
 						outputPageCount++;
 						if (isVerboseEnabled()) {
-							System.out.println("-- Building output PDF page " + outputPageCount + " ...");
+							verbose("Building output PDF page " + outputPageCount + " ...");
 						}
 						
 						// add first page of current source to TOC listener
@@ -230,7 +239,7 @@ public class PdfBookBuilder {
 								TocRow tocEntry = new TocRow( currentSourcePdfTitle, currentPageIndex );
 								tocRowChangeListener.addTocRow(tocEntry);
 								if (isVerboseEnabled()) {
-									System.out.println("-- Added TOC entry " + tocEntry + " to listener");
+									verbose("Added TOC entry " + tocEntry + " to listener");
 								}
 							}
 							firstPageOfCurrentSource = false;
@@ -239,7 +248,7 @@ public class PdfBookBuilder {
 						// extract first page from source document
 						sourcePageIndex++;
 						if (isVerboseEnabled()) {
-							System.out.println("-- Adding page " + sourcePageIndex + " of " + maxSourcePages + " from source to output");
+							verbose("Adding page " + sourcePageIndex + " of " + maxSourcePages + " from source to output");
 						}
 						PdfImportedPage page1 = pdfWriter.getImportedPage(sourcePdfReader,sourcePageIndex);
 
@@ -248,7 +257,7 @@ public class PdfBookBuilder {
 						if (sourcePageIndex < maxSourcePages) {
 							sourcePageIndex++;
 							if (isVerboseEnabled()) {
-								System.out.println("-- Adding page " + sourcePageIndex + " of " + maxSourcePages + " from source to output");
+								verbose("Adding page " + sourcePageIndex + " of " + maxSourcePages + " from source to output");
 							}
 							page2 = pdfWriter.getImportedPage( sourcePdfReader, sourcePageIndex );
 						}
@@ -261,7 +270,6 @@ public class PdfBookBuilder {
 						float p1d = 0.5f;
 						float p1e = (125);
 						float p1f = ((pageWidth / 2) + 120 + 20);
-						// pdfContent.addTemplate( page1, 0.5f, 0, 0, 0.5f, 125, ((pageWidth / 2) + 120 + 20) );
 						pdfContent.addTemplate( page1, p1a, p1b, p1c, p1d, p1e, p1f );
 
 						// add second page to bottom half of current page
@@ -273,7 +281,6 @@ public class PdfBookBuilder {
 							float p2d = 0.5f;
 							float p2e = 125;
 							float p2f = 120;
-							// pdfContent.addTemplate( page2, 0.5f, 0, 0, 0.5f, 125, 120 );
 							pdfContent.addTemplate( page2, p2a, p2b, p2c, p2d, p2e, p2f );
 						}
 
@@ -286,13 +293,15 @@ public class PdfBookBuilder {
 					}
 					
 					if (isVerboseEnabled()) {
-						System.out.println("-- Finished reading " + maxSourcePages + " page(s) from source PDF file " + sourceFile);
+						verbose("Finished reading " + maxSourcePages + " page(s) from source PDF file " + sourceFile);
 					}
 
 					// update progress
-					if (progressMonitor != null) {
-						int fileProgressPercentage = MathHelper.calculatePercentage(currentSourceFileIndex, maxSourceFileIndex);
-						progressMonitor.setProgressPercentage(fileProgressPercentage);
+					if (isVerboseEnabled()) {
+						if (progressMonitor != null) {
+							int fileProgressPercentage = MathHelper.calculatePercentage(currentSourceFileIndex, maxSourceFileIndex);
+							progressMonitor.setProgressPercentage(fileProgressPercentage);
+						}
 					}
 				}
 			}
@@ -301,7 +310,7 @@ public class PdfBookBuilder {
 			outputDocument.close();
 			
 			if (isVerboseEnabled()) {
-				System.out.println( "-- Output PDF file " + outputFile + " contains " + outputPageCount + " page(s)" );
+				verbose("Output PDF file " + outputFile + " contains " + outputPageCount + " page(s)" );
 			}
 			
 			// TODO - output ODT page stats summary
@@ -327,14 +336,14 @@ public class PdfBookBuilder {
 	}
 	
 	private boolean isVerboseEnabled() {
-		return getConfig().isVerbose();
+		return getConfig().isVerboseEnabled();
 	}
 	
 	private boolean isDebugEnabled() {
 		return getConfig().isDebugEnabled();
 	}
 	
-	private void trace( String msg ) {
+	private void verbose( String msg ) {
 		if (isVerboseEnabled()) {
 			System.out.println( msg );
 		}
@@ -342,7 +351,7 @@ public class PdfBookBuilder {
 	
 	private void debug( String msg ) {
 		if (isDebugEnabled()) {
-			System.out.println( msg );
+			System.out.println( "-- " + msg );
 		}
 	}
 	

@@ -21,7 +21,7 @@ import java.util.Iterator;
 
 
 /**
- * Table Of Conetns Tracer.
+ * Table Of Contents Tracer.
  * 
  * @author Tim Telcik <telcik@gmail.com>
  */

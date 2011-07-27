@@ -2,86 +2,108 @@
 
 = Usage =
 
+Basic workflow:
+
+* Start Open Office in "headless" (aka. server) mode.
+* Run required publishing tool (eg. book publisher, pdf publisher)
+* Stop Open Office
+
+= Dependency =
+
 == Open Office ==
 
 Start Open Office in "headless" mode on localhost, listen on port 8100 :
 
-* Mac OS X*
+=== Mac OS X ===
 
 {{{
 /Applications/OpenOffice.org.app/Contents/MacOS/soffice.bin -headless -accept="socket,host=127.0.0.1,port=8100;urp;" -nofirststartwizard
 }}}
 
-*Windows XP/Vista/7*
+=== Windows XP/Vista/7 ===
 
 {{{
 soffice -headless -accept="socket,host=127.0.0.1,port=8100;urp;" -nofirststartwizard
 }}}
 
+=== Start Open Office Script ===
+
+Sample Bourne Shell script.
+
+{{{
+% PDF_PUB_TOOLS_BIN/run-book-publisher-cli.sh  start-open-office-headless.sh
+}}}
+
+
 == Tools ==
 
 === Command Line Interfaces (CLI) ===
 
-==== BookPublisherCLI ====
+==== Book Publisher CLI ====
 
-purpose: 
+Purpose: 
 
-creates final PDF book
+Exports Open Office docs to PDF and assembled into PDF book with a Table of Contents (TOC).
 
-class: 
+Java Class: 
 
 net.mitnet.tools.pdf.book.publisher.ui.cli.BookPublisherCLI
 
-usage: 
+Usage: 
 
 {{{
-BookPublisherCLI -v -i <input-dir> -o <output-dir> -b <output-pdf-book>
+% PDF_PUB_TOOLS_BIN/run-book-publisher-cli.sh -indir <input-dir> -ooutdir <output-dir> -outbook <output-pdf-book>
 }}}
 
-==== OpenOfficeDocConverterCLI ====
+==== Open Office Doc Converter CLI ====
 
-purpose: 
+Purpose: 
 
-converts ODT to PDF (by default)
+Converts Open Office docs (eg. *.odt) to PDF (by default)
 
-class 
+Java Cass 
 
 net.mitnet.tools.pdf.openoffice.ui.cli.OpenOfficeDocConverterCLI
 
-usage: 
+Usage: 
 
 {{{
-OpenOfficeDocConverterCLI -v -i <input-dir> -o <output-dir>
+% $PDF_PUB_TOOLS_BIN/run-oo-doc-conv-cli.sh  -indir <input-dir>  -outbook <output-book-file>
 }}}
 
 
-==== PdfBookBuilderCLI ====
+==== Pdf Book Builder CLI ====
 
-purpose: 
+Purpose: 
 
-builds PDF book from PDF files
+Assembles a set of PDF files into a 2up PDF book.
 
-class: 
+Java Class: 
 
 net.mitnet.tools.pdf.pdf.builder.ui.cli.PdfBookBuilderCLI
 
-usage: 
+Usage: 
+
+
 
 {{{
-PdfBookBuilderCLI -v -i <input-dir> -o -b <output-pdf-book>
+% $PDF_PUB_TOOLS_BIN/run-pdf-book-builder-cli.sh  -indir <input-dir>  -outbook <output-book-file>
 }}}
 
 === Graphical User Interface (GUI) ===
 
-==== BookPublisherGUI ====
+==== Book Publisher GUI ====
 
-purpose: 
+Purpose: 
 
-creates PDFs from ODT only at this stage; a bit more work to 
-make this equivalent to BookPublisherCLI
+Graphical interface to the Book Publisher tools. The GUI is equivalent to the Book Publisher CLI 
 
-class: 
+Java Class: 
 
 net.mitnet.tools.pdf.book.publisher.ui.gui.BookPublisherGUI
 
-usage: launch from Eclipse
+Usage: 
+
+{{{
+% PDF_PUB_TOOLS_BIN/run-book-publisher-gui.sh -indir <input-dir> -ooutdir <output-dir> -outbook <output-pdf-book>
+}}}

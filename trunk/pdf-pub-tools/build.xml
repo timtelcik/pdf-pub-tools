@@ -27,9 +27,10 @@
 	<property name="lib.dir" location="${basedir}/lib" />
 	<property name="src.dir" location="${basedir}/src" />
 	<property name="bin.src.dir" location="${src.dir}/bin" />
-	<property name="resources.src.dir" location="${src.dir}/resources" />
 	<property name="fonts.src.dir" location="${resources.src.dir}/fonts" />
+	<property name="java.src.dir" location="${src.dir}/java" />
 	<property name="reports.src.dir" location="${resources.src.dir}/reports" />
+	<property name="resources.src.dir" location="${src.dir}/resources" />
 	<property name="build.dir" location="${basedir}/build" />
 	<property name="classes.build.dir" location="${build.dir}/classes" />
 	<property name="lib.build.dir" location="${build.dir}/lib" />
@@ -66,6 +67,23 @@
 
 	<target name="compile" depends="init" description="compile the source ">
 		<javac srcdir="${src.dir}" destdir="${classes.build.dir}" classpathref="classpath.path" debug="on" />
+
+		<!--
+		<copy todir="${classes.build.dir}">
+			<fileset dir="${java.src.dir}">
+				<exclude name="log4j" />
+				<exclude name="**/log4j" />
+				<include name="**/*.properties" />
+				<include name="**/*.xml" />
+			</fileset>
+  		</copy>
+		-->
+
+		<copy todir="${classes.build.dir}" flatten="true">
+			<resources>
+				<file file="${java.src.dir}/log4j.properties"/>
+			</resources>
+		</copy>
 
 		<!--
 		<mkdir dir="${resources.build.dir}" />

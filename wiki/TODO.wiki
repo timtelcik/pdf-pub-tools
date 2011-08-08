@@ -24,3 +24,57 @@ This page contains a non-exhaustive list of TODO items.
 == Review Performance ==
 
   * Review performance for processing large doc sets (i.e. memory usage. thread count).
+
+= TODO Release 2 =
+
+== Book Publisher ==
+
+=== TOC XML Configuration File ===
+
+Use a TOC XML config file to provide grouping of TOC entries and provide default meta-data (eg. title).
+
+eg.
+
+{{{
+<toc-configuration base="/home/somebody/work/source-docs">
+   <toc-template file="toc.odt">
+      <title>Table of Contents</title>
+   </toc-template>
+   <toc-entries>
+      <toc-entry-group title=”Day 1”>
+         <toc-entry file="overview.pdf">
+            <title>Overview</title>
+            <author>Basil Brush</author>
+            <keywords>overview</keywords>
+            <subject>overview</subject>
+          </toc-entry>
+      <toc-entry-group>
+      <toc-entry-group title=”Day 2”>
+         <toc-entry file="configuration.pdf">
+            <title>Configuration</title>
+            <author>Erik The Viking </author>
+            <keywords>configuration, setup</keywords>
+            <subject>configuration</subject>
+         </toc-entry>
+      </toc-entry-group>
+   </toc-entries>
+</toc-configuration>
+}}}
+
+**Notes**
+● If PDF metadata does not have a title, author etc, default to values from TOC configuration entry.
+● Use commons Digester to parse toc XML configuration into toc Entry model objects.
+● Update TOC model objects with details collected during pdf assembly.
+● Assume TOC template file path differs from PDF or ODT slide file path ?
+
+=== PDF Edit Meta ===
+(using iText)
+● Read source PDF
+● Create new PDF doc, add content bytes from source PDF, update meta title, subject etc.
+● Write new PDF doc
+
+=== PDF Bookmarks ===
+
+● Create PDF with bookmarks
+● Add “open bookmarks” flag/status to PDF so the bookmarks view opens automatically
+when Acrobat opens PDF.

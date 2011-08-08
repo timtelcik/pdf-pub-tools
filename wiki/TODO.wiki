@@ -27,6 +27,16 @@ This page contains a non-exhaustive list of TODO items.
 
 = TODO Release 2 =
 
+== General ==
+
+* Upgrade from JODReports 2.x to JODReports 3.x
+
+* Review performance (eg. threading).
+
+* Revise verbose and debug logging. Use log4j ?
+
+* Review GPL v3 license model
+
 == Book Publisher ==
 
 === TOC XML Configuration File ===
@@ -62,19 +72,18 @@ eg.
 }}}
 
 **Notes**
-● If PDF metadata does not have a title, author etc, default to values from TOC configuration entry.
-● Use commons Digester to parse toc XML configuration into toc Entry model objects.
-● Update TOC model objects with details collected during pdf assembly.
-● Assume TOC template file path differs from PDF or ODT slide file path ?
+  * If PDF metadata does not have a title, author etc, default to values from TOC configuration entry.
+  * Use commons Digester to parse toc XML configuration into toc Entry model objects.
+  * Update TOC model objects with details collected during pdf assembly.
+  * Assume TOC template file path differs from PDF or ODT slide file path ?
 
 === PDF Edit Meta ===
 (using iText)
-● Read source PDF
-● Create new PDF doc, add content bytes from source PDF, update meta title, subject etc.
-● Write new PDF doc
+  * Read source PDF
+  * Create new PDF doc, add content bytes from source PDF, update meta title, subject etc.
+  * Write new PDF doc
 
 === PDF Bookmarks ===
 
-● Create PDF with bookmarks
-● Add “open bookmarks” flag/status to PDF so the bookmarks view opens automatically
-when Acrobat opens PDF.
+  * Create PDF with bookmarks
+  * Add “open bookmarks” flag/status to PDF so the bookmarks view opens automatically when Acrobat opens PDF.

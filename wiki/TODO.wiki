@@ -39,6 +39,7 @@ This page contains a non-exhaustive list of TODO items.
 
 * Review command line (CLI) options and usage messages for all tools.
 
+* Convert project to Maven 2 POM.
 
 == Book Publisher ==
 

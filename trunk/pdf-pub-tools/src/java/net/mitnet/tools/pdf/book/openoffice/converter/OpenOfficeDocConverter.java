@@ -149,24 +149,34 @@ public class OpenOfficeDocConverter {
 			int maxItemIndex = sourceFileList.size();
 			for (File inputFile : sourceFileList) {
 				currentItemIndex++;
-				String baseOutputFilePath = null;
-				if ( outputDir == null ) {
-					baseOutputFilePath = inputFile.getParent();
-				} else {
-					String pathToParent = FileHelper.getPathToParent( sourceDir, inputFile );
-					if (StringUtils.isEmpty(pathToParent)) {
-						baseOutputFilePath = outputDir.getAbsolutePath();
+				if (inputFile.isFile()) {
+					String baseOutputFilePath = null;
+					if (outputDir == null) {
+						baseOutputFilePath = inputFile.getParent();
 					} else {
-						baseOutputFilePath = new File( outputDir, pathToParent ).getPath();
+						String pathToParent = FileHelper.getPathToParent(
+								sourceDir, inputFile);
+						if (StringUtils.isEmpty(pathToParent)) {
+							baseOutputFilePath = outputDir.getAbsolutePath();
+						} else {
+							baseOutputFilePath = new File(outputDir,
+									pathToParent).getPath();
+						}
 					}
-				}
-				String baseInputFileName = FilenameUtils.getBaseName(inputFile.getName());
-				String outputFileName =  baseInputFileName + "." + outputFormat;
-				File outputFile = new File( baseOutputFilePath, outputFileName );
-				convertDocument( converter, inputFile, outputFile );
-				if (getProgressMonitor() != null) {
-					int progressPercentage = MathHelper.calculatePercentage( currentItemIndex, maxItemIndex );
-					getProgressMonitor().setProgressPercentage(progressPercentage);
+					String baseInputFileName = FilenameUtils
+							.getBaseName(inputFile.getName());
+					String outputFileName = baseInputFileName + "."
+							+ outputFormat;
+					File outputFile = new File(baseOutputFilePath,
+							outputFileName);
+					convertDocument(converter, inputFile, outputFile);
+					if (getProgressMonitor() != null) {
+						int progressPercentage = MathHelper
+								.calculatePercentage(currentItemIndex,
+										maxItemIndex);
+						getProgressMonitor().setProgressPercentage(
+								progressPercentage);
+					}
 				}
 			}
 

@@ -18,8 +18,11 @@
 package net.mitnet.tools.pdf.book.io;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
@@ -31,6 +34,7 @@ import org.apache.commons.lang.StringUtils;
  * File Helper.
  * 
  * @author Tim Telcik <telcik@gmail.com>
+ * @author Rich Sezov <sezovr@gmail.com>
  * 
  * @see FilenameUtils
  * @see FileUtils
@@ -72,14 +76,70 @@ public class FileHelper {
 		return fileList;
 	}
 	
+	
+	/**
+	 * Get a list of all file/directories in a directory structure, filtering
+	 * by the extension of the file. This method also ensures that the files 
+	 * are returned in the proper order on all operating systems. 
+	 * @param startDir
+	 * @param fileExtensions
+	 * @param recursive
+	 * @return List<File>
+	 */
 	public static List<File> findFilesByExtensions( File startDir, String[] fileExtensions, boolean recursive ) {
-		@SuppressWarnings("unchecked")
-		Collection<File> fileCollection = FileUtils.listFiles( startDir, fileExtensions, recursive );
+		//Collection<File> fileCollection = FileUtils.listFiles( startDir, fileExtensions, recursive );
+		// Below algorithm is necessary to ensure proper file order 
+		// on all operating systems. 
+		List<File> fileCollection = getFileListingNoSort(startDir, recursive);
+		Collections.sort(fileCollection);
+		
 		// System.out.println("fileCollection: " + fileCollection);
 		List<File> fileList = new ArrayList<File>(fileCollection);
+		for (File file : fileCollection) {
+			if (checkExtensions(fileExtensions, file)) {
+				fileList.add(file);
+			}
+		}
+		
 		// System.out.println("fileList: " + fileList);
 		return fileList;
 	}	
+	
+	/**
+	 * Get a list of all files/directories in a directory structure. 
+	 * Can optionally recurse into any number of nested directories. 
+	 * @param aStartingDir
+	 * @param recursive
+	 * @return List<File>
+	 */
+	private static List<File> getFileListingNoSort(
+			File aStartingDir, boolean recursive) {
+		List<File> result = new ArrayList<File>();
+		File[] filesAndDirs = aStartingDir.listFiles();
+		List<File> filesDirs = Arrays.asList(filesAndDirs);
+		for (File file : filesDirs) {
+			result.add(file); //always add, even if directory
+			if (!file.isFile() && recursive == true) {
+				//must be a directory
+				//recursive call!
+				List<File> deeperList = getFileListingNoSort(file, recursive);
+				result.addAll(deeperList);
+			}
+		}
+		return result;
+	}
+	
+	private static boolean checkExtensions (String[] fileExtensions, File file) {
+		List <String> extensions = Arrays.asList(fileExtensions);
+		String ext = FilenameUtils.getExtension(file.getName());
+		boolean extThere = false;
+		for (int i = 0; i < extensions.size(); i++) {
+			if (ext.equalsIgnoreCase(extensions.get(i))) {
+				extThere = true;
+			}
+		}
+		return extThere;
+	}
 	
 	/**
 	 * Returns the system temp dir.

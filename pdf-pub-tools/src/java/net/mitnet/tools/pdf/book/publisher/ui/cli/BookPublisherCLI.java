@@ -129,8 +129,10 @@ public class BookPublisherCLI {
 		// Rectangle pageSize = PageSize.LETTER;
 		if (commandLineHelper.hasOption(CliConstants.OPTION_PAGE_SIZE)) {
 			String pageSizeString = commandLineHelper.getOptionValue(CliConstants.OPTION_PAGE_SIZE);
+			System.out.println("Page Size Option Detected: " + pageSizeString);
 			if (!StringUtils.isEmpty(pageSizeString)) {
 				if (CliConstants.PAGE_SIZE_US_LETTER_STRING.equalsIgnoreCase(pageSizeString)) {
+					System.out.println("Setting Page Size to Letter");
 					pageSize = PageSize.LETTER;
 				}
 			}

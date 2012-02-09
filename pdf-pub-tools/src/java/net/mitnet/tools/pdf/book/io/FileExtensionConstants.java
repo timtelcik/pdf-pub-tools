@@ -34,6 +34,9 @@ public class FileExtensionConstants {
 	
 	public static final String OPEN_DOC_PRESENTATION_EXTENSION_NAME = "odp";
 	public static final String OPEN_DOC_PRESENTATION_EXTENSION = FILE_EXTENSION_SEP + OPEN_DOC_PRESENTATION_EXTENSION_NAME;
+
+	public static final String OPEN_DOC_FLAT_PRESENTATION_EXTENSION_NAME = "fodp";
+	public static final String OPEN_DOC_FLAT_PRESENTATION_EXTENSION = FILE_EXTENSION_SEP + OPEN_DOC_FLAT_PRESENTATION_EXTENSION_NAME;
 	
 	public static final String OPEN_DOC_SPREADSHEET_EXTENSION_NAME = "ods";
 	public static final String OPEN_DOC_SPREADSHEET_EXTENSION = FILE_EXTENSION_SEP + OPEN_DOC_SPREADSHEET_EXTENSION_NAME;
@@ -54,6 +57,8 @@ public class FileExtensionConstants {
 		FileExtensionConstants.OPEN_DOC_GRAPHICS_EXTENSION_NAME,
 		FileExtensionConstants.PDF_EXTENSION_NAME,
 		FileExtensionConstants.PLAIN_TEXT_EXTENSION_NAME,
+		FileExtensionConstants.OPEN_DOC_FLAT_PRESENTATION_EXTENSION_NAME,
 	};
 
 }
+

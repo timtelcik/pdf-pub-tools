@@ -87,14 +87,14 @@ public class FileHelper {
 	 * @return List<File>
 	 */
 	public static List<File> findFilesByExtensions( File startDir, String[] fileExtensions, boolean recursive ) {
-		//Collection<File> fileCollection = FileUtils.listFiles( startDir, fileExtensions, recursive );
+		//List<File> fileCollection = (List<File>) FileUtils.listFiles( startDir, fileExtensions, recursive );
 		// Below algorithm is necessary to ensure proper file order 
 		// on all operating systems. 
 		List<File> fileCollection = getFileListingNoSort(startDir, recursive);
 		Collections.sort(fileCollection);
 		
 		// System.out.println("fileCollection: " + fileCollection);
-		List<File> fileList = new ArrayList<File>(fileCollection);
+		List<File> fileList = new ArrayList<File>();
 		for (File file : fileCollection) {
 			if (checkExtensions(fileExtensions, file)) {
 				fileList.add(file);

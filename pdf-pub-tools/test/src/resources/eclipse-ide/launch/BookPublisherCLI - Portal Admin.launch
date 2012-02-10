@@ -8,6 +8,6 @@
 <listEntry value="1"/>
 </listAttribute>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="net.mitnet.tools.pdf.book.publisher.ui.cli.BookPublisherCLI"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-v -indir /Users/tim.telcik/spool/test/pdf-pub-tools/docs/source/odt -outdir /Users/tim.telcik/spool/test/pdf-pub-tools/docs/output/pdf -outbook /Users/tim.telcik/spool/test/pdf-pub-tools/output-book.pdf"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-v -indir /home/rsezov/temp/61training-r1/02-portal-admin -outdir /home/rsezov/temp/portal-admin -outbook /home/rsezov/temp/portal-admin-book.pdf -ps LETTER"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="pdf-pub-tools"/>
 </launchConfiguration>

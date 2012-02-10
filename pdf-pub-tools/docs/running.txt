@@ -1,0 +1,4 @@
+./run-book-publisher-cli.sh -v -indir /home/rsezov/temp/training-r4/03-portal-dev -outdir /home/rsezov/temp/training-r4/dev-test -outbook /home/rsezov/temp/training-r4/output-book.pdf -ps LETTER
+
+
+soffice "-accept=socket,host=127.0.0.1,port=8100,tcpNoDelay=1;urp;" -headless -nodefault -nofirststartwizard -nolockcheck -nologo -norestore

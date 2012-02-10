@@ -91,6 +91,9 @@
 		<copy todir="${resources.build.dir}">
 			<fileset dir="${resources.src.dir}" />
   		</copy>
+		<copy todir="${build.dir}/META-INF">
+			<fileset file="MANIFEST.MF"/>
+		</copy>
 	</target>
 
 	<target name="dist-x" depends="compile" description="generate the distribution">
@@ -100,7 +103,8 @@
 
 	<target name="dist" depends="deploy" description="Build the distribution">
 		<mkdir dir="${dist.dir}" />
-		<jar jarfile="${dist.dir}/lib/${ant.project.name}-${DSTAMP}.jar" basedir="${build.dir}" />
+		<!-- <jar jarfile="${dist.dir}/lib/${ant.project.name}-${DSTAMP}.jar" basedir="${build.dir}" /> -->
+		<zip destfile="${dist.dir}/lib/${ant.project.name}-${DSTAMP}.jar" basedir="${build.dir}" />
 		<zip destfile="${dist.dir}/${ant.project.name}-${DSTAMP}.zip">
 			<zipfileset dir="${bin.deploy.dir}/" prefix="bin" filemode="755" />
 			<zipfileset dir="${lib.deploy.dir}/" prefix="lib" />

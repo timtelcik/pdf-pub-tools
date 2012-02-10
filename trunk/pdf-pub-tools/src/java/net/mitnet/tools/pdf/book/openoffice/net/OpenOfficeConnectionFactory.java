@@ -17,8 +17,8 @@
 
 package net.mitnet.tools.pdf.book.openoffice.net;
 
-import com.artofsolving.jodconverter.openoffice.connection.OpenOfficeConnection;
-import com.artofsolving.jodconverter.openoffice.connection.SocketOpenOfficeConnection;
+//import com.artofsolving.jodconverter.openoffice.connection.OpenOfficeConnection;
+//import com.artofsolving.jodconverter.openoffice.connection.SocketOpenOfficeConnection;
 
 
 /**
@@ -30,6 +30,7 @@ import com.artofsolving.jodconverter.openoffice.connection.SocketOpenOfficeConne
  */
 public class OpenOfficeConnectionFactory {
 
+	/*
 	public static OpenOfficeConnection createConnection( OpenOfficeServerContext serverContext ) {
 		OpenOfficeConnection connection = new SocketOpenOfficeConnection( serverContext.getHost(), serverContext.getPort() );
 		return connection;
@@ -44,5 +45,6 @@ public class OpenOfficeConnectionFactory {
 		OpenOfficeConnection connection = new SocketOpenOfficeConnection( host, port );
 		return connection;
 	}
+	*/
 
 }

@@ -40,7 +40,6 @@ import org.apache.commons.cli.PosixParser;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 
-import com.artofsolving.jodconverter.openoffice.connection.SocketOpenOfficeConnection;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Rectangle;
 
@@ -111,13 +110,15 @@ public class BookPublisherCLI {
 		
 		OpenOfficeServerContext serverContext = new OpenOfficeServerContext();
 
-		String openOfficeHost = SocketOpenOfficeConnection.DEFAULT_HOST;
+		//String openOfficeHost = SocketOpenOfficeConnection.DEFAULT_HOST;
+		String openOfficeHost = "localhost";
 		if (commandLineHelper.hasOption(CliConstants.OPTION_OPEN_OFFICE_HOST)) {
 			openOfficeHost = commandLineHelper.getOptionValue(CliConstants.OPTION_OPEN_OFFICE_HOST);
 			serverContext.setHost(openOfficeHost);
 		}
 
-		int openOfficePort = SocketOpenOfficeConnection.DEFAULT_PORT;
+		//int openOfficePort = SocketOpenOfficeConnection.DEFAULT_PORT;
+		int openOfficePort = 8100;
 		if (commandLineHelper.hasOption(CliConstants.OPTION_OPEN_OFFICE_PORT)) {
 			openOfficePort = commandLineHelper.getOptionValueAsInt(CliConstants.OPTION_OPEN_OFFICE_PORT);
 			serverContext.setPort(openOfficePort);

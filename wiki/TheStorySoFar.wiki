@@ -6,6 +6,6 @@ The PDF book publisher tool suite contains a number of tools, one of which ... t
 
 The translation is handled by running [http://www.openoffice.org/ Open Office] or [http://www.libreoffice.org/ Libre Office] in "server mode" and uploading each file to the Open Office server using the [http://www.artofsolving.com/opensource/jodconverter/ JOD Converter API].
 
-The Book Publisher also assembles the PDF docs into a 2-up PDF booklet using iText with page number. See See http://itextpdf.com/
+The Book Publisher also assembles the PDF docs into a 2-up PDF booklet using [http://itextpdf.com/ iText] with page numbers.
 
 There are many outstanding [TODO] items.

@@ -29,9 +29,6 @@ This page contains a non-exhaustive list of TODO items.
 
   * Add PDF Bookmarks to PDF book file. See [http://api.itextpdf.com/com/itextpdf/text/pdf/SimpleBookmark.html iText Simple Bookmark helper class].
 
-== Review Performance ==
-
-
 
 == Release 1.x ==
 

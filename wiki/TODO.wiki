@@ -3,21 +3,30 @@
 
 = TODO =
 
+
 This page contains a non-exhaustive list of TODO items.
 
-= TODO Release 1 =
 
-== Book Publisher ==
+== Release 1.0 ==
 
-=== Build TOC Page ===
+( Complete.
+
+* Includes upgrade from JODReports 2.x to JODReports 3.x
+
+
+== Release 1.1 ==
+
+=== Book Publisher ===
+
+==== Build TOC Page ====
 
   * Revise Table of Contents (TOC) template document (toc-template.odt).
 
-=== Defaults ===
+==== Defaults ====
 
   * Default paper size according to Locale (eg. A4, LETTER).
 
-=== Add PDF Bookmarks ===
+==== Add PDF Bookmarks ====
 
   * Add PDF Bookmarks to PDF book file. See iText Simple Bookmark helper class http://api.itextpdf.com/com/itextpdf/text/pdf/SimpleBookmark.html
 
@@ -25,11 +34,9 @@ This page contains a non-exhaustive list of TODO items.
 
   * Review performance for processing large doc sets (i.e. memory usage. thread count).
 
-= TODO Release 2 =
+== Release 1.x ==
 
-== General ==
-
-* Upgrade from JODReports 2.x to JODReports 3.x
+=== General ===
 
 * Review performance (eg. threading).
 
@@ -41,9 +48,9 @@ This page contains a non-exhaustive list of TODO items.
 
 * Convert project to Maven 2 POM.
 
-== Book Publisher ==
+=== Book Publisher ===
 
-=== TOC XML Configuration File ===
+==== TOC XML Configuration File ====
 
 Use a TOC XML config file to provide grouping of TOC entries and provide default meta-data (eg. title).
 
@@ -81,13 +88,14 @@ eg.
   * Update TOC model objects with details collected during pdf assembly.
   * Assume TOC template file path differs from PDF or ODT slide file path ?
 
-=== PDF Edit Meta ===
+==== PDF Edit Meta ====
+
 (using iText)
   * Read source PDF
   * Create new PDF doc, add content bytes from source PDF, update meta title, subject etc.
   * Write new PDF doc
 
-=== PDF Bookmarks ===
+==== PDF Bookmarks ====
 
   * Create PDF with bookmarks
   * Add “open bookmarks” flag/status to PDF so the bookmarks view opens automatically when Acrobat opens PDF.

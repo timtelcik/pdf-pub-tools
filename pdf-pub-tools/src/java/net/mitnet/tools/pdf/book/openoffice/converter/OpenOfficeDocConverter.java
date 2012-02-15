@@ -32,10 +32,10 @@ import net.mitnet.tools.pdf.book.util.ProgressMonitor;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
-import org.artofsolving.jodconverter.OfficeDocumentConverter;
-import org.artofsolving.jodconverter.office.DefaultOfficeManagerConfiguration;
-import org.artofsolving.jodconverter.office.OfficeManager;
 
+import com.artofsolving.jodconverter.DocumentConverter;
+import com.artofsolving.jodconverter.openoffice.connection.OpenOfficeConnection;
+import com.artofsolving.jodconverter.openoffice.converter.OpenOfficeDocumentConverter;
 
 
 /**
@@ -134,21 +134,13 @@ public class OpenOfficeDocConverter {
 			verbose("connecting to OpenOffice server " + this.serverContext);
 		}
 		
-		
-		//jodconverter 3.x
-		OfficeManager officeManager = new DefaultOfficeManagerConfiguration().setPortNumber(8100).buildOfficeManager();
-	    officeManager.start();
-		
-	    //OpenOfficeConnection connection = openConnection(serverContext);
-		//if (isDebugEnabled()) {
-		//	verbose("connection is " + connection );
-		//} 
-		
+		OpenOfficeConnection connection = openConnection(serverContext);
+		if (isDebugEnabled()) {
+			verbose("connection is " + connection );
+		}
 
 		try {
-			//DocumentConverter converter = new OpenOfficeDocumentConverter(connection);
-			//jodconverter 3.x
-			OfficeDocumentConverter converter = new OfficeDocumentConverter (officeManager);
+			DocumentConverter converter = new OpenOfficeDocumentConverter(connection);
 			if (isDebugEnabled()) {
 				verbose("converter is " + converter );
 			}
@@ -192,8 +184,7 @@ public class OpenOfficeDocConverter {
 			if (isDebugEnabled()) {
 				verbose("disconnecting");
 			}
-			//connection.disconnect();
-			officeManager.stop();
+			connection.disconnect();
 		}
 	}
 	
@@ -204,7 +195,7 @@ public class OpenOfficeDocConverter {
 		convertDocuments( sourceDir, sourceFiles, outputDir, outputFormat );
 	}
 	
-	private void convertDocument( OfficeDocumentConverter converter, File inputFile, File outputFile  ) throws IOException {
+	private void convertDocument( DocumentConverter converter, File inputFile, File outputFile  ) throws IOException {
 
 		String inputFileExtension = FilenameUtils.getExtension(inputFile.getName());
 		String outputFileExtension = FilenameUtils.getExtension(outputFile.getName());
@@ -231,7 +222,6 @@ public class OpenOfficeDocConverter {
 		}
 	}
 	
-	/*
 	private OpenOfficeConnection openConnection( OpenOfficeServerContext serverContext ) throws Exception {
 
 		OpenOfficeConnection connection = OpenOfficeConnectionFactory.createConnection(serverContext);
@@ -249,7 +239,6 @@ public class OpenOfficeDocConverter {
 		
 		return connection;
 	}
-	*/
 	
 	private void verbose( String msg ) {
 		if (isVerboseEnabled()) {

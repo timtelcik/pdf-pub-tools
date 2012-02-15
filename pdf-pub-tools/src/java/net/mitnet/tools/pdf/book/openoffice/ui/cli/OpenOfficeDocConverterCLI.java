@@ -31,9 +31,9 @@ import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.PosixParser;
-import org.artofsolving.jodconverter.office.DefaultOfficeManagerConfiguration;
-import org.artofsolving.jodconverter.office.OfficeManager;
 
+import com.artofsolving.jodconverter.openoffice.connection.OpenOfficeConnection;
+import com.artofsolving.jodconverter.openoffice.connection.SocketOpenOfficeConnection;
 
 
 /**
@@ -86,12 +86,12 @@ public class OpenOfficeDocConverterCLI {
 		}
 		File outputDir = commandLineHelper.getOptionValueAsFile(CliConstants.OPTION_OUTPUT_DIR);
 
-		int openOfficePort = 8100;
+		int openOfficePort = SocketOpenOfficeConnection.DEFAULT_PORT;
 		if (commandLineHelper.hasOption(CliConstants.OPTION_OPEN_OFFICE_PORT)) {
 			openOfficePort = commandLineHelper.getOptionValueAsInt(CliConstants.OPTION_OPEN_OFFICE_PORT);
 		}
 
-		String openOfficeHost = "localhost";
+		String openOfficeHost = SocketOpenOfficeConnection.DEFAULT_HOST;
 		if (commandLineHelper.hasOption(CliConstants.OPTION_OPEN_OFFICE_HOST)) {
 			openOfficeHost = commandLineHelper.getOptionValue(CliConstants.OPTION_OPEN_OFFICE_HOST);
 		}
@@ -106,18 +106,14 @@ public class OpenOfficeDocConverterCLI {
 			verbose = true;
 		}
 
-		//OpenOfficeConnection connection = new SocketOpenOfficeConnection(openOfficeHost, openOfficePort);
-		OfficeManager officeManager = new DefaultOfficeManagerConfiguration().setPortNumber(8100).buildOfficeManager();
-	    
-	    
+		OpenOfficeConnection connection = new SocketOpenOfficeConnection(openOfficeHost, openOfficePort);
 		try {
 			if (verbose) {
 				System.out.println("-- connecting to OpenOffice.org host "
 						+ openOfficeHost + " on port " + openOfficePort);
 			}
-			//connection.connect();
-			officeManager.start();
-		} catch (Exception ce) {
+			connection.connect();
+		} catch (ConnectException ce) {
 			ce.printStackTrace(System.err);
 			System.err.println(ce.getMessage());
 			String msg = "ERROR: connection failed. Please make sure OpenOffice.org is running on host " 
@@ -143,8 +139,7 @@ public class OpenOfficeDocConverterCLI {
 			if (verbose) {
 				System.out.println("-- disconnecting");
 			}
-			//connection.disconnect();
-			officeManager.stop();
+			connection.disconnect();
 			System.out.println( "Finished converting files.");
 		}
 	}

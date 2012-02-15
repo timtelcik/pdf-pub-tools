@@ -2,7 +2,7 @@
 <launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
 <stringAttribute key="bad_container_name" value="/pdf-pub-tools/pdf-pub-tools/test/src"/>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-<listEntry value="/pdf-pub-tools/src/java/net/mitnet/tools/pdf/book/publisher/ui/cli/BookPublisherCLI.java"/>
+<listEntry value="/pdf-pub-tools/src/net/mitnet/tools/pdf/book/publisher/ui/cli/BookPublisherCLI.java"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
 <listEntry value="1"/>

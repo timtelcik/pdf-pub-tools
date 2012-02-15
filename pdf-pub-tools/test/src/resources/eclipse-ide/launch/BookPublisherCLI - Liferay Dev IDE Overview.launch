@@ -2,12 +2,12 @@
 <launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
 <stringAttribute key="bad_container_name" value="/pdf-pub-tools/pdf-pub-tools/test/src"/>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-<listEntry value="/pdf-pub-tools/src/java/net/mitnet/tools/pdf/book/publisher/ui/cli/BookPublisherCLI.java"/>
+<listEntry value="/pdf-pub-tools/src/net/mitnet/tools/pdf/book/publisher/ui/cli/BookPublisherCLI.java"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
 <listEntry value="1"/>
 </listAttribute>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="net.mitnet.tools.pdf.book.publisher.ui.cli.BookPublisherCLI"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-v -indir /home/rsezov/temp/training-r4/03-portal-dev -outdir /home/rsezov/temp/training-r4/dev-course -outbook /home/rsezov/temp/training-r4/portal-dev-book.pdf -ps LETTER"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-v -indir /Users/tim.telcik/spool/test2/docs -outdir /Users/tim.telcik/spool/test2/out -outbook /Users/tim.telcik/spool/test2/output-book.pdf"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="pdf-pub-tools"/>
 </launchConfiguration>

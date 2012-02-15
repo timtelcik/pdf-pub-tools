@@ -1,0 +1,22 @@
+= PDF Publishing Tools - TODO =
+ 
+Created: 20-Nov-2010, Tim Telcik <tim.telcik@permeance.com.au>
+Modified: 30-Nov-2010, Tim Telcik <tim.telcik@permeance.com.au>
+Modified: 1-Mar-2011, Tim Telcik <telcik@gmail.com>
+Modified: 20-Jul-2011, Tim Telcik <telcik@gmail.com>
+Modified: 27-Jul-2011, Tim Telcik <telcik@gmail.com>
+ 
+ 
+== TODO ==
+ 
+* Upgrade from JODReports 2.x to JODReports 3.x
+
+* Update BookPublisher
+** Generate PDF bookmarks in output PDF file using TOC data
+ 
+* Review performance (eg. threading).
+
+* Revise verbose and debug logging. Use log4j ?
+
+* Review GPL v3 license model
+

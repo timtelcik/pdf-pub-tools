@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
+<stringAttribute key="bad_container_name" value="/pdf-pub-tools/pdf-pub-tools/test/src"/>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
+<listEntry value="/pdf-pub-tools/src/java/net/mitnet/tools/pdf/book/publisher/ui/cli/BookPublisherCLI.java"/>
+</listAttribute>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
+<listEntry value="1"/>
+</listAttribute>
+<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="net.mitnet.tools.pdf.book.publisher.ui.cli.BookPublisherCLI"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-v -indir &quot;/Users/tim.telcik/spool/test/6.0ee-sp1-dev/slides/input&quot; -outdir &quot;/Users/tim.telcik/spool/test/6.0ee-sp1-dev/slides/output/pdf&quot; -outbook &quot;/Users/tim.telcik/spool/test/6.0ee-sp1-dev/slides/output/dev-training-book.pdf&quot;"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="pdf-pub-tools"/>
+</launchConfiguration>

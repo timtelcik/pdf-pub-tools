@@ -1,3 +1,6 @@
+<?xml version="1.0"?>
+<!DOCTYPE project>
+
 <!--
     Copyright (C) 2010-2011  Tim Telcik <telcik@gmail.com>
 
@@ -29,6 +32,7 @@
 	<property name="bin.src.dir" location="${src.dir}/bin" />
 	<property name="fonts.src.dir" location="${resources.src.dir}/fonts" />
 	<property name="java.src.dir" location="${src.dir}/java" />
+	<property name="metainf.src.dir" location="${java.src.dir}/META-INF" />
 	<property name="reports.src.dir" location="${resources.src.dir}/reports" />
 	<property name="resources.src.dir" location="${src.dir}/resources" />
 	<property name="build.dir" location="${basedir}/build" />
@@ -92,7 +96,7 @@
 			<fileset dir="${resources.src.dir}" />
   		</copy>
 		<copy todir="${build.dir}/META-INF">
-			<fileset file="MANIFEST.MF"/>
+			<fileset file="${metainf.src.dir}/MANIFEST.MF"/>
 		</copy>
 	</target>
 
@@ -104,7 +108,7 @@
 	<target name="dist" depends="deploy" description="Build the distribution">
 		<mkdir dir="${dist.dir}" />
 		<!-- <jar jarfile="${dist.dir}/lib/${ant.project.name}-${DSTAMP}.jar" basedir="${build.dir}" /> -->
-		<zip destfile="${dist.dir}/lib/${ant.project.name}-${DSTAMP}.jar" basedir="${build.dir}" />
+		<!-- <zip destfile="${dist.dir}/lib/${ant.project.name}-${DSTAMP}.zip" basedir="${build.dir}" /> -->
 		<zip destfile="${dist.dir}/${ant.project.name}-${DSTAMP}.zip">
 			<zipfileset dir="${bin.deploy.dir}/" prefix="bin" filemode="755" />
 			<zipfileset dir="${lib.deploy.dir}/" prefix="lib" />

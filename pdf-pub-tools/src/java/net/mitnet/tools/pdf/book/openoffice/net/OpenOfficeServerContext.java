@@ -18,8 +18,6 @@
 package net.mitnet.tools.pdf.book.openoffice.net;
 
 
-
-
 /**
  * Open Office Server Context.
  * 

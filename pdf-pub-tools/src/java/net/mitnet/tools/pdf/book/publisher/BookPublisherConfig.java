@@ -17,6 +17,8 @@
 
 package net.mitnet.tools.pdf.book.publisher;
 
+import java.io.File;
+
 import net.mitnet.tools.pdf.book.conf.BaseConfig;
 import net.mitnet.tools.pdf.book.openoffice.net.OpenOfficeServerContext;
 
@@ -33,6 +35,10 @@ public class BookPublisherConfig extends BaseConfig {
 
 	private OpenOfficeServerContext serverContext = new OpenOfficeServerContext();
 	private String tocTemplatePath = null;
+	
+	private File sourceDir = null;
+	private File outputDir = null;
+	private File outputBookFile = null;
 	
 	
 	public BookPublisherConfig() {	
@@ -52,6 +58,30 @@ public class BookPublisherConfig extends BaseConfig {
 	
 	public OpenOfficeServerContext getServerContext() {
 		return serverContext;
+	}
+
+	public File getSourceDir() {
+		return sourceDir;
+	}
+
+	public void setSourceDir(File sourceDir) {
+		this.sourceDir = sourceDir;
+	}
+
+	public File getOutputDir() {
+		return outputDir;
+	}
+
+	public void setOutputDir(File outputDir) {
+		this.outputDir = outputDir;
+	}
+
+	public File getOutputBookFile() {
+		return outputBookFile;
+	}
+
+	public void setOutputBookFile(File outputBookFile) {
+		this.outputBookFile = outputBookFile;
 	}
 
 }

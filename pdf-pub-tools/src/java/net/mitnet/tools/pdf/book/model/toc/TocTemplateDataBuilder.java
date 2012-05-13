@@ -53,31 +53,34 @@ public class TocTemplateDataBuilder {
 	
 	public static Map buildTocTemplateData( Toc toc ) throws IOException, DocumentTemplateException {
 
-		Map dataMap = new HashMap();
+		Map templateDataMap = new HashMap();
 		
-		Map tocMap = new HashMap();
-		dataMap.put(KEY_TOC, tocMap);
-		
-		List sectionList = new ArrayList();
-		tocMap.put(KEY_SECTION, sectionList);
-		
-		Iterator<TocRow> tocRowIter = toc.rowIterator();
-		
-		while (tocRowIter.hasNext()) {
-			TocRow tocRow = tocRowIter.next();
-			Map tocRowMap = createTocSectionData( tocRow );
-			sectionList.add( tocRowMap );
+		if (toc != null) {
+			
+			Map tocMap = new HashMap();
+			templateDataMap.put(KEY_TOC, tocMap);
+			
+			List sectionList = new ArrayList();
+			tocMap.put(KEY_SECTION, sectionList);
+			
+			Iterator<TocRow> tocRowIter = toc.rowIterator();
+			
+			while (tocRowIter.hasNext()) {
+				TocRow tocRow = tocRowIter.next();
+				Map tocRowMap = buildTocSectionData( tocRow );
+				sectionList.add( tocRowMap );
+			}
 		}
 		
-		return dataMap;
+		return templateDataMap;
 	}
 	
-	public static Map createTocSectionData( TocRow tocRow ) {
-		Map tocRowMap = createTocSectionData( tocRow.getTitle(), tocRow.getPageNumber() );
+	public static Map buildTocSectionData( TocRow tocRow ) {
+		Map tocRowMap = buildTocSectionData( tocRow.getTitle(), tocRow.getPageNumber() );
 		return tocRowMap;
 	}
 	
-	public static Map createTocSectionData( String title, int pageNumber ) {
+	public static Map buildTocSectionData( String title, int pageNumber ) {
 		Map tocRowMap = new HashMap();
 		tocRowMap.put(KEY_SECTION_TITLE,title);
 		tocRowMap.put(KEY_SECTION_PAGE_NUMBER, new Integer(pageNumber));

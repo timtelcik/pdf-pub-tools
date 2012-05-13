@@ -65,6 +65,9 @@ public class BookPublisherCLI {
 
 	private static final Options OPTIONS = initOptions();
 	
+	// private static BookPublisherConfig config = new BookPublisherConfig();
+	
+	
 	private static Options initOptions() {
 		Options options = new Options();
 		options.addOption(CliConstants.OPTION_SOURCE_DIR);
@@ -81,11 +84,13 @@ public class BookPublisherCLI {
 		return options;
 	}
 
-	public static void main(String[] arguments) throws Exception {
+	private static BookPublisherConfig parseConfig( String[] arguments ) throws Exception {
 
 		CommandLineParser commandLineParser = new PosixParser();
 		CommandLine commandLine = commandLineParser.parse(OPTIONS, arguments);
 		CommandLineHelper commandLineHelper = new CommandLineHelper( commandLine );
+		
+		BookPublisherConfig config = new BookPublisherConfig();
 		
 		if (!commandLineHelper.hasOption(CliConstants.OPTION_SOURCE_DIR)) {
 			System.err.println("Must specify " + CliConstants.OPTION_SOURCE_DIR.getDescription());
@@ -93,6 +98,7 @@ public class BookPublisherCLI {
 			System.exit(CliConstants.EXIT_CODE_ERROR);
 		}
 		File sourceDir = commandLineHelper.getOptionValueAsFile(CliConstants.OPTION_SOURCE_DIR);
+		config.setSourceDir(sourceDir);
 		
 		if (!commandLineHelper.hasOption(CliConstants.OPTION_OUTPUT_DIR)) {
 			System.err.println("Must specify " + CliConstants.OPTION_OUTPUT_DIR.getDescription());
@@ -100,6 +106,7 @@ public class BookPublisherCLI {
 			System.exit(CliConstants.EXIT_CODE_ERROR);
 		}
 		File outputDir = commandLineHelper.getOptionValueAsFile(CliConstants.OPTION_OUTPUT_DIR);
+		config.setOutputDir(outputDir);
 
 		if (!commandLineHelper.hasOption(CliConstants.OPTION_OUTPUT_BOOK_FILE)) {
 			System.err.println("Must specify " + CliConstants.OPTION_OUTPUT_BOOK_FILE.getDescription());
@@ -107,18 +114,18 @@ public class BookPublisherCLI {
 			System.exit(CliConstants.EXIT_CODE_ERROR);
 		}
 		File outputBookFile = commandLineHelper.getOptionValueAsFile(CliConstants.OPTION_OUTPUT_BOOK_FILE);
+		config.setOutputBookFile(outputBookFile);
 		
 		OpenOfficeServerContext serverContext = new OpenOfficeServerContext();
+		config.setServerContext(serverContext);
 
-		//String openOfficeHost = SocketOpenOfficeConnection.DEFAULT_HOST;
-		String openOfficeHost = "localhost";
+		String openOfficeHost = OpenOfficeServerContext.DEFAULT_HOST;
 		if (commandLineHelper.hasOption(CliConstants.OPTION_OPEN_OFFICE_HOST)) {
 			openOfficeHost = commandLineHelper.getOptionValue(CliConstants.OPTION_OPEN_OFFICE_HOST);
 			serverContext.setHost(openOfficeHost);
 		}
 
-		//int openOfficePort = SocketOpenOfficeConnection.DEFAULT_PORT;
-		int openOfficePort = 8100;
+		int openOfficePort = OpenOfficeServerContext.DEFAULT_PORT;
 		if (commandLineHelper.hasOption(CliConstants.OPTION_OPEN_OFFICE_PORT)) {
 			openOfficePort = commandLineHelper.getOptionValueAsInt(CliConstants.OPTION_OPEN_OFFICE_PORT);
 			serverContext.setPort(openOfficePort);
@@ -138,20 +145,26 @@ public class BookPublisherCLI {
 				}
 			}
 		}
+		config.setPageSize(pageSize);
 
 		boolean debugEnabled = false;
 		if (commandLineHelper.hasOption(CliConstants.OPTION_DEBUG)) {
 			debugEnabled = true;
 		}
+		config.setDebugEnabled(debugEnabled);
 		
 		boolean verboseEnabled = false;
 		if (commandLineHelper.hasOption(CliConstants.OPTION_VERBOSE)) {
 			verboseEnabled = true;
 		}
+		config.setVerboseEnabled(verboseEnabled);
 		
 		File tocTemplatePath = null;
 		if (commandLineHelper.hasOption(CliConstants.OPTION_TOC_TEMPLATE_PATH)) {
 			tocTemplatePath = commandLineHelper.getOptionValueAsFile(CliConstants.OPTION_TOC_TEMPLATE_PATH);
+			if (tocTemplatePath != null) {
+				config.setTocTemplatePath(tocTemplatePath.getCanonicalPath());
+			}
 		}
 		
 		String metaTitle = FilenameUtils.getBaseName( outputBookFile.getName() );
@@ -161,59 +174,56 @@ public class BookPublisherCLI {
 		if (commandLineHelper.hasOption(CliConstants.OPTION_META_TITLE)) {
 			metaTitle = commandLineHelper.getOptionValue(CliConstants.OPTION_META_TITLE);
 		}
+		config.setMetaTitle(metaTitle);
 		
 		String metaAuthor = System.getProperty( "user.name" );
 		if (commandLineHelper.hasOption(CliConstants.OPTION_META_AUTHOR)) {
 			metaAuthor = commandLineHelper.getOptionValue(CliConstants.OPTION_META_AUTHOR);
 		}
-
+		config.setMetaAuthor(metaAuthor);
+		
+		if (verboseEnabled) {
+			ProgressMonitor progressMonitor = new ConsoleProgressMonitor();
+			config.setProgressMonitor(progressMonitor);
+		}
+		
+		return config;
+	}
+		
+		
+	public static void main(String[] arguments) throws Exception {
+		
+		BookPublisherConfig config = new BookPublisherConfig();			
+		
 		try {
 
-			if (verboseEnabled) {
-				verbose( "Source dir is \"" + sourceDir + "\"" );
-				verbose( "Output dir is \"" + outputDir + "\"" );
-				verbose( "Output file is \"" + outputBookFile + "\"" );
-				verbose( "Page size is " + pageSize );
-				if (tocTemplatePath != null) {
-					verbose( "-- TOC template path is \"" + tocTemplatePath + "\"" );
+			if (config.isVerboseEnabled()) {
+				verbose( "Source dir is \"" + config.getSourceDir() + "\"" );
+				verbose( "Output dir is \"" + config.getOutputDir() + "\"" );
+				verbose( "Output file is \"" + config.getOutputBookFile() + "\"" );
+				verbose( "Page size is " + config.getPageSize() );
+				if (config.getTocTemplatePath() != null) {
+					verbose( "-- TOC template path is \"" + config.getTocTemplatePath() + "\"" );
 				}
 			}
 			
-			System.out.println( "Publishing PDF book \"" + outputBookFile + "\" from files in source folder \"" + sourceDir + "\" ..." );
-
-			BookPublisherConfig config = new BookPublisherConfig();
-			
-			if (verboseEnabled) {
-				ProgressMonitor progressMonitor = new ConsoleProgressMonitor();
-				config.setProgressMonitor(progressMonitor);
-			}
-			
-			config.setMetaTitle(metaTitle);
-			config.setMetaAuthor(metaAuthor);
-			config.setDebugEnabled(debugEnabled);
-			config.setVerboseEnabled(verboseEnabled);
-			config.setPageSize(pageSize);
-			config.setServerContext(serverContext);
-			if (tocTemplatePath != null) {
-				config.setTocTemplatePath(tocTemplatePath.getCanonicalPath());
-			}
+			debug( "Publishing PDF book \"" + config.getOutputBookFile() + "\" from files in source folder \"" + config.getSourceDir() + "\" ..." );
 			
 			BookPublisher bookPublisher = new BookPublisher();
-			bookPublisher.setConfig(config);
-			bookPublisher.publish( sourceDir, outputDir, outputBookFile );
+			bookPublisher.setConfig( config );
+			bookPublisher.publish( config.getSourceDir(), config.getOutputDir(), config.getOutputBookFile() );
 
 		} catch (Exception e) {
-			e.printStackTrace(System.err);
-			String msg = "Error publishing book \"" + outputBookFile + "\" : " + e.getMessage();
-			System.err.println( msg );
+			String msg = "Error publishing book \"" + config.getOutputBookFile() + "\" : " + e.getMessage();
+			error( msg, e );
 			throw new Exception( msg, e );
 		}
 		
-		System.out.println( "Finished publishing book \"" + outputBookFile + "\"." );
+		System.out.println( "Finished publishing book \"" + config.getOutputBookFile() + "\"." );
 	}
 
 	private static void showHelp() {
-		// TODO - fix args
+		// TODO - show all args
 		String syntax = BookPublisherCLI.class.getName()
 				+ " [options] -indir <input-dir> -ooutdir <output-dir> [-of <output-file>] [-p <page-size>] \n";
 		HelpFormatter helpFormatter = new HelpFormatter();
@@ -227,6 +237,19 @@ public class BookPublisherCLI {
 	
 	private static void debug( String msg ) {
 		System.out.println( "-- " + msg );
+	}
+	
+	private static void error( String msg ) {
+		System.err.println( "-- " + msg );
+	}
+	
+	private static void error( String msg, Exception exception ) {
+		System.err.println( "-- " + msg );
+		if (exception != null) {
+			System.err.println( exception );
+			exception.printStackTrace(System.err);
+		}
 	}	
 
 }
+

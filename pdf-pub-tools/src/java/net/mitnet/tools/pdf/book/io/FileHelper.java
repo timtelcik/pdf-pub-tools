@@ -18,10 +18,8 @@
 package net.mitnet.tools.pdf.book.io;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -87,9 +85,10 @@ public class FileHelper {
 	 * @return List<File>
 	 */
 	public static List<File> findFilesByExtensions( File startDir, String[] fileExtensions, boolean recursive ) {
-		//List<File> fileCollection = (List<File>) FileUtils.listFiles( startDir, fileExtensions, recursive );
-		// Below algorithm is necessary to ensure proper file order 
-		// on all operating systems. 
+		
+		// List<File> fileCollection = (List<File>) FileUtils.listFiles( startDir, fileExtensions, recursive );
+		
+		// Below algorithm is necessary to ensure proper file order on all operating systems. 
 		List<File> fileCollection = getFileListingNoSort(startDir, recursive);
 		Collections.sort(fileCollection);
 		
@@ -108,22 +107,22 @@ public class FileHelper {
 	/**
 	 * Get a list of all files/directories in a directory structure. 
 	 * Can optionally recurse into any number of nested directories. 
+	 * 
 	 * @param aStartingDir
 	 * @param recursive
 	 * @return List<File>
 	 */
 	private static List<File> getFileListingNoSort(
-			File aStartingDir, boolean recursive) {
+			File aStartingDir, boolean recursive) 
+	{
 		List<File> result = new ArrayList<File>();
 		File[] filesAndDirs = aStartingDir.listFiles();
 		List<File> filesDirs = Arrays.asList(filesAndDirs);
 		for (File file : filesDirs) {
-			result.add(file); //always add, even if directory
-			if (!file.isFile() && recursive == true) {
-				//must be a directory
-				//recursive call!
-				List<File> deeperList = getFileListingNoSort(file, recursive);
-				result.addAll(deeperList);
+			result.add(file); // always add, even if directory
+			if (file.isDirectory() && recursive) {
+				List<File> nestedList = getFileListingNoSort(file, recursive);
+				result.addAll(nestedList);
 			}
 		}
 		return result;
@@ -158,7 +157,7 @@ public class FileHelper {
 	 * For example,
 	 * if parentDir is "/home/users/nobody/spool/docs/input"
 	 * and file is "/home/users/nobody/spool/docs/input/a/b/c/test.odt"
-	 * the relative path will be "a/b/c"
+	 * the path to parent will be "a/b/c"
 	 * 
 	 * @param parentDir parent dir
 	 * @param file file relative to parent dir

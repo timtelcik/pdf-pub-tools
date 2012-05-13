@@ -59,6 +59,8 @@ import com.lowagie.text.Rectangle;
  * @see com.lowagie.toolbox.plugins.Handouts
  * @see com.lowagie.toolbox.plugins.NUp
  * @see BookPublisher
+ * 
+ * TODO - refactor GUI widget layout
  */
 public class BookPublisherGUI extends JFrame {
 	

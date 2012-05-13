@@ -38,10 +38,10 @@ import com.lowagie.text.pdf.SimpleBookmark;
  * @see http://api.itextpdf.com/itext/com/itextpdf/text/pdf/SimpleBookmark.html
  * @see http://api.itextpdf.com/itext/com/itextpdf/text/pdf/PdfStamper.html
  * @see http://api.itextpdf.com/itext/com/itextpdf/text/pdf/interfaces/PdfViewerPreferences.html
- * @see http://itextpdf.com/examples/iia.php?id=141
+ * @see http://itext-general.2136553.n4.nabble.com/simply-add-a-bookmark-at-the-root-of-new-PDF-for-each-concat-ed-document-td2140075.html 
  * @see http://itextpdf.com/examples/iia.php?id=139
  * @see http://itextpdf.com/examples/iia.php?id=140
- * @see http://itext-general.2136553.n4.nabble.com/simply-add-a-bookmark-at-the-root-of-new-PDF-for-each-concat-ed-document-td2140075.html
+ * @see http://itextpdf.com/examples/iia.php?id=141 
  * @see http://kuujinbo.info/cs/itext_toc.aspx
  * 
  * @author Tim Telcik <telcik@gmail.com>

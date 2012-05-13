@@ -21,12 +21,15 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import net.mitnet.tools.pdf.book.io.FileExtensionConstants;
 import net.mitnet.tools.pdf.book.io.FileHelper;
 import net.mitnet.tools.pdf.book.io.FileNameHelper;
 import net.mitnet.tools.pdf.book.model.toc.Toc;
+import net.mitnet.tools.pdf.book.model.toc.TocBookmarkListBuilder;
 import net.mitnet.tools.pdf.book.model.toc.TocBuilder;
 import net.mitnet.tools.pdf.book.model.toc.TocTemplateDataBuilder;
 import net.mitnet.tools.pdf.book.model.toc.TocTracer;
@@ -36,6 +39,7 @@ import net.mitnet.tools.pdf.book.openoffice.reports.OpenOfficeReportBuilder;
 import net.mitnet.tools.pdf.book.pdf.builder.PdfBookBuilder;
 import net.mitnet.tools.pdf.book.pdf.builder.PdfBookBuilderConfig;
 import net.mitnet.tools.pdf.book.pdf.event.PdfPageEventLogger;
+import net.mitnet.tools.pdf.book.pdf.util.PdfBookmarkBuilder;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
@@ -46,6 +50,7 @@ import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfCopyFields;
 import com.lowagie.text.pdf.PdfPageEvent;
 import com.lowagie.text.pdf.PdfReader;
+import com.lowagie.text.pdf.RandomAccessFileOrArray;
 import com.lowagie.text.pdf.SimpleBookmark;
 import com.lowagie.toolbox.plugins.HtmlBookmarks;
 import com.lowagie.toolbox.plugins.InspectPDF;
@@ -55,8 +60,7 @@ import com.lowagie.toolbox.plugins.XML2Bookmarks;
 /**
  * Book Publisher.
  * 
- * TODO: Review process to create NUP PDF books with TOC and embedded bookmarks
- * TODO: Refactor class variables into config class
+ * TODO: Review process to create NUP PDF books with TOC and embedded bookmarks.
  * 
  * @author Tim Telcik <telcik@gmail.com>
  * 
@@ -69,22 +73,30 @@ import com.lowagie.toolbox.plugins.XML2Bookmarks;
  */
 public class BookPublisher {
 	
+	private static final String PDF_FILE_PLUS_TOC_SUFFIX = "-plus-toc";
+	private static final String DEFAULT_TOC_FILE_NAME = "toc";
+	private static final String DEFAULT_BOOKMARK_FILE_NAME = "bookmark";
+	
 	private BookPublisherConfig config = new BookPublisherConfig();
+	
 	
 	public BookPublisher() {
 		getConfig().setServerContext(new OpenOfficeServerContext());
 		getConfig().setPageSize(PageSize.A4);
 	}
 	
+	
 	public BookPublisher( Rectangle pageSize ) {
 		getConfig().setServerContext(new OpenOfficeServerContext());
 		getConfig().setPageSize(pageSize);
 	}
 	
+	
 	public BookPublisher( OpenOfficeServerContext serverContext, Rectangle pageSize ) {
 		getConfig().setServerContext(serverContext);
 		getConfig().setPageSize(pageSize);
 	}
+	
 	
 	public void setConfig(BookPublisherConfig config) {
 		if (config == null) {
@@ -94,13 +106,14 @@ public class BookPublisher {
 		}
 	}
 	
+	
 	public BookPublisherConfig getConfig() {
 		return this.config;
 	}
 
 
 	/**
-	 * Publishes the OpenOffice source documents into a single PDF booklet.
+	 * Publishes OpenOffice source documents into a single PDF booklet.
 	 *
 	 * This method chains together the OpenOffice to PDF conversion process and PDF book assembly.
 	 * 
@@ -131,7 +144,9 @@ public class BookPublisher {
 			debug("tempDir: " + tempDir);
 		}
 		
+		//
 		// Convert Open Office documents to PDF
+		//
 		OpenOfficeDocConverter openOfficeDocConverter = new OpenOfficeDocConverter(getConfig().getServerContext());
 		openOfficeDocConverter.setDebugEnabled(isDebugEnabled());
 		openOfficeDocConverter.setVerboseEnabled(isVerboseEnabled());
@@ -147,7 +162,9 @@ public class BookPublisher {
 			}
 		}
 		
+		//
 		// Build PDF book
+		//
 		PdfBookBuilderConfig pdfConfig = new PdfBookBuilderConfig();
 		PdfPageEvent pdfPageEventListener = new PdfPageEventLogger();
 
@@ -164,12 +181,14 @@ public class BookPublisher {
 		pdfBookBuilder.setConfig(pdfConfig);
 		pdfBookBuilder.buildBook( pdfSourceDir, outputBookFile );
 
+		//
 		// Build TOC doc
+		//
 		// TODO: refactor to PdfTocPageBuilder
 		if (getConfig().isBuildTocEnabled()) {
 			
 			// Trace TOC
-			Toc toc = 	tocBuilder.getToc();
+			Toc toc = tocBuilder.getToc();
 			if (isVerboseEnabled()) {
 				verbose("Output PDF Table Of Contents contains " + toc.getTocRowCount() + " entries" );
 			}
@@ -178,43 +197,82 @@ public class BookPublisher {
 				TocTracer.traceToc(toc);
 			}
 			
-			// Build TOC PDF
-			File tocTemplateFile = getTocTemplateFile();
+			//
+			// Build TOC PDF doc
+			//
+			File tocTemplateFile = resolveTocTemplateFile();
 			debug("tocTemplateFile: " + tocTemplateFile);
 			File tocOutputFile = new File( tempDir, getTempTocFileName() );
 			debug("tocOutputFile: " + tocOutputFile);
 			buildTocDoc( tocTemplateFile, toc, tocOutputFile );
 			File tocSourceFile = tocOutputFile;
 			openOfficeDocConverter.convertDocument(tocSourceFile, tempDir, OpenOfficeDocConverter.OUTPUT_FORMAT_PDF);
+			String tocPdfFileName = FileNameHelper.rewriteFileNameSuffix(tocSourceFile,FileExtensionConstants.PDF_EXTENSION);
+			File tocPdfFile = new File(tocPdfFileName);
+			debug("tocPdfFileName: " + tocPdfFileName);
+			debug("tocOutputFile: " + tocOutputFile);
+			int tocDocPageCount = countPdfPages(tocPdfFileName);
+			debug("tocDocPageCount: " + tocDocPageCount);
 			
-			// Merge TOC PDF with book PDF
+			//
+			// Merge TOC PDF doc with PDF book
+			//
 			if (isVerboseEnabled()) {
 				verbose("Merging TOC with book");
 			}
-			String firstPdfName = FileNameHelper.rewriteFileNameSuffix(tocSourceFile,FileExtensionConstants.PDF_EXTENSION);
-			File firstPdf = new File(tempDir,firstPdfName);
+			// File firstPdf = new File(tempDir,tocPdfFileName);
+			File firstPdf = new File(tocPdfFileName);
 			File secondPdf = outputBookFile;
-			String concatName = FileNameHelper.rewriteFileNameSuffix(outputBookFile,"-plus-toc",FileExtensionConstants.PDF_EXTENSION);
+			String concatName = FileNameHelper.rewriteFileNameSuffix(outputBookFile,PDF_FILE_PLUS_TOC_SUFFIX,FileExtensionConstants.PDF_EXTENSION);
 			File concatPdf = new File(outputBookFile.getParent(),concatName);
 			concatPdf(firstPdf, secondPdf, concatPdf);
+			debug("concatPdf: " + concatPdf);
 			if (concatPdf.exists()) {
 				FileUtils.copyFile(concatPdf, outputBookFile);
 				FileUtils.deleteQuietly(concatPdf);
 			}
+			debug("outputBookFile: " + outputBookFile);
+			// TODO - cleanup temp files
+			
+			//
+			// Add TOC bookmarks to PDF book
+			//
+			File inputPdfFile = outputBookFile;
+			File bookmarkPdfFile = new File( tempDir, getTempBookmarkFileName() );
+			debug("bookmarkPdfFile: " + bookmarkPdfFile);
+			// TODO - offset bookmark page numbers by page count in toc pdf doc
+			List<HashMap<String, Object>> bookmarks = TocBookmarkListBuilder.buildTocBookmarkList(toc);
+			debug("bookmarks: " + bookmarks);
+			debug("shifting page numbers by " + tocDocPageCount + " pages");
+			SimpleBookmark.shiftPageNumbers(bookmarks, tocDocPageCount, null);
+			debug("bookmarks: " + bookmarks);
+			PdfBookmarkBuilder pdfBookmarkBuilder = new PdfBookmarkBuilder();
+			pdfBookmarkBuilder.addBookmarks(inputPdfFile, bookmarks, bookmarkPdfFile);
+			if (bookmarkPdfFile.exists()) {
+				FileUtils.copyFile(bookmarkPdfFile, outputBookFile);
+				FileUtils.deleteQuietly(bookmarkPdfFile);
+			}
 			// TODO - cleanup temp files
 		}
 		
-		// TODO - copy/add meta data to output book PDF
+		// TODO - update final pdf with meta data
+		// eg. title, author, versionId
 		
-		// TODO - convert TOC model to PDF bookmarks using com.itextpdf.text.pdf.SimpleBookmark and insert in output book PDF
 	}
 	
+	
 	private String getTempTocFileName() {
-		return "toc" + FileExtensionConstants.OPEN_DOC_TEXT_EXTENSION; 
+		return DEFAULT_TOC_FILE_NAME + FileExtensionConstants.OPEN_DOC_TEXT_EXTENSION; 
+	}
+	
+	
+	private String getTempBookmarkFileName() {
+		return DEFAULT_BOOKMARK_FILE_NAME + FileExtensionConstants.PDF_EXTENSION; 
 	}
 
+	
 	// TODO - review template file resolution and temp file allocation
-	private File getTocTemplateFile() throws IOException {
+	private File resolveTocTemplateFile() throws IOException {
 		
 		File tocTemplateFile = null;
 		
@@ -249,6 +307,7 @@ public class BookPublisher {
 		return tocTemplateFile;
 	}
 	
+	
 	private void buildTocDoc( File tocTemplateFile, Toc toc, File tocOutputFile ) throws Exception {
 		
 		if (isVerboseEnabled()) {
@@ -277,15 +336,35 @@ public class BookPublisher {
 				reportBuilder.setVerboseEnabled(isVerboseEnabled());
 				reportBuilder.buildReport(tocTemplateFile, tocTemplateDataMap, tocOutputFile);
 			} else {
-				System.err.println("Template file " + tocTemplateFile + " does not exist - skipping TOC build phase");
+				error("Template file " + tocTemplateFile + " does not exist - skipping TOC build phase");
 			}
 		}
 	}
+	
+	
+	/**
+	 * Returns the number of pages in a PDF file.
+	 * 
+	 * @param pdfFileName
+	 * @return
+	 * @throws IOException
+	 * 
+	 * @see http://stackoverflow.com/questions/6026971/page-count-of-pdf-with-java
+	 */
+	private int countPdfPages( String pdfFileName ) throws IOException {
+		  RandomAccessFileOrArray pdfFile = new RandomAccessFileOrArray(pdfFileName, false, true );
+		  PdfReader reader = new PdfReader(pdfFileName);
+		  int pageCount = reader.getNumberOfPages();
+		  reader.close();
+		  return pageCount;
+	}
+
 	
 	/**
 	 * TODO: review concat process and compare to PdfCopy.
 	 */
 	public void concatPdf( File firstPdf, File secondPdf, File concatPdf ) throws IOException, DocumentException {
+		
 		if (isDebugEnabled()) {
 			debug("firstPdf: " + firstPdf);
 			debug("secondPdf: " + secondPdf);
@@ -301,13 +380,16 @@ public class BookPublisher {
 		copy.close();
 	}
 	
+	
 	private boolean isDebugEnabled() {
 		return getConfig().isDebugEnabled();
 	}
 	
+	
 	private boolean isVerboseEnabled() {
 		return getConfig().isVerboseEnabled();
 	}
+	
 	
 	private void debug( String msg ) {
 		if (isDebugEnabled()) {
@@ -315,10 +397,28 @@ public class BookPublisher {
 		}
 	}
 
+	
 	private void verbose( String msg ) {
 		if (isVerboseEnabled()) {
 			System.out.println( msg );
 		}
 	}
+	
+	
+	private void error( String msg ) {
+		if (msg != null) {
+			System.err.println(msg);
+		}
+	}
+	
+	
+	private void error( String msg, Exception exception ) {
+		if (msg != null) {
+			System.err.println(msg);
+			if (exception != null) {
+				exception.printStackTrace(System.err);
+			}
+		}
+	}	
 	
 }

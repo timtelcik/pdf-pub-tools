@@ -175,7 +175,8 @@ public class BookPublisherGUI extends JFrame {
             }
         });
 
-        statusMessageLabel.setText("Press Convert to Start");
+        String statusMessageText = "Press " + publishButton.getText() + " to start.";
+        statusMessageLabel.setText(statusMessageText);
 
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

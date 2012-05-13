@@ -18,7 +18,6 @@
 package net.mitnet.tools.pdf.book.openoffice.ui.cli;
 
 import java.io.File;
-import java.net.ConnectException;
 
 import net.mitnet.tools.pdf.book.openoffice.converter.OpenOfficeDocConverter;
 import net.mitnet.tools.pdf.book.ui.cli.CliConstants;

@@ -32,7 +32,8 @@ import org.apache.commons.io.FilenameUtils;
 public class FileNameHelper {
 
 	public static String rewriteFileNameSuffix( File sourceFile, String newFileNameExtension ) {
-		String newFileName = rewriteFileNameSuffix( sourceFile.getName(), newFileNameExtension );
+		// String newFileName = rewriteFileNameSuffix( sourceFile.getName(), newFileNameExtension );
+		String newFileName = rewriteFileNameSuffix( sourceFile.getAbsolutePath(), newFileNameExtension );
 		return newFileName;
 	}
 
@@ -42,9 +43,11 @@ public class FileNameHelper {
 	}
 
 	public static String rewriteFileNameSuffix( String sourceFileName, String newFileNameExtension ) {
+		String pathPath = FilenameUtils.getFullPath(sourceFileName);
 		String baseFileName = FilenameUtils.getBaseName(sourceFileName);
 		String newFileName = baseFileName + newFileNameExtension;
-		return newFileName;
+		String newFile = FilenameUtils.concat(pathPath, newFileName);
+		return newFile;
 	}
 
 	public static String rewriteFileNameSuffix( String sourceFileName, String newFileNameSuffix, String newFileNameExtension ) {
@@ -56,5 +59,4 @@ public class FileNameHelper {
 		return newFileName;
 	}
 	
-
 }

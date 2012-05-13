@@ -19,12 +19,10 @@ package net.mitnet.tools.pdf.book.openoffice.converter;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.List;
 
 import net.mitnet.tools.pdf.book.io.FileHelper;
-import net.mitnet.tools.pdf.book.openoffice.net.OpenOfficeConnectionFactory;
 import net.mitnet.tools.pdf.book.openoffice.net.OpenOfficeServerContext;
 import net.mitnet.tools.pdf.book.util.MathHelper;
 import net.mitnet.tools.pdf.book.util.ProgressMonitor;
@@ -35,7 +33,6 @@ import org.apache.commons.lang.StringUtils;
 import org.artofsolving.jodconverter.OfficeDocumentConverter;
 import org.artofsolving.jodconverter.office.DefaultOfficeManagerConfiguration;
 import org.artofsolving.jodconverter.office.OfficeManager;
-
 
 
 /**
@@ -53,6 +50,7 @@ import org.artofsolving.jodconverter.office.OfficeManager;
  */
 public class OpenOfficeDocConverter {
 	
+	// TODO - replace String constants with enum
 	public static final String OUTPUT_FORMAT_PDF = "pdf";
 	public static final String OUTPUT_FORMAT_OPEN_DOC_TEXT = "odt";
 	public static final String DEFAULT_OUTPUT_FORMAT = OUTPUT_FORMAT_PDF;
@@ -119,15 +117,15 @@ public class OpenOfficeDocConverter {
 
 		if (isVerboseEnabled()) {
 			if (sourceFileList != null) {
-				System.out.println("Converting " + sourceFileList.size() + " doucments to " + outputFormat + " ..." );				
+				System.out.println("Converting " + sourceFileList.size() + " documents to " + outputFormat + " ..." );				
 			}
 		}
 		
 		if (isDebugEnabled()) {
-			verbose( "sourceDir: " + sourceDir);
-			verbose( "sourceFileList: " + sourceFileList);
-			verbose( "outputDir: " + outputDir);
-			verbose( "outputFormat: " + outputFormat);
+			verbose("sourceDir: " + sourceDir);
+			verbose("sourceFileList: " + sourceFileList);
+			verbose("outputDir: " + outputDir);
+			verbose("outputFormat: " + outputFormat);
 			verbose("converting " + sourceFileList.size() + " document(s)");
 			verbose("output dir is " + outputDir);
 			verbose("output format is " + outputFormat);
@@ -135,20 +133,11 @@ public class OpenOfficeDocConverter {
 		}
 		
 		
-		//jodconverter 3.x
-		OfficeManager officeManager = new DefaultOfficeManagerConfiguration().setPortNumber(8100).buildOfficeManager();
+		OfficeManager officeManager = buildOfficeManager(serverContext);
 	    officeManager.start();
 		
-	    //OpenOfficeConnection connection = openConnection(serverContext);
-		//if (isDebugEnabled()) {
-		//	verbose("connection is " + connection );
-		//} 
-		
-
 		try {
-			//DocumentConverter converter = new OpenOfficeDocumentConverter(connection);
-			//jodconverter 3.x
-			OfficeDocumentConverter converter = new OfficeDocumentConverter (officeManager);
+			OfficeDocumentConverter converter = new OfficeDocumentConverter(officeManager);
 			if (isDebugEnabled()) {
 				verbose("converter is " + converter );
 			}
@@ -171,19 +160,13 @@ public class OpenOfficeDocConverter {
 									pathToParent).getPath();
 						}
 					}
-					String baseInputFileName = FilenameUtils
-							.getBaseName(inputFile.getName());
-					String outputFileName = baseInputFileName + "."
-							+ outputFormat;
-					File outputFile = new File(baseOutputFilePath,
-							outputFileName);
+					String baseInputFileName = FilenameUtils.getBaseName(inputFile.getName());
+					String outputFileName = baseInputFileName + "." + outputFormat;
+					File outputFile = new File(baseOutputFilePath, outputFileName);
 					convertDocument(converter, inputFile, outputFile);
 					if (getProgressMonitor() != null) {
-						int progressPercentage = MathHelper
-								.calculatePercentage(currentItemIndex,
-										maxItemIndex);
-						getProgressMonitor().setProgressPercentage(
-								progressPercentage);
+						int progressPercentage = MathHelper.calculatePercentage(currentItemIndex,maxItemIndex);
+						getProgressMonitor().setProgressPercentage(progressPercentage);
 					}
 				}
 			}
@@ -192,7 +175,6 @@ public class OpenOfficeDocConverter {
 			if (isDebugEnabled()) {
 				verbose("disconnecting");
 			}
-			//connection.disconnect();
 			officeManager.stop();
 		}
 	}
@@ -231,25 +213,22 @@ public class OpenOfficeDocConverter {
 		}
 	}
 	
-	/*
-	private OpenOfficeConnection openConnection( OpenOfficeServerContext serverContext ) throws Exception {
+	private OfficeManager buildOfficeManager( OpenOfficeServerContext serverContext ) throws Exception {
 
-		OpenOfficeConnection connection = OpenOfficeConnectionFactory.createConnection(serverContext);
-		try {
-			if (isVerboseEnabled()) {
-				verbose("connecting to OpenOffice using server context " + serverContext);
-			}
-			connection.connect();
-		} catch (ConnectException ce) {
-			ce.printStackTrace(System.err);
-			String msg = "Error connecting to OpenOffice using server context " + serverContext;
-			System.err.println(msg);
-			throw new Exception(msg, ce);
+		if (isVerboseEnabled()) {
+			verbose("Building Office Mananger using server context " + serverContext);
 		}
 		
-		return connection;
+		DefaultOfficeManagerConfiguration config = new DefaultOfficeManagerConfiguration();
+		config.setPortNumber(serverContext.getPort());
+		OfficeManager officeManager = config.buildOfficeManager();
+		
+		if (isVerboseEnabled()) {
+			verbose("Office Mananger is " + officeManager);
+		}
+		
+		return officeManager;
 	}
-	*/
 	
 	private void verbose( String msg ) {
 		if (isVerboseEnabled()) {
@@ -264,3 +243,4 @@ public class OpenOfficeDocConverter {
 	}
 
 }
+

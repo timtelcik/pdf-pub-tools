@@ -303,7 +303,9 @@ public class BookPublisherGUI extends JFrame {
 				BookPublisher bookPublisher = new BookPublisher();
 				bookPublisher.setConfig( config );
 				bookPublisher.publish( sourceDir, outputDir, outputBookFile );
-				setStatusMessage("Finished publishing book.");
+				// setStatusMessage("Finished publishing book.");
+				String fileName = outputBookFile.getName();
+				setStatusMessage("Finished publishing book " + fileName);
 				
 			} catch (Exception ex) {
 				setStatusMessage("Error publishing book: " + ex.getMessage());
@@ -360,6 +362,9 @@ public class BookPublisherGUI extends JFrame {
 		*/
 		boolean verbose = true;
 		config.setVerboseEnabled(verbose);
+		
+		boolean debug = true;
+		config.setDebugEnabled(debug);
 		
 		return config;
 	}

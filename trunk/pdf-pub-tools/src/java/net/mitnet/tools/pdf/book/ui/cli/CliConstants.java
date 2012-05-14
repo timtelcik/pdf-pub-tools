@@ -50,6 +50,9 @@ public class CliConstants {
 
 	public static final Option OPTION_META_AUTHOR = new Option("ma",
 			"meta-author", false, "PDF meta-data author");
+	
+	public static final Option OPTION_META_VERSION_ID = new Option("mvid",
+			"meta-version-id", false, "PDF meta-data version ID");	
 
 	public static final Option OPTION_OPEN_OFFICE_HOST = new Option("ooh",
 			"open-office-host", true, "OpenOffice host");

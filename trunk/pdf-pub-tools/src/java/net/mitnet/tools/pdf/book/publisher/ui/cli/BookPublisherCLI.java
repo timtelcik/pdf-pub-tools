@@ -77,6 +77,7 @@ public class BookPublisherCLI {
 		options.addOption(CliConstants.OPTION_DEBUG);
 		options.addOption(CliConstants.OPTION_META_TITLE);
 		options.addOption(CliConstants.OPTION_META_AUTHOR);
+		options.addOption(CliConstants.OPTION_META_VERSION_ID);
 		options.addOption(CliConstants.OPTION_OPEN_OFFICE_HOST);
 		options.addOption(CliConstants.OPTION_OPEN_OFFICE_PORT);
 		options.addOption(CliConstants.OPTION_VERBOSE);
@@ -131,7 +132,9 @@ public class BookPublisherCLI {
 			serverContext.setPort(openOfficePort);
 		}
 		
-		// TODO - default page size using Locale
+		// TODO - resolve page size using Locale
+		// eg. "en_AU" = PageSize.A4
+		//     "en_US" = PageSize.LETTER
 
 		Rectangle pageSize = PageSize.A4;
 		// Rectangle pageSize = PageSize.LETTER;
@@ -181,6 +184,11 @@ public class BookPublisherCLI {
 			metaAuthor = commandLineHelper.getOptionValue(CliConstants.OPTION_META_AUTHOR);
 		}
 		config.setMetaAuthor(metaAuthor);
+		
+		if (commandLineHelper.hasOption(CliConstants.OPTION_META_VERSION_ID)) {
+			String metaVersionId = commandLineHelper.getOptionValue(CliConstants.OPTION_META_VERSION_ID);
+			config.setMetaVersionId(metaVersionId);
+		}
 		
 		if (verboseEnabled) {
 			ProgressMonitor progressMonitor = new ConsoleProgressMonitor();

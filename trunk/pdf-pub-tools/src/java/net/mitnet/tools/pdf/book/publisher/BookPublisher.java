@@ -39,16 +39,19 @@ import net.mitnet.tools.pdf.book.pdf.builder.PdfBookBuilder;
 import net.mitnet.tools.pdf.book.pdf.builder.PdfBookBuilderConfig;
 import net.mitnet.tools.pdf.book.pdf.event.PdfPageEventLogger;
 import net.mitnet.tools.pdf.book.pdf.util.PdfBookmarkBuilder;
+import net.mitnet.tools.pdf.book.pdf.util.PdfMetaKeys;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 
+import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfCopyFields;
 import com.lowagie.text.pdf.PdfPageEvent;
 import com.lowagie.text.pdf.PdfReader;
+import com.lowagie.text.pdf.PdfStamper;
 import com.lowagie.text.pdf.SimpleBookmark;
 import com.lowagie.toolbox.plugins.HtmlBookmarks;
 import com.lowagie.toolbox.plugins.InspectPDF;
@@ -71,10 +74,12 @@ import com.lowagie.toolbox.plugins.XML2Bookmarks;
  */
 public class BookPublisher {
 	
+	private static final String PDF_PUBLISHER_TOOLS_IDENT = "PDF Publisher Tools";
 	private static final String PDF_FILE_PLUS_TOC_SUFFIX = "-plus-toc";
 	private static final String DEFAULT_TOC_TEMPLATE_FILE_NAME = "toc-template";
 	private static final String DEFAULT_TOC_FILE_NAME = "toc";
 	private static final String DEFAULT_BOOKMARK_FILE_NAME = "bookmark";
+	private static final String DEFAULT_PDF_BOOK_FILE_NAME = "book";
 	
 	private BookPublisherConfig config = new BookPublisherConfig();
 	
@@ -178,12 +183,10 @@ public class BookPublisher {
 		
 		
 		// Update book with meta-data
-		
-		// TODO - update final pdf with meta data
-		// eg. title, author, versionId
+		updatePdfBookWithMeta( outputBookFile );
 		
 	}
-	
+
 	
 	/**
 	 * Build PDF book.
@@ -318,6 +321,59 @@ public class BookPublisher {
 		}
 	}
 	
+
+	/**
+	 * Update PDF book with meta-data.
+	 * 
+	 * @see http://itext-general.2136553.n4.nabble.com/how-to-add-meta-information-to-a-document-that-is-closed-td2137179.html
+	 * @see com.lowagie.examples.general.copystamp.AddWatermarkPageNumbers
+	 */
+	private void updatePdfBookWithMeta( File pdfBookFile ) throws IOException, DocumentException {
+		
+		info("updating PDF book with meta ...");
+		
+		File inputPdfFile = pdfBookFile;
+		String inputPdfFilename = inputPdfFile.getAbsolutePath();
+		File outputPdfFile = File.createTempFile(DEFAULT_PDF_BOOK_FILE_NAME, FileExtensionConstants.PDF_EXTENSION);
+		debug("outputPdfFile: " + outputPdfFile);
+		String outputPdfFilename = outputPdfFile.getAbsolutePath();
+		
+		PdfReader reader = new PdfReader(inputPdfFilename);
+
+		PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(outputPdfFilename));
+		
+        HashMap metaMap = new HashMap();
+
+        String metaTitle = config.getMetaTitle();
+        addNonEmptyMapValue( metaMap, PdfMetaKeys.TITLE, metaTitle );
+        
+        String metaSubject = config.getMetaSubject();
+        addNonEmptyMapValue( metaMap, PdfMetaKeys.SUBJECT, metaSubject );
+        
+        String metaKeywords = config.getMetaKeywords();
+        addNonEmptyMapValue( metaMap, PdfMetaKeys.KEYWORDS, metaKeywords );
+        
+        String metaCreator = PDF_PUBLISHER_TOOLS_IDENT + " with " + Document.getVersion();
+        addNonEmptyMapValue( metaMap, PdfMetaKeys.CREATOR, metaCreator );
+        
+        String metaAuthor = config.getMetaAuthor();
+        addNonEmptyMapValue( metaMap, PdfMetaKeys.AUTHOR, metaAuthor );
+        
+        String metaVersionId = config.getMetaVersionId();
+        addNonEmptyMapValue( metaMap, PdfMetaKeys.VERSION_ID, metaVersionId );
+        
+        debug("updating PDF book with meta map: " + metaMap);
+        
+        stamper.setMoreInfo( metaMap ); 
+		
+		stamper.close();
+		
+		if (outputPdfFile.exists()) {
+			FileUtils.copyFile(outputPdfFile, pdfBookFile);
+			FileUtils.deleteQuietly(outputPdfFile);
+		}
+	}
+	
 	
 	// TODO - review template file resolution and temp file allocation
 	private File resolveTocTemplateFile() throws IOException {
@@ -445,6 +501,17 @@ public class BookPublisher {
 	}
 	
 	
+	private void addNonEmptyMapValue( Map map, String key, String value ) {
+		if (map != null) {
+	        if (!StringUtils.isEmpty(key)) {
+		        if (!StringUtils.isEmpty(value)) {
+		        	map.put( key, value );	
+		        }
+	        }
+		}
+	}	
+	
+	
 	private boolean isDebugEnabled() {
 		return getConfig().isDebugEnabled();
 	}
@@ -460,7 +527,10 @@ public class BookPublisher {
 			System.out.println("-- " + msg);
 		}
 	}
-
+	
+	private void info( String msg ) {
+		System.out.println( msg );
+	}
 	
 	private void verbose( String msg ) {
 		if (isVerboseEnabled()) {

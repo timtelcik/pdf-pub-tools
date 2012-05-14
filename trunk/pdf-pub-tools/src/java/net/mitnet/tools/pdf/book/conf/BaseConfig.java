@@ -38,6 +38,9 @@ public class BaseConfig implements Config {
 	private boolean debugEnabled = false;
 	private String metaAuthor = null;
 	private String metaTitle = null;
+	private String metaSubject = null;
+	private String metaKeywords = null;
+	private String metaVersionId = null;
 	private Rectangle pageSize = DEFAULT_DOCUMENT_PAGE_SIZE;
 	private ProgressMonitor progressMonitor = null;
 	private boolean buildTocEnabled = true;
@@ -78,6 +81,30 @@ public class BaseConfig implements Config {
 		return metaTitle;
 	}
 	
+	public String getMetaSubject() {
+		return metaSubject;
+	}
+
+	public void setMetaSubject(String metaSubject) {
+		this.metaSubject = metaSubject;
+	}
+
+	public String getMetaKeywords() {
+		return metaKeywords;
+	}
+
+	public void setMetaKeywords(String metaKeywords) {
+		this.metaKeywords = metaKeywords;
+	}
+	
+	public void setMetaVersionId(String metaVersionId) {
+		this.metaVersionId = metaVersionId;
+	}
+	
+	public String getMetaVersionId() {
+		return metaVersionId;
+	}	
+	
 	public void setPageSize(Rectangle pageSize) {
 		this.pageSize = pageSize;
 	}
@@ -109,5 +136,5 @@ public class BaseConfig implements Config {
 	public boolean isBuildTocEnabled() {
 		return buildTocEnabled;
 	}
-	
+
 }

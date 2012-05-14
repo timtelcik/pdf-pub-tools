@@ -21,6 +21,7 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -109,7 +110,7 @@ public class BookPublisherGUI extends JFrame {
 
         docControlPanel.setBorder(BorderFactory.createTitledBorder("Documents"));
 
-        sourceLabel.setText("Source:");
+        sourceLabel.setText("Source Folder:");
         browseSourceButton.setText("Browse ...");
         browseSourceButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
@@ -117,7 +118,7 @@ public class BookPublisherGUI extends JFrame {
             }
         });
 
-        targetLabel.setText("Target:");
+        targetLabel.setText("Target Folder:");
         browseTargetButton.setText("Browse ...");
         browseTargetButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
@@ -291,6 +292,13 @@ public class BookPublisherGUI extends JFrame {
 		File outputBookDir = getOutputDir().getParentFile();
 		String outputBookName = FilenameUtils.getBaseName(outputDir.getName()) + "-book" + FileExtensionConstants.PDF_EXTENSION;
 		File outputBookFile = new File( outputBookDir, outputBookName );
+		String metaTitle = null;
+		try {
+			metaTitle = outputBookFile.getName();
+		} catch (Exception e) {
+			System.err.println("Error defining meta title");
+		}
+		String metaVersionId = "" + new Date().getTime();
 		
 		System.out.println( "Source dir is " + sourceDir );
 		System.out.println( "Output dir is " + outputDir );
@@ -301,7 +309,9 @@ public class BookPublisherGUI extends JFrame {
 				setStatusMessage("Publishing book ...");
 				System.out.println( "Processing files in source dir " + sourceDir + " ..." );
 
-				BookPublisherConfig config = buildConfig();
+				BookPublisherConfig config = buildBookPublisherConfig();
+				config.setMetaTitle(metaTitle);
+				config.setMetaVersionId(metaVersionId);
 				BookPublisher bookPublisher = new BookPublisher();
 				bookPublisher.setConfig( config );
 				bookPublisher.publish( sourceDir, outputDir, outputBookFile );
@@ -330,7 +340,11 @@ public class BookPublisherGUI extends JFrame {
 	}
 	
 	private String getSourceDirName() {
-		return sourceDirField.getText();
+		String dirName = sourceDirField.getText(); 
+		if (dirName != null) {
+			dirName = dirName.trim();
+		}
+		return dirName;
 	}
 	
 	private File getSourceDir() {
@@ -338,14 +352,18 @@ public class BookPublisherGUI extends JFrame {
 	}
 	
 	private String getOutputDirName() {
-		return outputDirField.getText();
+		String dirName = outputDirField.getText(); 
+		if (dirName != null) {
+			dirName = dirName.trim();
+		}
+		return dirName;
 	}
 	
 	private File getOutputDir() {
 		return new File( getOutputDirName() );
 	}
 	
-	private BookPublisherConfig buildConfig() {
+	private BookPublisherConfig buildBookPublisherConfig() {
 		
 		BookPublisherConfig config = new BookPublisherConfig();
 		
@@ -358,10 +376,11 @@ public class BookPublisherGUI extends JFrame {
 		Rectangle pageSize = BookPublisherConfig.DEFAULT_DOCUMENT_PAGE_SIZE;
 		config.setPageSize(pageSize);
 
-		/*
-		config.setMetaTitle(metaTitle);
+		// config.setMetaTitle(metaTitle);
+
+		String metaAuthor = System.getProperty( "user.name" );
 		config.setMetaAuthor(metaAuthor);
-		*/
+
 		boolean verbose = true;
 		config.setVerboseEnabled(verbose);
 		

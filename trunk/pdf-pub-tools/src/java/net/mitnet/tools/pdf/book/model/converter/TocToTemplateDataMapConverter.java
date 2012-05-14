@@ -15,7 +15,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package net.mitnet.tools.pdf.book.model.toc;
+package net.mitnet.tools.pdf.book.model.converter;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,11 +24,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import net.mitnet.tools.pdf.book.model.toc.Toc;
+import net.mitnet.tools.pdf.book.model.toc.TocRow;
 import net.sf.jooreports.templates.DocumentTemplateException;
 
 
 /**
- * Table Of Contents Template Data Builder.
+ * Table Of Contents (TOC) to Template Data Map Converter.
  * 
  * NOTE: JODReports template data contains <tt>[#list items as item]</tt>
  * 
@@ -37,7 +39,7 @@ import net.sf.jooreports.templates.DocumentTemplateException;
  * 
  * @author Tim Telcik <telcik@gmail.com>
  */
-public class TocTemplateDataBuilder {
+public class TocToTemplateDataMapConverter {
 	
 	public static final String KEY_TOC = "toc";
 	
@@ -51,7 +53,7 @@ public class TocTemplateDataBuilder {
 	// public static final String KEY_TOC_ROW_PAGE_NUMBER = "pageNumber";
 	
 	
-	public static Map buildTocTemplateData( Toc toc ) throws IOException, DocumentTemplateException {
+	public static Map convert( Toc toc ) throws IOException, DocumentTemplateException {
 
 		Map templateDataMap = new HashMap();
 		
@@ -64,23 +66,22 @@ public class TocTemplateDataBuilder {
 			tocMap.put(KEY_SECTION, sectionList);
 			
 			Iterator<TocRow> tocRowIter = toc.rowIterator();
-			
 			while (tocRowIter.hasNext()) {
 				TocRow tocRow = tocRowIter.next();
-				Map tocRowMap = buildTocSectionData( tocRow );
-				sectionList.add( tocRowMap );
+				Map sectionDataMap = buildTocSectionDataMap( tocRow );
+				sectionList.add( sectionDataMap );
 			}
 		}
 		
 		return templateDataMap;
 	}
 	
-	public static Map buildTocSectionData( TocRow tocRow ) {
-		Map tocRowMap = buildTocSectionData( tocRow.getTitle(), tocRow.getPageNumber() );
+	public static Map buildTocSectionDataMap( TocRow tocRow ) {
+		Map tocRowMap = buildTocSectionDataMap( tocRow.getTitle(), tocRow.getPageNumber() );
 		return tocRowMap;
 	}
 	
-	public static Map buildTocSectionData( String title, int pageNumber ) {
+	public static Map buildTocSectionDataMap( String title, int pageNumber ) {
 		Map tocRowMap = new HashMap();
 		tocRowMap.put(KEY_SECTION_TITLE,title);
 		tocRowMap.put(KEY_SECTION_PAGE_NUMBER, new Integer(pageNumber));

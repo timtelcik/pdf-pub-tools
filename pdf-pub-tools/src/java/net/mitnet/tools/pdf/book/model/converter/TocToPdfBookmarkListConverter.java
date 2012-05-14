@@ -15,7 +15,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package net.mitnet.tools.pdf.book.model.toc;
+package net.mitnet.tools.pdf.book.model.converter;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,30 +23,33 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import net.mitnet.tools.pdf.book.model.toc.Toc;
+import net.mitnet.tools.pdf.book.model.toc.TocRow;
 import net.sf.jooreports.templates.DocumentTemplateException;
+
+import com.lowagie.text.pdf.SimpleBookmark;
 
 
 /**
- * Table of Contents Bookmarks List Builder.
+ * Table of Contents (TOC) to PDF Bookmarks List Converter.
  * 
  * @author Tim Telcik <telcik@gmail.com>
- * 
+ *
+ * @see SimpleBookmark
  * @see http://api.itextpdf.com/itext/com/itextpdf/text/pdf/SimpleBookmark.html
  * @see http://itext-general.2136553.n4.nabble.com/simply-add-a-bookmark-at-the-root-of-new-PDF-for-each-concat-ed-document-td2140075.html
  * @see http://www.mail-archive.com/itext-questions@lists.sourceforge.net/msg10971.html
  * @see com.itextpdf.text.pdf.SimpleBookmark
- * @see http://itextpdf.com/examples/iia.php?id=140		
+ * @see http://itextpdf.com/examples/iia.php?id=140
  */
-public class TocBookmarkListBuilder {
+public class TocToPdfBookmarkListConverter {
 	
-	public static List<HashMap<String, Object>> buildTocBookmarkList( Toc toc ) throws IOException, DocumentTemplateException {
+	public static List<HashMap<String, Object>> convert( Toc toc ) throws IOException, DocumentTemplateException {
 
 		List<HashMap<String, Object>> bookmarkList = new ArrayList<HashMap<String, Object>>();
 		
 		if (toc != null) {
-			
 			Iterator<TocRow> tocRowIter = toc.rowIterator();
-			
 			while (tocRowIter.hasNext()) {
 				TocRow tocRow = tocRowIter.next();
 				HashMap<String,Object> tocBookmarkEntry = buildBookmarkEntry( tocRow );

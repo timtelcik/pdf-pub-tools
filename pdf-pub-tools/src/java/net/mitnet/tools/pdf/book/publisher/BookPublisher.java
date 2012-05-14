@@ -27,10 +27,10 @@ import java.util.Map;
 
 import net.mitnet.tools.pdf.book.io.FileExtensionConstants;
 import net.mitnet.tools.pdf.book.io.FileNameHelper;
+import net.mitnet.tools.pdf.book.model.converter.TocToPdfBookmarkListConverter;
+import net.mitnet.tools.pdf.book.model.converter.TocToTemplateDataMapConverter;
 import net.mitnet.tools.pdf.book.model.toc.Toc;
-import net.mitnet.tools.pdf.book.model.toc.TocBookmarkListBuilder;
 import net.mitnet.tools.pdf.book.model.toc.TocBuilder;
-import net.mitnet.tools.pdf.book.model.toc.TocTemplateDataBuilder;
 import net.mitnet.tools.pdf.book.model.toc.TocTracer;
 import net.mitnet.tools.pdf.book.openoffice.converter.OpenOfficeDocConverter;
 import net.mitnet.tools.pdf.book.openoffice.net.OpenOfficeServerContext;
@@ -305,7 +305,7 @@ public class BookPublisher {
 		File inputPdfFile = outputBookFile;
 		File bookmarkPdfFile = File.createTempFile(DEFAULT_BOOKMARK_FILE_NAME, FileExtensionConstants.OPEN_DOC_TEXT_EXTENSION);
 		debug("bookmarkPdfFile: " + bookmarkPdfFile);
-		List<HashMap<String, Object>> bookmarks = TocBookmarkListBuilder.buildTocBookmarkList(toc);
+		List<HashMap<String, Object>> bookmarks = TocToPdfBookmarkListConverter.convert(toc);
 		debug("bookmarks: " + bookmarks);
 		debug("shifting page numbers by " + tocDocPageCount + " pages");
 		SimpleBookmark.shiftPageNumbers(bookmarks, tocDocPageCount, null);
@@ -375,7 +375,7 @@ public class BookPublisher {
 		
 		if ((tocTemplateFile != null) && (tocOutputFile != null)) {
 			if (tocTemplateFile.exists()) {
-				Map tocTemplateDataMap = TocTemplateDataBuilder.buildTocTemplateData(toc);
+				Map tocTemplateDataMap = TocToTemplateDataMapConverter.convert(toc);
 				if (isDebugEnabled()) {
 					debug("tocTemplateDataMap: " + tocTemplateDataMap);
 					debug("Generating TOC report" );

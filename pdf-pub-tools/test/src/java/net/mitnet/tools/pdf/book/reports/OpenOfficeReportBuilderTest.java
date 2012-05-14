@@ -24,9 +24,9 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import net.mitnet.tools.pdf.book.model.converter.TocToTemplateDataMapConverter;
 import net.mitnet.tools.pdf.book.model.toc.Toc;
 import net.mitnet.tools.pdf.book.model.toc.TocRow;
-import net.mitnet.tools.pdf.book.model.toc.TocTemplateDataBuilder;
 import net.mitnet.tools.pdf.book.openoffice.reports.OpenOfficeReportBuilder;
 import net.sf.jooreports.templates.DocumentTemplateException;
 
@@ -177,7 +177,7 @@ public class OpenOfficeReportBuilderTest extends TestCase {
 		
 		System.out.println("toc: " + toc);
 		
-		Map tocTemplateDataMap = TocTemplateDataBuilder.buildTocTemplateData(toc);
+		Map tocTemplateDataMap = TocToTemplateDataMapConverter.convert(toc);
 		
 		System.out.println("tocTemplateDataMap: " + tocTemplateDataMap);
 		

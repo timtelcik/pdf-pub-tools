@@ -295,6 +295,7 @@ public class BookPublisherGUI extends JFrame {
 		String metaTitle = null;
 		try {
 			metaTitle = outputBookFile.getName();
+			metaTitle = FilenameUtils.getBaseName(metaTitle);
 		} catch (Exception e) {
 			System.err.println("Error defining meta title");
 		}

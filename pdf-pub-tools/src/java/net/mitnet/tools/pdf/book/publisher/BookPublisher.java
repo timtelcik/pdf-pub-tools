@@ -395,8 +395,6 @@ public class BookPublisher {
 				debug("tocTemplateUrl: " + tocTemplateUrl);
 			}			
 			if (tocTemplateUrl != null) {
-				// tocTemplateFile = new File(tocTemplateUrl.getFile());
-				// tocTemplateFile = File.createTempFile("toc-template", FileExtensionConstants.OPEN_DOC_TEXT_EXTENSION);
 				tocTemplateFile = File.createTempFile(DEFAULT_TOC_TEMPLATE_FILE_NAME, FileExtensionConstants.OPEN_DOC_TEXT_EXTENSION);
 				tocTemplateFile.deleteOnExit();
 				FileUtils.copyURLToFile(tocTemplateUrl, tocTemplateFile); 
@@ -501,7 +499,8 @@ public class BookPublisher {
 	}
 	
 	
-	private void addNonEmptyMapValue( Map map, String key, String value ) {
+	// TODO - move to CollectionHelper
+	private void addNonEmptyMapValue( Map<String,String> map, String key, String value ) {
 		if (map != null) {
 	        if (!StringUtils.isEmpty(key)) {
 		        if (!StringUtils.isEmpty(value)) {

@@ -170,16 +170,20 @@ public class BookPublisherCLI {
 			}
 		}
 		
+		/*
 		String metaTitle = FilenameUtils.getBaseName( outputBookFile.getName() );
 		if (metaTitle != null) {
 			metaTitle = metaTitle.toUpperCase();
 		}
+		*/
+		String metaTitle = null;
 		if (commandLineHelper.hasOption(CliConstants.OPTION_META_TITLE)) {
 			metaTitle = commandLineHelper.getOptionValue(CliConstants.OPTION_META_TITLE);
 		}
 		config.setMetaTitle(metaTitle);
 		
-		String metaAuthor = System.getProperty( "user.name" );
+		// String metaAuthor = System.getProperty( "user.name" );
+		String metaAuthor = null;
 		if (commandLineHelper.hasOption(CliConstants.OPTION_META_AUTHOR)) {
 			metaAuthor = commandLineHelper.getOptionValue(CliConstants.OPTION_META_AUTHOR);
 		}

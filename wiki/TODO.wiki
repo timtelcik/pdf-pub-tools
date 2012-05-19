@@ -1,10 +1,10 @@
-#summary TODO items
+#summary Backlog items
 #labels PDF,Java,Tools,Java
 
-= TODO =
+= Backlog =
 
 
-This page contains a non-exhaustive list of TODO items.
+This page contains a non-exhaustive list of backlog items.
 
 
 == Release 1.0 ==

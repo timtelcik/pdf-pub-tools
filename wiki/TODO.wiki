@@ -3,21 +3,7 @@
 
 = Backlog =
 
-
 This page contains a non-exhaustive list of backlog items.
-
-
-== Release 1.0 ==
-
-  * Complete.
-  * Includes upgrade from JODReports 2.x to JODReports 3.x
-
-== Release 1.1 ==
-
-  * Complete
-  * Create PDF with bookmarks
-  ** Add “open bookmarks” flag/status to PDF so the bookmarks view opens automatically when Acrobat opens PDF.
-
 
 == Release 1.x ==
 

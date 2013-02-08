@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2010-2011  Tim Telcik <telcik@gmail.com>
+    Copyright (C) 2010-2013  Tim Telcik <telcik@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@ package net.mitnet.tools.pdf.book.publisher;
 
 import java.io.File;
 
+import net.mitnet.tools.pdf.book.common.cli.CliDefaultValues;
 import net.mitnet.tools.pdf.book.conf.BaseConfig;
 import net.mitnet.tools.pdf.book.openoffice.net.OpenOfficeServerContext;
 
@@ -30,18 +31,17 @@ import net.mitnet.tools.pdf.book.openoffice.net.OpenOfficeServerContext;
  */
 public class BookPublisherConfig extends BaseConfig {
 	
-	// public static final String DEFAULT_TOC_TEMPLATE_PATH = "resources/reports/templates/toc-template.odt";
-	public static final String DEFAULT_TOC_TEMPLATE_PATH = "reports/templates/toc-template.odt";
+	public static final String DEFAULT_TOC_TEMPLATE_PATH = CliDefaultValues.DEFAULT_TOC_TEMPLATE_PATH;
+	
+	public static final int DEFAULT_NUP = CliDefaultValues.DEFAULT_NUP;
 
 	private OpenOfficeServerContext serverContext = new OpenOfficeServerContext();
 	private String tocTemplatePath = null;
-	
-	private File sourceDir = null;
+	private File inputDir = null;
 	private File outputDir = null;
 	private File outputBookFile = null;
-	
-	
 	public BookPublisherConfig() {	
+		super();
 	}
 	
 	public void setTocTemplatePath(String tocTemplatePath) {
@@ -60,12 +60,12 @@ public class BookPublisherConfig extends BaseConfig {
 		return serverContext;
 	}
 
-	public File getSourceDir() {
-		return sourceDir;
+	public File getInputDir() {
+		return inputDir;
 	}
 
-	public void setSourceDir(File sourceDir) {
-		this.sourceDir = sourceDir;
+	public void setInputDir(File sourceDir) {
+		this.inputDir = sourceDir;
 	}
 
 	public File getOutputDir() {

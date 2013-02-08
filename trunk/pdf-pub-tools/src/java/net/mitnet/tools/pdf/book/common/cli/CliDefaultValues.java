@@ -15,14 +15,25 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package net.mitnet.tools.pdf.book.conf;
+package net.mitnet.tools.pdf.book.common.cli;
+
+import net.mitnet.tools.pdf.book.pdf.util.PdfPageValues;
 
 
 /**
- * Configuration.
+ * Command Line Interface (CLI) Options.
  * 
  * @author Tim Telcik <telcik@gmail.com>
  */
-public interface Config {
+public class CliDefaultValues {
+
+	// public static final int DEFAULT_NUP = 1;
+	public static final int DEFAULT_NUP = 2;
+	
+	public static final String DEFAULT_PAGE_ORIENTATION = PdfPageValues.PAGE_ORIENTATION_PORTRAIT;
+	
+	public static final String DEFAULT_PAGE_SIZE = PdfPageValues.PAGE_SIZE_ISO_A4_STRING;
+	
+	public static final String DEFAULT_TOC_TEMPLATE_PATH = "reports/templates/toc-template.odt";
 
 }

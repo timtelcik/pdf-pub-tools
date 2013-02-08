@@ -208,6 +208,7 @@ public class BookPublisher {
 		pdfConfig.setProgressMonitor(getConfig().getProgressMonitor());
 		pdfConfig.setTocRowChangeListener(tocBuilder);
 		pdfConfig.setPdfPageEventListener(pdfPageEventListener);
+		pdfConfig.setNup(getConfig().getNup());
 		
 		pdfBookBuilder.setConfig(pdfConfig);
 		pdfBookBuilder.buildBook( sourceDir, outputFile );

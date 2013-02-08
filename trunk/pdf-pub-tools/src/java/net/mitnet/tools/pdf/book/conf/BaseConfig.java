@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2010-2011  Tim Telcik <telcik@gmail.com>
+    Copyright (C) 2010-2013  Tim Telcik <telcik@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,9 +17,11 @@
 
 package net.mitnet.tools.pdf.book.conf;
 
+import net.mitnet.tools.pdf.book.common.cli.CliDefaultValues;
+import net.mitnet.tools.pdf.book.pdf.util.PdfPageSizeHelper;
+import net.mitnet.tools.pdf.book.pdf.util.PdfPageValues;
 import net.mitnet.tools.pdf.book.util.ProgressMonitor;
 
-import com.lowagie.text.PageSize;
 import com.lowagie.text.Rectangle;
 
 
@@ -30,10 +32,6 @@ import com.lowagie.text.Rectangle;
  */
 public class BaseConfig implements Config {
 	
-	// TOOD - default page size based on Locale
-	public static final Rectangle DEFAULT_DOCUMENT_PAGE_SIZE = PageSize.A4;
-	// public static final Rectangle DEFAULT_DOCUMENT_PAGE_SIZE = PageSize.LETTER;
-	
 	private boolean verboseEnabled = false;
 	private boolean debugEnabled = false;
 	private String metaAuthor = null;
@@ -41,12 +39,16 @@ public class BaseConfig implements Config {
 	private String metaSubject = null;
 	private String metaKeywords = null;
 	private String metaVersionId = null;
-	private Rectangle pageSize = DEFAULT_DOCUMENT_PAGE_SIZE;
+	private Rectangle pageSize = null;
+	private String pageOrientation = PdfPageValues.PAGE_ORIENTATION_PORTRAIT;
 	private ProgressMonitor progressMonitor = null;
 	private boolean buildTocEnabled = true;
+	// private TocBuilder tocBuilder = new TocBuilder();
+	private int nup = CliDefaultValues.DEFAULT_NUP;
 	
 	
 	public BaseConfig() {	
+		init();
 	}
 	
 	public void setVerboseEnabled( boolean value ) {
@@ -108,17 +110,33 @@ public class BaseConfig implements Config {
 	public void setPageSize(Rectangle pageSize) {
 		this.pageSize = pageSize;
 	}
+	
+	public String getPageOrientation() {
+		return pageOrientation;
+	}
+
+	public void setPageOrientation(String pageOrientation) {
+		this.pageOrientation = pageOrientation;
+	}	
 
 	public Rectangle getPageSize() {
 		return this.pageSize;
 	}
 	
 	public float getPageHeight() {
-		return this.pageSize.getHeight();
+		float height = 0f;
+		if (getPageSize() != null) {
+			return getPageSize().getHeight();	
+		}
+		return height;
 	}
 	
 	public float getPageWidth() {
-		return this.pageSize.getWidth();
+		float width = 0f;
+		if (getPageSize() != null) {
+			return getPageSize().getWidth();	
+		}
+		return width;
 	}
 	
 	public void setProgressMonitor(ProgressMonitor progressMonitor) {
@@ -135,6 +153,34 @@ public class BaseConfig implements Config {
 	
 	public boolean isBuildTocEnabled() {
 		return buildTocEnabled;
+	}
+	
+	/*
+	public TocBuilder getTocBuilder() {
+		return tocBuilder;
+	}
+
+	public void setTocBuilder(TocBuilder tocBuilder) {
+		this.tocBuilder = tocBuilder;
+	}
+	*/
+	
+	public int getNup() {
+		return this.nup;
+	}
+
+	public void setNup(int value) {
+		this.nup = value;
+	}
+	
+	protected void init() {
+		
+		this.pageSize = PdfPageValues.DEFAULT_PAGE_SIZE;
+		Rectangle defPageSize = PdfPageSizeHelper.getDefaultPageSizeByLocale();
+		if (defPageSize != null) {
+			this.pageSize = defPageSize;			
+		}
+ 
 	}
 
 }

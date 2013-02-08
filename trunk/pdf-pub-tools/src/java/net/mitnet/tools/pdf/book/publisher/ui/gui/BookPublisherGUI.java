@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2010-2011  Tim Telcik <telcik@gmail.com>
+    Copyright (C) 2010-2013  Tim Telcik <telcik@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,35 +17,26 @@
 
 package net.mitnet.tools.pdf.book.publisher.ui.gui;
 
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
-import net.mitnet.tools.pdf.book.io.FileExtensionConstants;
-import net.mitnet.tools.pdf.book.openoffice.converter.OpenOfficeDocConverter;
-import net.mitnet.tools.pdf.book.openoffice.net.OpenOfficeServerContext;
 import net.mitnet.tools.pdf.book.publisher.BookPublisher;
-import net.mitnet.tools.pdf.book.publisher.BookPublisherConfig;
 import net.mitnet.tools.pdf.book.ui.gui.ProgressBarMonitor;
 import net.mitnet.tools.pdf.book.util.ProgressMonitor;
 
-import org.apache.commons.io.FilenameUtils;
 import org.jdesktop.layout.GroupLayout;
 import org.jdesktop.layout.LayoutStyle;
 
-import com.lowagie.text.Rectangle;
 
 
 /**
@@ -62,21 +53,18 @@ import com.lowagie.text.Rectangle;
  * @see BookPublisher
  * 
  * TODO - refactor GUI widget layout
+ * TODO - use temp folder for output dir, allow user to browser output book file
  */
-public class BookPublisherGUI extends JFrame {
+public class BookPublisherGUI extends BaseBookPublisherGUI {
 	
 	private static final long serialVersionUID = -7359553392594050434L;
 	
-	private JButton browseSourceButton;
-	private JButton browseTargetButton;
-	private JButton publishButton;
-	private JButton exitButton;
-	private JLabel sourceLabel;
-	private JLabel targetLabel;
-	private JPanel docControlPanel;
+	private static final String FRAME_TITLE = "PDF Book Publisher";
+	
+	private JFrame frame;
 	private JProgressBar progressBar;
 	private JLabel statusMessageLabel;
-	private JTextField sourceDirField;
+	private JTextField inputDirField;
 	private JTextField outputDirField;
 
 
@@ -84,50 +72,68 @@ public class BookPublisherGUI extends JFrame {
 	 * Default constructor.
 	 */
 	public BookPublisherGUI() {
+		super();
 		initComponents();
 	}
+	
+	
+	public void setVisible( boolean visible ) {
+		this.frame.setVisible( visible );
+	}
+	
+	public void show() {
+		this.frame.setVisible( true );
+	}
+	
+	public void hide() {
+		this.frame.setVisible( false );
+	}
+	
+	
 
 	/**
 	 * Initialise widgets.
 	 */
 	private void initComponents() {
 
-        docControlPanel = new JPanel();
-        sourceLabel = new JLabel();
-        targetLabel = new JLabel();
-        sourceDirField = new JTextField();
-        outputDirField = new JTextField();
-        browseSourceButton = new JButton();
-        browseTargetButton = new JButton();
-        publishButton = new JButton();
-        progressBar = new JProgressBar();
-        exitButton = new JButton();
-        statusMessageLabel = new JLabel();
+		this.frame = new JFrame();
+        this.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        this.frame.setTitle(FRAME_TITLE);
 
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         
-        setTitle("PDF Book Publisher");
-
+    	JPanel docControlPanel = new JPanel();
         docControlPanel.setBorder(BorderFactory.createTitledBorder("Documents"));
 
-        sourceLabel.setText("Source Folder:");
-        browseSourceButton.setText("Browse ...");
-        browseSourceButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                browseSourceButtonActionHandler(event);
-            }
-        });
-
-        targetLabel.setText("Target Folder:");
-        browseTargetButton.setText("Browse ...");
-        browseTargetButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                browseTargetButtonActionHandler(event);
-            }
-        });
-
-        GroupLayout docControlPanelLayout = new GroupLayout(docControlPanel);
         
+    	JLabel inputDirLabel = new JLabel();
+        inputDirLabel.setText("Input Folder:");
+        inputDirField = new JTextField();
+        inputDirField.setEditable(true);
+        inputDirField.setDragEnabled(true);
+    	JButton browseInputDirButton = new JButton();
+        browseInputDirButton.setText("Browse ...");
+        browseInputDirButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                browseInputDirButtonActionHandler(event);
+            }
+        });
+
+        
+    	JLabel outputDirLabel = new JLabel();
+        outputDirField = new JTextField();
+        outputDirField.setEditable(true);
+        outputDirField.setDragEnabled(true);
+        outputDirLabel.setText("Output Folder:");
+    	JButton browseOutputDirButton = new JButton();
+        browseOutputDirButton.setText("Browse ...");
+        browseOutputDirButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                browseOutputDirButtonActionHandler(event);
+            }
+        });
+
+        
+        GroupLayout docControlPanelLayout = new GroupLayout(docControlPanel);
         docControlPanel.setLayout(docControlPanelLayout);
         docControlPanelLayout.setHorizontalGroup(
             docControlPanelLayout.createParallelGroup(GroupLayout.LEADING)
@@ -135,15 +141,15 @@ public class BookPublisherGUI extends JFrame {
                 .addContainerGap()
                 .add(docControlPanelLayout.createParallelGroup(GroupLayout.LEADING)
                     .add(docControlPanelLayout.createSequentialGroup()
-                        .add(sourceLabel)
+                        .add(inputDirLabel)
                         .addPreferredGap(LayoutStyle.RELATED)
-                        .add(sourceDirField, GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE))
+                        .add(inputDirField, GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE))
                     .add(docControlPanelLayout.createSequentialGroup()
-                        .add(targetLabel)
+                        .add(outputDirLabel)
                         .addPreferredGap(LayoutStyle.RELATED)
-                        .add(outputDirField, GroupLayout.DEFAULT_SIZE, 247, Short.MAX_VALUE))
-                    .add(GroupLayout.TRAILING, browseSourceButton)
-                    .add(GroupLayout.TRAILING, browseTargetButton))
+                        .add(outputDirField, GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE))
+                    .add(GroupLayout.TRAILING, browseInputDirButton)
+                    .add(GroupLayout.TRAILING, browseOutputDirButton))
                 .addContainerGap())
         );
         docControlPanelLayout.setVerticalGroup(
@@ -151,19 +157,21 @@ public class BookPublisherGUI extends JFrame {
             .add(docControlPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .add(docControlPanelLayout.createParallelGroup(GroupLayout.BASELINE)
-                    .add(sourceLabel)
-                    .add(sourceDirField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                    .add(inputDirLabel)
+                    .add(inputDirField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(LayoutStyle.RELATED)
-                .add(browseSourceButton)
+                .add(browseInputDirButton)
                 .add(14, 14, 14)
                 .add(docControlPanelLayout.createParallelGroup(GroupLayout.BASELINE)
-                    .add(targetLabel)
+                    .add(outputDirLabel)
                     .add(outputDirField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(LayoutStyle.RELATED)
-                .add(browseTargetButton)
+                .add(browseOutputDirButton)
                 .addContainerGap(13, Short.MAX_VALUE))
         );
 
+        
+    	JButton publishButton = new JButton();
         publishButton.setText("Publish");
         publishButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
@@ -171,6 +179,8 @@ public class BookPublisherGUI extends JFrame {
             }
         });
 
+
+    	JButton exitButton = new JButton();
         exitButton.setText("Exit");
         exitButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
@@ -178,11 +188,19 @@ public class BookPublisherGUI extends JFrame {
             }
         });
 
-        String statusMessageText = "Press " + publishButton.getText() + " to start.";
+        
+        statusMessageLabel = new JLabel();
+        String statusMessageText = "Click " + publishButton.getText() + " to start.";
+        // String statusMessageText = "";
         statusMessageLabel.setText(statusMessageText);
+        // statusMessageLabel.setVisible(false);
+        
+        
+        progressBar = new JProgressBar();
+        
 
-        GroupLayout layout = new GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        GroupLayout layout = new GroupLayout(this.frame.getContentPane());
+        this.frame.getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
@@ -220,139 +238,63 @@ public class BookPublisherGUI extends JFrame {
                 .addContainerGap())
         );
 
-        pack();
+        this.frame.pack();
     }
 
-	private void browseSourceButtonActionHandler(ActionEvent event) {
-		browseDir(sourceDirField);
+	
+	private void browseInputDirButtonActionHandler(ActionEvent event) {
+		browseDir(inputDirField);
 	}
 	
-	private void browseTargetButtonActionHandler(ActionEvent event) {
+	
+	private void browseOutputDirButtonActionHandler(ActionEvent event) {
 		browseDir(outputDirField);
 	}
 	
-	private void browseDir(JTextField dirField) {
-		JFileChooser fileChooser = new JFileChooser();
-		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		int returnVal = fileChooser.showOpenDialog(null);
-		if (returnVal == JFileChooser.APPROVE_OPTION) {
-			File selectedFile = fileChooser.getSelectedFile();
-			String selectedFilePath = selectedFile.getAbsolutePath();
-			dirField.setText(selectedFilePath);
-		}
-	}
-
+	
 	private void exitButtonActionHandler(ActionEvent event) {
-		this.setVisible(false);
+		hide();
 		System.exit(0);
 	}
+
 	
 	private void publishButtonActionHandler(ActionEvent event) {
 		// convertOpenOfficeDocumentsToPdf();
 		publishBook();
 	}
 	
-	public void convertOpenOfficeDocumentsToPdf() {
-		
-		this.progressBar.setMinimum(0); 
-		this.progressBar.setMaximum(100);
-		
-		File sourceDir = getSourceDir();
-		File outputDir = getOutputDir();
-		System.out.println( "Source dir is " + sourceDir );
-		System.out.println( "Output dir is " + outputDir );
-		
-		if (sourceDir.isDirectory() && outputDir.isDirectory()) {
-			try {
-				setStatusMessage("Converting OpenOffice docs ...");
-				ProgressMonitor progressMonitor = new ProgressBarMonitor(getProgressBar());
-				System.out.println( "Converting OpenOffice docs in dir " + sourceDir + " to PDF ..." );
-				OpenOfficeServerContext serverContext = new OpenOfficeServerContext();
-				OpenOfficeDocConverter docConverter = new OpenOfficeDocConverter(serverContext);
-				boolean verbose = true;
-				docConverter.setVerboseEnabled(verbose);
-				docConverter.setProgressMonitor(progressMonitor);
-				docConverter.convertDocuments( sourceDir, outputDir, OpenOfficeDocConverter.OUTPUT_FORMAT_PDF );
-				setStatusMessage("Finished converting documents.");
-			} catch (Exception ex) {
-				setStatusMessage("Error publishing book: " + ex.getMessage());
-			}
-		} else {
-			setStatusMessage("Source or output folder is invalid.");
-		}
-	}
 	
-	public void publishBook() {
-		
-		this.progressBar.setMinimum(0); 
-		this.progressBar.setMaximum(100);
-		
-		File sourceDir = getSourceDir();
-		File outputDir = getOutputDir();
-		File outputBookDir = getOutputDir().getParentFile();
-		String outputBookName = FilenameUtils.getBaseName(outputDir.getName()) + "-book" + FileExtensionConstants.PDF_EXTENSION;
-		File outputBookFile = new File( outputBookDir, outputBookName );
-		String metaTitle = null;
-		try {
-			metaTitle = outputBookFile.getName();
-			metaTitle = FilenameUtils.getBaseName(metaTitle);
-		} catch (Exception e) {
-			System.err.println("Error defining meta title");
-		}
-		String metaVersionId = "" + new Date().getTime();
-		
-		System.out.println( "Source dir is " + sourceDir );
-		System.out.println( "Output dir is " + outputDir );
-		System.out.println( "Output book file is " + outputBookFile );
-		
-		if (sourceDir.isDirectory() && outputDir.isDirectory()) {
-			try {
-				setStatusMessage("Publishing book ...");
-				System.out.println( "Processing files in source dir " + sourceDir + " ..." );
-
-				BookPublisherConfig config = buildBookPublisherConfig();
-				config.setMetaTitle(metaTitle);
-				config.setMetaVersionId(metaVersionId);
-				BookPublisher bookPublisher = new BookPublisher();
-				bookPublisher.setConfig( config );
-				bookPublisher.publish( sourceDir, outputDir, outputBookFile );
-				// setStatusMessage("Finished publishing book.");
-				String fileName = outputBookFile.getName();
-				setStatusMessage("Finished publishing book " + fileName);
-				
-			} catch (Exception ex) {
-				setStatusMessage("Error publishing book: " + ex.getMessage());
-			}
-		} else {
-			setStatusMessage("Source or output folder is invalid.");
-		}
-	}
-
 	public void setStatusMessage(String msg) {
 		statusMessageLabel.setText(msg);
 	}
 
+	
 	public void updateProgressBar(int value) {
-		progressBar.setValue(value);
+		this.progressBar.setValue(value);
 	}
 	
-	private JProgressBar getProgressBar() {
+	
+	public JProgressBar getProgressBar() {
 		return this.progressBar;
 	}
 	
-	private String getSourceDirName() {
-		String dirName = sourceDirField.getText(); 
+	
+	public ProgressMonitor getProgressMonitor() {
+		ProgressMonitor progressMonitor = new ProgressBarMonitor(getProgressBar());
+		return progressMonitor;
+	}
+
+	
+	public String getInputDirName() {
+		String dirName = inputDirField.getText(); 
 		if (dirName != null) {
 			dirName = dirName.trim();
 		}
 		return dirName;
 	}
 	
-	private File getSourceDir() {
-		return new File( getSourceDirName() );
-	}
 	
-	private String getOutputDirName() {
+	public String getOutputDirName() {
 		String dirName = outputDirField.getText(); 
 		if (dirName != null) {
 			dirName = dirName.trim();
@@ -360,43 +302,17 @@ public class BookPublisherGUI extends JFrame {
 		return dirName;
 	}
 	
-	private File getOutputDir() {
-		return new File( getOutputDirName() );
-	}
 	
-	private BookPublisherConfig buildBookPublisherConfig() {
-		
-		BookPublisherConfig config = new BookPublisherConfig();
-		
-		ProgressMonitor progressMonitor = new ProgressBarMonitor(getProgressBar());
-		config.setProgressMonitor(progressMonitor);
-		
-		OpenOfficeServerContext serverContext = new OpenOfficeServerContext();
-		config.setServerContext(serverContext);
-		
-		Rectangle pageSize = BookPublisherConfig.DEFAULT_DOCUMENT_PAGE_SIZE;
-		config.setPageSize(pageSize);
-
-		// config.setMetaTitle(metaTitle);
-
-		String metaAuthor = System.getProperty( "user.name" );
-		config.setMetaAuthor(metaAuthor);
-
-		boolean verbose = true;
-		config.setVerboseEnabled(verbose);
-		
-		boolean debug = true;
-		config.setDebugEnabled(debug);
-		
-		return config;
+	public static void main( String[] args ) {
+		SwingUtilities.invokeLater( new GuiRunner() );
 	}
 
-	public static void main(String args[]) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				new BookPublisherGUI().setVisible(true);
-			}
-		});
+	
+	private static class GuiRunner implements Runnable {
+		public void run() {
+			BookPublisherGUI gui = new BookPublisherGUI();
+			gui.show();
+		}		
 	}
 
 }

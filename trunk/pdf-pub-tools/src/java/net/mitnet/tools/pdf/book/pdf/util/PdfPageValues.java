@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2010-2011  Tim Telcik <telcik@gmail.com>
+    Copyright (C) 2010-2013  Tim Telcik <telcik@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -15,25 +15,27 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package net.mitnet.tools.pdf.book.ui.cli;
+package net.mitnet.tools.pdf.book.pdf.util;
 
-import net.mitnet.tools.pdf.book.util.ProgressMonitor;
+import com.lowagie.text.PageSize;
+import com.lowagie.text.Rectangle;
 
 
 /**
- * Console Progress Monitor.
+ * PDF Page Values.
  * 
  * @author Tim Telcik <telcik@gmail.com>
  */
-public class ConsoleProgressMonitor implements ProgressMonitor {
+public class PdfPageValues {
 
-	@Override
-	public void setProgressPercentage(int value) {
-		if (value < 100) {
-			System.out.println( value + " % complete ...");
-		} else if (value == 100) {
-			System.out.println( value + " % complete.");
-		}
-	}
+	public static final String PAGE_ORIENTATION_LANDSCAPE = "landscape";
+	
+	public static final String PAGE_ORIENTATION_PORTRAIT = "portrait";
+	
+	public static final String PAGE_SIZE_ISO_A4_STRING = "A4";
+	
+	public static final String PAGE_SIZE_US_LETTER_STRING = "LETTER";
+
+	public static final Rectangle DEFAULT_PAGE_SIZE = PageSize.A4;
 
 }

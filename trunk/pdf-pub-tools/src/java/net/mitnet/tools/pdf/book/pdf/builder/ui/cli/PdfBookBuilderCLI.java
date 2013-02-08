@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2010-2011  Tim Telcik <telcik@gmail.com>
+    Copyright (C) 2010-2013  Tim Telcik <telcik@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,15 +19,18 @@ package net.mitnet.tools.pdf.book.pdf.builder.ui.cli;
 
 import java.io.File;
 
+import net.mitnet.tools.pdf.book.common.cli.CliDefaultValues;
+import net.mitnet.tools.pdf.book.common.cli.CliOptions;
+import net.mitnet.tools.pdf.book.common.cli.CommandLineHelper;
+import net.mitnet.tools.pdf.book.common.cli.ConsoleProgressMonitor;
+import net.mitnet.tools.pdf.book.common.cli.SystemExitValues;
+import net.mitnet.tools.pdf.book.conf.ConfigHelper;
 import net.mitnet.tools.pdf.book.model.toc.Toc;
 import net.mitnet.tools.pdf.book.model.toc.TocBuilder;
 import net.mitnet.tools.pdf.book.model.toc.TocTracer;
 import net.mitnet.tools.pdf.book.pdf.builder.PdfBookBuilder;
 import net.mitnet.tools.pdf.book.pdf.builder.PdfBookBuilderConfig;
 import net.mitnet.tools.pdf.book.pdf.event.PdfPageEventLogger;
-import net.mitnet.tools.pdf.book.ui.cli.CliConstants;
-import net.mitnet.tools.pdf.book.ui.cli.CommandLineHelper;
-import net.mitnet.tools.pdf.book.ui.cli.ConsoleProgressMonitor;
 import net.mitnet.tools.pdf.book.util.ProgressMonitor;
 
 import org.apache.commons.cli.CommandLine;
@@ -36,9 +39,7 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.PosixParser;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang.StringUtils;
 
-import com.lowagie.text.PageSize;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfPageEvent;
 
@@ -55,118 +56,140 @@ import com.lowagie.text.pdf.PdfPageEvent;
  */
 public class PdfBookBuilderCLI {
 	
-	private static final Options OPTIONS = initOptions();
+	private static final String CLI_USAGE = 
+			" [options] -i <input-dir> -o <output-file> [-p <page-size>] \n";
+	
+	private static final String CLI_HEADER =
+			"PdfBookBuilderCLI - PDF Book Builder Tool (c) 2010-2013 Tim Telcik <telcik@gmail.com>";
+	
+	private static final String CLI_FOOTER =
+			"For more instructions, see the PDF Publishing Tools project at \"https://code.google.com/p/pdf-pub-tools/\"";
+	
+	private static final int CLI_USAGE_HELP_WIDTH = 80;
+	
+	public static final int DEFAULT_NUP = CliDefaultValues.DEFAULT_NUP;
+	
+	private static final Options CLI_OPTIONS = initOptions();
 	
 
 	private static Options initOptions() {
 		Options options = new Options();
-		options.addOption(CliConstants.OPTION_SOURCE_DIR);
-		options.addOption(CliConstants.OPTION_OUTPUT_BOOK_FILE);
-		options.addOption(CliConstants.OPTION_PAGE_SIZE);
-		options.addOption(CliConstants.OPTION_DEBUG);
-		options.addOption(CliConstants.OPTION_VERBOSE);
-		options.addOption(CliConstants.OPTION_META_TITLE);
-		options.addOption(CliConstants.OPTION_META_AUTHOR);
+		options.addOption(CliOptions.OPTION_INPUT_DIR);
+		options.addOption(CliOptions.OPTION_OUTPUT_BOOK_FILE);
+		options.addOption(CliOptions.OPTION_PAGE_SIZE);
+		options.addOption(CliOptions.OPTION_DEBUG);
+		options.addOption(CliOptions.OPTION_VERBOSE);
+		options.addOption(CliOptions.OPTION_META_TITLE);
+		options.addOption(CliOptions.OPTION_META_AUTHOR);
+		options.addOption(CliOptions.OPTION_NUP);
 		return options;
 	}
-
-	public static void main(String[] arguments) throws Exception {
-
+	
+	
+	public PdfBookBuilderConfig parseConfig( String[] args ) throws Exception {
+		
+		PdfBookBuilderConfig config = new PdfBookBuilderConfig();
+		
 		CommandLineParser commandLineParser = new PosixParser();
-		CommandLine commandLine = commandLineParser.parse(OPTIONS, arguments);
+		CommandLine commandLine = commandLineParser.parse( CLI_OPTIONS, args );
 		CommandLineHelper commandLineHelper = new CommandLineHelper( commandLine );
 		
-		if (!commandLineHelper.hasOption(CliConstants.OPTION_SOURCE_DIR)) {
-			System.err.println("Must specify " + CliConstants.OPTION_SOURCE_DIR.getDescription());
+		if (!commandLineHelper.hasOption(CliOptions.OPTION_INPUT_DIR)) {
+			System.err.println("Must specify " + CliOptions.OPTION_INPUT_DIR.getDescription());
 			showHelp();
-			System.exit(CliConstants.EXIT_CODE_ERROR);
 		}
-		File sourceDir = commandLineHelper.getOptionValueAsFile(CliConstants.OPTION_SOURCE_DIR);
+		File inputDir = commandLineHelper.getOptionValueAsFile(CliOptions.OPTION_INPUT_DIR);
+		config.setInputDir(inputDir);
 
-		if (!commandLineHelper.hasOption(CliConstants.OPTION_OUTPUT_BOOK_FILE)) {
-			System.err.println("Must specify " + CliConstants.OPTION_OUTPUT_BOOK_FILE.getDescription());
+		if (!commandLineHelper.hasOption(CliOptions.OPTION_OUTPUT_BOOK_FILE)) {
+			System.err.println("Must specify " + CliOptions.OPTION_OUTPUT_BOOK_FILE.getDescription());
 			showHelp();
-			System.exit(CliConstants.EXIT_CODE_ERROR);
 		}
-		File outputBookFile = commandLineHelper.getOptionValueAsFile(CliConstants.OPTION_OUTPUT_BOOK_FILE);
+		File outputBookFile = commandLineHelper.getOptionValueAsFile(CliOptions.OPTION_OUTPUT_BOOK_FILE);
+		config.setOutputBookFile(outputBookFile);
 
-		Rectangle pageSize = PageSize.A4;
-		// Rectangle pageSize = PageSize.LETTER;
-		if (commandLineHelper.hasOption(CliConstants.OPTION_PAGE_SIZE)) {
-			String pageSizeString = commandLineHelper.getOptionValue(CliConstants.OPTION_PAGE_SIZE);
-			if (!StringUtils.isEmpty(pageSizeString)) {
-				if (CliConstants.PAGE_SIZE_US_LETTER_STRING.equalsIgnoreCase(pageSizeString)) {
-					pageSize = PageSize.LETTER;
-				}
-			}
-		}
+		Rectangle pageSize = ConfigHelper.parsePageSize(commandLineHelper);
+		config.setPageSize(pageSize);
 
 		boolean debug = false;
-		if (commandLineHelper.hasOption(CliConstants.OPTION_DEBUG)) {
+		if (commandLineHelper.hasOption(CliOptions.OPTION_DEBUG)) {
 			debug = true;
 		}
+		config.setDebugEnabled(debug);
 
 		boolean verbose = false;
-		if (commandLineHelper.hasOption(CliConstants.OPTION_VERBOSE)) {
+		if (commandLineHelper.hasOption(CliOptions.OPTION_VERBOSE)) {
 			verbose = true;
 		}
+		config.setVerboseEnabled(verbose);
 		
 		String metaTitle = FilenameUtils.getBaseName( outputBookFile.getName() );
 		if (metaTitle != null) {
 			metaTitle = metaTitle.toUpperCase();
 		}
-		if (commandLineHelper.hasOption(CliConstants.OPTION_META_TITLE)) {
-			metaTitle = commandLineHelper.getOptionValue(CliConstants.OPTION_META_TITLE);
+		if (commandLineHelper.hasOption(CliOptions.OPTION_META_TITLE)) {
+			metaTitle = commandLineHelper.getOptionValue(CliOptions.OPTION_META_TITLE);
 		}
+		config.setMetaTitle(metaTitle);
 		
 		String metaAuthor = System.getProperty( "user.name" );
-		if (commandLineHelper.hasOption(CliConstants.OPTION_META_AUTHOR)) {
-			metaAuthor = commandLineHelper.getOptionValue(CliConstants.OPTION_META_AUTHOR);
+		if (commandLineHelper.hasOption(CliOptions.OPTION_META_AUTHOR)) {
+			metaAuthor = commandLineHelper.getOptionValue(CliOptions.OPTION_META_AUTHOR);
 		}
+		config.setMetaAuthor(metaAuthor);
+		
+		int nup = CliDefaultValues.DEFAULT_NUP;
+		if (commandLineHelper.hasOption(CliOptions.OPTION_NUP)) {
+			nup = commandLineHelper.getOptionValueAsInt(CliOptions.OPTION_NUP);
+		}
+		config.setNup(nup);
+			
+		PdfPageEvent pdfPageEventListener = new PdfPageEventLogger();
+		config.setPdfPageEventListener(pdfPageEventListener);
+		
+		config.setBuildTocEnabled(true);
+		TocBuilder tocBuilder = new TocBuilder();
+		// config.setTocBuilder(tocBuilder);
+		config.setTocRowChangeListener(tocBuilder);
+		
+		return config;
+	}
+	
+	
+	public void run( String[] args ) throws Exception {
+		
+		PdfBookBuilderConfig config = parseConfig( args );
 
-		System.out.println( "Building PDF book \"" + outputBookFile + "\" from files in source folder \"" + sourceDir + "\" ..." );
+		System.out.println( "Building PDF book \"" + config.getOutputBookFile() + "\" from files in source folder \"" + config.getInputDir() + "\" ..." );
 
 		try {
 
-			if (verbose) {
-				verbose( "Source dir is \"" + sourceDir + "\"" );
-				verbose( "Output book file is \"" + outputBookFile + "\"" );
-				verbose( "Page size is " + pageSize );
-				verbose( "Building PDF book \"" + outputBookFile + "\" ...");
+			if (config.isVerboseEnabled()) {
+				verbose( "Source dir is \"" +  config.getInputDir() + "\"" );
+				verbose( "Output book file is \"" + config.getOutputBookFile() + "\"" );
+				verbose( "Page size is " + config.getPageSize() );
+				verbose( "Building PDF book \"" + config.getOutputBookFile() + "\" ...");
 			}
 
-			PdfBookBuilderConfig config = new PdfBookBuilderConfig();
-			
-			if (verbose) {
+			if (config.isVerboseEnabled()) {
 				ProgressMonitor progressMonitor = new ConsoleProgressMonitor();
 				config.setProgressMonitor(progressMonitor);
 			}
 			
-			PdfPageEvent pdfPageEventListener = new PdfPageEventLogger();
-			config.setPdfPageEventListener(pdfPageEventListener);
-			
-			config.setPageSize(pageSize);
-			config.setMetaTitle(metaTitle);
-			config.setMetaAuthor(metaAuthor);
-			config.setDebugEnabled(debug);
-			config.setVerboseEnabled(verbose);
-			
-			config.setBuildTocEnabled(true);
-			TocBuilder tocBuilder = new TocBuilder();
-			config.setTocRowChangeListener(tocBuilder);
-			
 			PdfBookBuilder pdfBookBuilder = new PdfBookBuilder();
 			pdfBookBuilder.setConfig(config);
-			pdfBookBuilder.buildBook(sourceDir, outputBookFile);
+			pdfBookBuilder.buildBook(config.getInputDir(), config.getOutputBookFile());
 			
-			Toc toc = tocBuilder.getToc();
-			if (verbose) {
-				// System.out.println( "Output PDF Table Of Contents is " + toc );
-				System.out.println( "Output PDF Table Of Contents contains " + toc.getTocRowCount() + " entries" );
-
-			}
-			if (debug) {
-				TocTracer.traceToc(toc);					
+			TocBuilder tocBuilder = (TocBuilder) config.getTocRowChangeListener();
+			if (tocBuilder != null) {
+				Toc toc = tocBuilder.getToc();
+				if (config.isVerboseEnabled()) {
+					// System.out.println( "Output PDF Table Of Contents is " + toc );
+					System.out.println( "Output PDF Table Of Contents contains " + toc.getTocRowCount() + " entries" );
+				}
+				if (config.isDebugEnabled()) {
+					TocTracer.traceToc(toc);					
+				}
 			}
 
 			// TODO - output TOC data ???
@@ -183,20 +206,27 @@ public class PdfBookBuilderCLI {
 
 		} catch (Exception e) {
 			e.printStackTrace(System.err);
-			String msg = "Error building PDF book " + outputBookFile + " : " + e.getMessage();
+			String msg = "Error building PDF book " + config.getOutputBookFile() + " : " + e.getMessage();
 			System.err.println( msg );
 			throw new Exception( msg, e );
 		}
 
-		System.out.println( "Finished building PDF book \"" + outputBookFile + "\".");
+		System.out.println( "Finished building PDF book \"" + config.getOutputBookFile() + "\".");
 	}
 
-	private static void showHelp() {
-		String syntax = PdfBookBuilderCLI.class.getName()
-				+ " [options] -i <input-dir> -o <output-file> [-p <page-size>] \n";
-		HelpFormatter helpFormatter = new HelpFormatter();
-		helpFormatter.printHelp(syntax, OPTIONS);
-		System.exit(CliConstants.EXIT_CODE_TOO_FEW_ARGS);
+	
+	public static void main( String[] args ) throws Exception {
+		
+		PdfBookBuilderCLI cli = new PdfBookBuilderCLI();
+		cli.run( args );
+
+	}
+
+	private void showHelp() {
+        HelpFormatter helpFormatter = new HelpFormatter( );
+        helpFormatter.setWidth( CLI_USAGE_HELP_WIDTH );
+        helpFormatter.printHelp( CLI_USAGE, CLI_HEADER, CLI_OPTIONS, CLI_FOOTER );
+		System.exit(SystemExitValues.EXIT_CODE_TOO_FEW_ARGS);
 	}
 	
 	private static void verbose( String msg ) {

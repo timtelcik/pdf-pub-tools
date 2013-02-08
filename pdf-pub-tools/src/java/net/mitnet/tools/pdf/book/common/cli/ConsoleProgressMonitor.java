@@ -15,41 +15,25 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package net.mitnet.tools.pdf.book.ui.cli;
+package net.mitnet.tools.pdf.book.common.cli;
+
+import net.mitnet.tools.pdf.book.util.ProgressMonitor;
 
 
 /**
- * Console Logger.
- * 
- * TODO: Merge/replace with Apache Log4j.
+ * Console Progress Monitor.
  * 
  * @author Tim Telcik <telcik@gmail.com>
  */
-public class ConsoleLogger {
+public class ConsoleProgressMonitor implements ProgressMonitor {
 
-	public static void verbose( String msg ) {
-		System.out.println( msg );
-	}
-	
-	public static void debug( String msg ) {
-		System.out.println( "DEBUG: " + msg );
-	}
-	
-	public static void info( String msg ) {
-		System.out.println( "INFO: " + msg );
-	}
-	
-	public static void error( String msg ) {
-		System.err.println( "ERROR: " + msg );
-	}
-	
-	public static void error( String msg, Exception exception ) {
-		System.err.println( "ERROR: " + msg );
-		if (exception != null) {
-			System.err.println( exception );
-			exception.printStackTrace(System.err);
+	@Override
+	public void setProgressPercentage(int value) {
+		if (value < 100) {
+			System.out.println( value + " % complete ...");
+		} else if (value == 100) {
+			System.out.println( value + " % complete.");
 		}
-	}	
+	}
 
 }
-

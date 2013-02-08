@@ -15,7 +15,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package net.mitnet.tools.pdf.book.ui.cli;
+package net.mitnet.tools.pdf.book.common.cli;
 
 import java.io.File;
 import java.util.Arrays;

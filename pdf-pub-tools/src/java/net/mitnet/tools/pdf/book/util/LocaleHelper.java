@@ -15,14 +15,37 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package net.mitnet.tools.pdf.book.conf;
+package net.mitnet.tools.pdf.book.util;
+
+import java.util.Locale;
+
 
 
 /**
- * Configuration.
+ * Locale Helper.
  * 
  * @author Tim Telcik <telcik@gmail.com>
+ * 
+ * @see Locale
  */
-public interface Config {
+public class LocaleHelper {
+	
+	public static final boolean isAustralianLocale() {
+		boolean result = false;
+		String code = Locale.getDefault().getCountry();
+		if (Iso3166CountryCodes.AUSTRALIA.equalsIgnoreCase(code)) {
+			result = true;
+		}
+		return result;
+	}
+	
+	public static final boolean isUsaLocale() {
+		boolean result = false;
+		String code = Locale.getDefault().getCountry();
+		if (Iso3166CountryCodes.USA.equalsIgnoreCase(code)) {
+			result = true;
+		}
+		return result;
+	}
 
 }

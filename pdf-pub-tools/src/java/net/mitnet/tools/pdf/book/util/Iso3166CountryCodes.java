@@ -15,14 +15,21 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package net.mitnet.tools.pdf.book.conf;
+package net.mitnet.tools.pdf.book.util;
 
 
 /**
- * Configuration.
+ * ISO 3166 Country Codes.
  * 
  * @author Tim Telcik <telcik@gmail.com>
+ * 
+ * TODO: Replace with Java enum
  */
-public interface Config {
+public class Iso3166CountryCodes {
+
+	public static final String AUSTRALIA = "au";
+	public static final String GERMANY = "de";
+	public static final String UK = "uk";
+	public static final String USA = "us";
 
 }

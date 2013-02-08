@@ -15,14 +15,18 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package net.mitnet.tools.pdf.book.conf;
+package net.mitnet.tools.pdf.book.common.cli;
 
 
 /**
- * Configuration.
+ * System Exit Values.
  * 
  * @author Tim Telcik <telcik@gmail.com>
  */
-public interface Config {
+public class SystemExitValues {
+
+	public static final int EXIT_CODE_CONNECTION_FAILED = 1;
+	public static final int EXIT_CODE_ERROR = 1;
+	public static final int EXIT_CODE_TOO_FEW_ARGS = 255;
 
 }

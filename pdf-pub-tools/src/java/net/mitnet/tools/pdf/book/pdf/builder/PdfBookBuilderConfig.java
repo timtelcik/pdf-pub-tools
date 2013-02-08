@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2010-2011  Tim Telcik <telcik@gmail.com>
+    Copyright (C) 2010-2013  Tim Telcik <telcik@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,6 +17,9 @@
 
 package net.mitnet.tools.pdf.book.pdf.builder;
 
+import java.io.File;
+
+import net.mitnet.tools.pdf.book.common.cli.CliDefaultValues;
 import net.mitnet.tools.pdf.book.conf.BaseConfig;
 import net.mitnet.tools.pdf.book.model.toc.TocRowChangeListener;
 import net.mitnet.tools.pdf.book.openoffice.net.OpenOfficeServerContext;
@@ -38,16 +41,36 @@ public class PdfBookBuilderConfig extends BaseConfig {
 	// public static final String DEFAULT_FONT_PATH = "resources/fonts/" + DELICIOUS_ROMAN_FONT_FILE_NAME;
 	public static final String DEFAULT_FONT_PATH = FONT_FILE_PATH + "/" + DELICIOUS_ROMAN_FONT_FILE_NAME;
 	public static final int DEFAULT_FONT_SIZE = 14;
+	public static final int DEFAULT_NUP = CliDefaultValues.DEFAULT_NUP;
 
+	private File inputDir = null;
+	private File outputBookFile = null;
 	private OpenOfficeServerContext serverContext = new OpenOfficeServerContext();
 	private TocRowChangeListener tocRowChangeListener = null;
 	private PdfPageEvent pdfPageEventListener = null;
 	private String fontName = DEFAULT_FONT_FILE_NAME;
 	private int fontSize = DEFAULT_FONT_SIZE;
 	private boolean showPageNumbers = true;
+
 	
 	
 	public PdfBookBuilderConfig() {	
+	}
+	
+	public File getInputDir() {
+		return inputDir;
+	}
+
+	public void setInputDir(File inputDir) {
+		this.inputDir = inputDir;
+	}
+
+	public File getOutputBookFile() {
+		return outputBookFile;
+	}
+
+	public void setOutputBookFile(File outputBookFile) {
+		this.outputBookFile = outputBookFile;
 	}
 	
 	public void setFontName( String fontName ) {
@@ -89,5 +112,5 @@ public class PdfBookBuilderConfig extends BaseConfig {
 	public boolean isShowPageNumbers() {
 		return showPageNumbers;
 	}
-
+	
 }

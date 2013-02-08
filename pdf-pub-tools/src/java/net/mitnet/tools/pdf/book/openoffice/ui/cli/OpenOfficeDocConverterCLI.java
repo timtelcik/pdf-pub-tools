@@ -19,10 +19,11 @@ package net.mitnet.tools.pdf.book.openoffice.ui.cli;
 
 import java.io.File;
 
+import net.mitnet.tools.pdf.book.common.cli.CliOptions;
+import net.mitnet.tools.pdf.book.common.cli.CommandLineHelper;
+import net.mitnet.tools.pdf.book.common.cli.ConsoleProgressMonitor;
+import net.mitnet.tools.pdf.book.common.cli.SystemExitValues;
 import net.mitnet.tools.pdf.book.openoffice.converter.OpenOfficeDocConverter;
-import net.mitnet.tools.pdf.book.ui.cli.CliConstants;
-import net.mitnet.tools.pdf.book.ui.cli.CommandLineHelper;
-import net.mitnet.tools.pdf.book.ui.cli.ConsoleProgressMonitor;
 import net.mitnet.tools.pdf.book.util.ProgressMonitor;
 
 import org.apache.commons.cli.CommandLine;
@@ -55,13 +56,13 @@ public class OpenOfficeDocConverterCLI {
 
 	private static Options initOptions() {
 		Options options = new Options();
-		options.addOption(CliConstants.OPTION_SOURCE_DIR);
-		options.addOption(CliConstants.OPTION_OUTPUT_DIR);
-		options.addOption(CliConstants.OPTION_OUTPUT_FORMAT);
-		options.addOption(CliConstants.OPTION_OPEN_OFFICE_HOST);
-		options.addOption(CliConstants.OPTION_OPEN_OFFICE_PORT);
-		options.addOption(CliConstants.OPTION_DEBUG);
-		options.addOption(CliConstants.OPTION_VERBOSE);
+		options.addOption(CliOptions.OPTION_INPUT_DIR);
+		options.addOption(CliOptions.OPTION_OUTPUT_DIR);
+		options.addOption(CliOptions.OPTION_OUTPUT_FORMAT);
+		options.addOption(CliOptions.OPTION_OPEN_OFFICE_HOST);
+		options.addOption(CliOptions.OPTION_OPEN_OFFICE_PORT);
+		options.addOption(CliOptions.OPTION_DEBUG);
+		options.addOption(CliOptions.OPTION_VERBOSE);
 		return options;
 	}
 
@@ -71,37 +72,35 @@ public class OpenOfficeDocConverterCLI {
 		CommandLine commandLine = commandLineParser.parse(OPTIONS, arguments);
 		CommandLineHelper commandLineHelper = new CommandLineHelper(commandLine);
 		
-		if (!commandLineHelper.hasOption(CliConstants.OPTION_SOURCE_DIR)) {
-			System.err.println("Must specify " + CliConstants.OPTION_SOURCE_DIR.getDescription());
+		if (!commandLineHelper.hasOption(CliOptions.OPTION_INPUT_DIR)) {
+			System.err.println("Must specify " + CliOptions.OPTION_INPUT_DIR.getDescription());
 			showHelp();
-			System.exit(CliConstants.EXIT_CODE_ERROR);
 		}
-		File sourceDir = commandLineHelper.getOptionValueAsFile(CliConstants.OPTION_SOURCE_DIR);
+		File sourceDir = commandLineHelper.getOptionValueAsFile(CliOptions.OPTION_INPUT_DIR);
 
-		if (!commandLineHelper.hasOption(CliConstants.OPTION_OUTPUT_DIR)) {
-			System.err.println("Must specify " + CliConstants.OPTION_OUTPUT_DIR.getDescription());
+		if (!commandLineHelper.hasOption(CliOptions.OPTION_OUTPUT_DIR)) {
+			System.err.println("Must specify " + CliOptions.OPTION_OUTPUT_DIR.getDescription());
 			showHelp();
-			System.exit(CliConstants.EXIT_CODE_ERROR);
 		}
-		File outputDir = commandLineHelper.getOptionValueAsFile(CliConstants.OPTION_OUTPUT_DIR);
+		File outputDir = commandLineHelper.getOptionValueAsFile(CliOptions.OPTION_OUTPUT_DIR);
 
 		int openOfficePort = 8100;
-		if (commandLineHelper.hasOption(CliConstants.OPTION_OPEN_OFFICE_PORT)) {
-			openOfficePort = commandLineHelper.getOptionValueAsInt(CliConstants.OPTION_OPEN_OFFICE_PORT);
+		if (commandLineHelper.hasOption(CliOptions.OPTION_OPEN_OFFICE_PORT)) {
+			openOfficePort = commandLineHelper.getOptionValueAsInt(CliOptions.OPTION_OPEN_OFFICE_PORT);
 		}
 
 		String openOfficeHost = "localhost";
-		if (commandLineHelper.hasOption(CliConstants.OPTION_OPEN_OFFICE_HOST)) {
-			openOfficeHost = commandLineHelper.getOptionValue(CliConstants.OPTION_OPEN_OFFICE_HOST);
+		if (commandLineHelper.hasOption(CliOptions.OPTION_OPEN_OFFICE_HOST)) {
+			openOfficeHost = commandLineHelper.getOptionValue(CliOptions.OPTION_OPEN_OFFICE_HOST);
 		}
 
 		String outputFormat = DEFAULT_OUTPUT_FORMAT;
-		if (commandLineHelper.hasOption(CliConstants.OPTION_OUTPUT_FORMAT)) {
-			outputFormat = commandLineHelper.getOptionValue(CliConstants.OPTION_OUTPUT_FORMAT);
+		if (commandLineHelper.hasOption(CliOptions.OPTION_OUTPUT_FORMAT)) {
+			outputFormat = commandLineHelper.getOptionValue(CliOptions.OPTION_OUTPUT_FORMAT);
 		}
 
 		boolean verbose = false;
-		if (commandLineHelper.hasOption(CliConstants.OPTION_VERBOSE)) {
+		if (commandLineHelper.hasOption(CliOptions.OPTION_VERBOSE)) {
 			verbose = true;
 		}
 
@@ -124,7 +123,7 @@ public class OpenOfficeDocConverterCLI {
 				+ " and listening on port " 
 				+ openOfficePort + ".";
 			System.err.println(msg);
-			System.exit(CliConstants.EXIT_CODE_CONNECTION_FAILED);
+			System.exit(SystemExitValues.EXIT_CODE_CONNECTION_FAILED);
 		}
 		try {
 			if (verbose) {
@@ -153,7 +152,7 @@ public class OpenOfficeDocConverterCLI {
 				+ " [options] -indir <input-dir> -outdir <output-dir>\n";
 		HelpFormatter helpFormatter = new HelpFormatter();
 		helpFormatter.printHelp(syntax, OPTIONS);
-		System.exit(CliConstants.EXIT_CODE_TOO_FEW_ARGS);
+		System.exit(SystemExitValues.EXIT_CODE_TOO_FEW_ARGS);
 	}
 
 }

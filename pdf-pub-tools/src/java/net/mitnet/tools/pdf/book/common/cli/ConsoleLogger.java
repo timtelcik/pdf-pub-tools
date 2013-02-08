@@ -15,39 +15,41 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package net.mitnet.tools.pdf.book.ui.gui;
-
-import javax.swing.JProgressBar;
-
-import net.mitnet.tools.pdf.book.util.ProgressMonitor;
+package net.mitnet.tools.pdf.book.common.cli;
 
 
 /**
- * Progress Bar Monitor.
+ * Console Logger.
+ * 
+ * TODO: Merge/replace with Apache Log4j.
  * 
  * @author Tim Telcik <telcik@gmail.com>
  */
-public class ProgressBarMonitor implements ProgressMonitor {
-	
-	private JProgressBar progressBar = null;
-	
-	public ProgressBarMonitor( JProgressBar progressBar ) {
-		this.progressBar = progressBar;
-		this.progressBar.setMinimum(0); 
-		this.progressBar.setMaximum(100);
-		this.progressBar.setStringPainted(true);
-	}
+public class ConsoleLogger {
 
-	@Override
-	public void setProgressPercentage(int value) {
-		
-		if (value < 100) {
-			System.out.println( value + " % complete ...");
-		} else if (value == 100) {
-			System.out.println( value + " % complete.");
+	public static void verbose( String msg ) {
+		System.out.println( msg );
+	}
+	
+	public static void debug( String msg ) {
+		System.out.println( "DEBUG: " + msg );
+	}
+	
+	public static void info( String msg ) {
+		System.out.println( "INFO: " + msg );
+	}
+	
+	public static void error( String msg ) {
+		System.err.println( "ERROR: " + msg );
+	}
+	
+	public static void error( String msg, Exception exception ) {
+		System.err.println( "ERROR: " + msg );
+		if (exception != null) {
+			System.err.println( exception );
+			exception.printStackTrace(System.err);
 		}
-
-		this.progressBar.setValue(value);
-	}
+	}	
 
 }
+

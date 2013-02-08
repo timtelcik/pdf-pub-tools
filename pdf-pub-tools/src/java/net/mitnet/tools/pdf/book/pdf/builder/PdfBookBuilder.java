@@ -19,13 +19,9 @@ package net.mitnet.tools.pdf.book.pdf.builder;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
 import net.mitnet.tools.pdf.book.io.FileHelper;
-import net.mitnet.tools.pdf.book.model.toc.Toc;
 import net.mitnet.tools.pdf.book.model.toc.TocRow;
 import net.mitnet.tools.pdf.book.model.toc.TocRowChangeListener;
 import net.mitnet.tools.pdf.book.pdf.event.PdfPageEventLogger;
@@ -92,34 +88,34 @@ public class PdfBookBuilder {
 	}
 	
 
-	public void buildBook( File sourceDir, File outputFile ) throws Exception {
+	public void buildBook( File inputDir, File outputFile ) throws Exception {
 
 		if (isVerboseEnabled()) {
-			verbose( "Building book \"" + outputFile + "\" from source folder \"" + sourceDir + "\" ..." );
+			verbose( "Building book \"" + outputFile + "\" from source folder \"" + inputDir + "\" ..." );
 		}
 
 		if (isDebugEnabled()) {
-			debug( "-- sourceDir: " + sourceDir);
+			debug( "-- inputDir: " + inputDir);
 			debug( "-- outputFile: " + outputFile);
 			debug( "-- progressMonitor: " + getConfig().getProgressMonitor());
 			debug( "-- tocRowChangeListener: " + getConfig().getTocRowChangeListener());
 		}
 		
-		List<File> sourceFileList = FileHelper.findPdfFiles(sourceDir,true);
+		List<File> inputFileList = FileHelper.findPdfFiles(inputDir,true);
 		if (isDebugEnabled()) {
-			debug( "-- sourceFileList contains " + sourceFileList.size() + " items");
+			debug( "-- inputFileList contains " + inputFileList.size() + " items");
 		}
 		if (isDebugEnabled()) {
-			debug( "-- sourceFileList.size: " + sourceFileList.size());
-			debug( "-- sourceFileList: " + sourceFileList);
+			debug( "-- inputFileList.size: " + inputFileList.size());
+			debug( "-- inputFileList: " + inputFileList);
 		}
 		
-		if (!sourceFileList.isEmpty()) {
-			buildBook( sourceFileList, outputFile );
+		if (!inputFileList.isEmpty()) {
+			buildBook( inputFileList, outputFile );
 		}
 	}
 
-	public void buildBook( List<File> sourceFileList, File outputFile ) {
+	public void buildBook( List<File> inputFileList, File outputFile ) {
 		
 		try {
 
@@ -169,15 +165,19 @@ public class PdfBookBuilder {
 			// Loop through and pull pages
 			int outputPageCount = 0;
 			int currentSourceFileIndex = 0;
-			int maxSourceFileIndex = sourceFileList.size();
+			int maxSourceFileIndex = inputFileList.size();
 			
 			// BaseFont pageLabelFont = BaseFont.createFont( PdfBookBuilderConfig.DEFAULT_FONT, BaseFont.CP1250, BaseFont.EMBEDDED );
 			BaseFont pageLabelFont = BaseFont.createFont( PdfBookBuilderConfig.DEFAULT_FONT_PATH, BaseFont.CP1250, BaseFont.EMBEDDED );
 			if (isVerboseEnabled()) {
 				verbose("Using page label font " + pageLabelFont);
 			}
+			
+			if (isVerboseEnabled()) {
+				verbose("Assembling pages using n-up " + getConfig().getNup());
+			}			
 
-			for (File sourceFile : sourceFileList) {
+			for (File sourceFile : inputFileList) {
 
 				currentSourceFileIndex++;
 
@@ -213,7 +213,6 @@ public class PdfBookBuilder {
 						verbose("PDF info author is " + currentSourcePdfAuthor);
 					}
 
-					
 					boolean firstPageOfCurrentSource = true;
 					
 					int maxSourcePages = sourcePdfReader.getNumberOfPages();
@@ -221,7 +220,7 @@ public class PdfBookBuilder {
 						verbose("There are " + maxSourcePages + " page(s) in source PDF file " + sourceFile);
 					}
 
-					// process all pages from source doc ...
+					// process all pages from source doc
 					while (sourcePageIndex < maxSourcePages) {
 
 						// add new page to current document
@@ -250,18 +249,59 @@ public class PdfBookBuilder {
 						if (isVerboseEnabled()) {
 							verbose("Adding page " + sourcePageIndex + " of " + maxSourcePages + " from source to output");
 						}
-						PdfImportedPage page1 = pdfWriter.getImportedPage(sourcePdfReader,sourcePageIndex);
+						PdfImportedPage page1 = pdfWriter.getImportedPage( sourcePdfReader, sourcePageIndex );
+						
+						// n-up is 1
+						if (config.getNup() == 1) {
+							// add first page to top half of current page
+							// TODO - review magic transformation matrix numbers and offsets
+							// TODO - calculate scaling/transform based on page rect and template rect
+							float p1a = 0.65f;
+							float p1b = 0;
+							float p1c = 0;
+							float p1d = 0.65f;
+							float p1e = 20;
+							float p1f = 160;
+							pdfContent.addTemplate( page1, p1a, p1b, p1c, p1d, p1e, p1f );
 
-						// extract second page from source document ?
-						PdfImportedPage page2 = null;
-						if (sourcePageIndex < maxSourcePages) {
-							sourcePageIndex++;
-							if (isVerboseEnabled()) {
-								verbose("Adding page " + sourcePageIndex + " of " + maxSourcePages + " from source to output");
+						// n-up is 2 (default)
+						} else {
+							
+							// add first page to top half of current page
+							// TODO - review magic transformation matrix numbers and offsets
+							float p1a = 0.5f;
+							float p1b = 0;
+							float p1c = 0;
+							float p1d = 0.5f;
+							float p1e = (125);
+							float p1f = ((pageWidth / 2) + 120 + 20);
+							pdfContent.addTemplate( page1, p1a, p1b, p1c, p1d, p1e, p1f );
+
+							// extract second page from source document ?
+							PdfImportedPage page2 = null;
+							if (sourcePageIndex < maxSourcePages) {
+								sourcePageIndex++;
+								if (isVerboseEnabled()) {
+									verbose("Adding page " + sourcePageIndex + " of " + maxSourcePages + " from source to output");
+								}
+								page2 = pdfWriter.getImportedPage( sourcePdfReader, sourcePageIndex );
 							}
-							page2 = pdfWriter.getImportedPage( sourcePdfReader, sourcePageIndex );
+							
+							// add second page to bottom half of current page
+							if (page2 != null) {
+								// TODO - review magic transformation matrix numbers and offsets
+								float p2a = 0.5f; 
+								float p2b = 0;
+								float p2c = 0;
+								float p2d = 0.5f;
+								float p2e = 125;
+								float p2f = 120;
+								pdfContent.addTemplate( page2, p2a, p2b, p2c, p2d, p2e, p2f );
+							}
 						}
 
+
+						/*
 						// add first page to top half of current page
 						// TODO - review magic transformation matrix numbers and offsets
 						float p1a = 0.5f;
@@ -283,6 +323,7 @@ public class PdfBookBuilder {
 							float p2f = 120;
 							pdfContent.addTemplate( page2, p2a, p2b, p2c, p2d, p2e, p2f );
 						}
+						*/
 
 						// Add current page number to page footer
 						String pageCountLabel = "Page " + outputPageCount;
@@ -325,16 +366,6 @@ public class PdfBookBuilder {
 		
 	}
 	
-	// TODO - fix Locale logic
-	private Rectangle getPageSizeForLocale() {
-		return PdfBookBuilderConfig.DEFAULT_DOCUMENT_PAGE_SIZE;
-	}
-	
-	// TODO - fix Locale logic
-	private Rectangle getPageSizeForLocale( Locale locale ) {
-		return PdfBookBuilderConfig.DEFAULT_DOCUMENT_PAGE_SIZE;
-	}
-	
 	private boolean isVerboseEnabled() {
 		return getConfig().isVerboseEnabled();
 	}
@@ -353,11 +384,6 @@ public class PdfBookBuilder {
 		if (isDebugEnabled()) {
 			System.out.println( "-- " + msg );
 		}
-	}
-	
-	private Map buildTocTemplateData( Toc toc ) {
-		Map templateData = new HashMap();
-		return templateData;
 	}
 	
 	private String getSystemUserName() {

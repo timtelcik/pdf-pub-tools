@@ -19,9 +19,10 @@ package net.mitnet.tools.pdf.book.openoffice.ui.cli;
 
 import java.io.File;
 
+import net.mitnet.tools.pdf.book.common.cli.CliOptions;
+import net.mitnet.tools.pdf.book.common.cli.CommandLineHelper;
+import net.mitnet.tools.pdf.book.common.cli.SystemExitValues;
 import net.mitnet.tools.pdf.book.openoffice.reports.OpenOfficeReportBuilder;
-import net.mitnet.tools.pdf.book.ui.cli.CliConstants;
-import net.mitnet.tools.pdf.book.ui.cli.CommandLineHelper;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -47,13 +48,13 @@ public class OpenOfficeReportBuilderCLI {
 
 	private static Options initOptions() {
 		Options options = new Options();
-		options.addOption(CliConstants.OPTION_SOURCE_DIR);
-		options.addOption(CliConstants.OPTION_OUTPUT_DIR);
-		options.addOption(CliConstants.OPTION_OUTPUT_FORMAT);
-		options.addOption(CliConstants.OPTION_OPEN_OFFICE_HOST);
-		options.addOption(CliConstants.OPTION_OPEN_OFFICE_PORT);
-		options.addOption(CliConstants.OPTION_DEBUG);
-		options.addOption(CliConstants.OPTION_VERBOSE);
+		options.addOption(CliOptions.OPTION_INPUT_DIR);
+		options.addOption(CliOptions.OPTION_OUTPUT_DIR);
+		options.addOption(CliOptions.OPTION_OUTPUT_FORMAT);
+		options.addOption(CliOptions.OPTION_OPEN_OFFICE_HOST);
+		options.addOption(CliOptions.OPTION_OPEN_OFFICE_PORT);
+		options.addOption(CliOptions.OPTION_DEBUG);
+		options.addOption(CliOptions.OPTION_VERBOSE);
 		return options;
 	}
 
@@ -63,29 +64,26 @@ public class OpenOfficeReportBuilderCLI {
 		CommandLine commandLine = commandLineParser.parse(OPTIONS, arguments);
 		CommandLineHelper commandLineHelper = new CommandLineHelper(commandLine);
 		
-		if (!commandLineHelper.hasOption(CliConstants.OPTION_SOURCE_TEMPLATE_FILE)) {
-			System.err.println("Must specify " + CliConstants.OPTION_SOURCE_TEMPLATE_FILE.getDescription());
+		if (!commandLineHelper.hasOption(CliOptions.OPTION_INPUT_TEMPLATE_FILE)) {
+			System.err.println("Must specify " + CliOptions.OPTION_INPUT_TEMPLATE_FILE.getDescription());
 			showHelp();
-			System.exit(CliConstants.EXIT_CODE_ERROR);
 		}
-		File sourceTemplateFile = commandLineHelper.getOptionValueAsFile(CliConstants.OPTION_SOURCE_TEMPLATE_FILE);
+		File sourceTemplateFile = commandLineHelper.getOptionValueAsFile(CliOptions.OPTION_INPUT_TEMPLATE_FILE);
 
-		if (!commandLineHelper.hasOption(CliConstants.OPTION_SOURCE_DATA_FILE)) {
-			System.err.println("Must specify " + CliConstants.OPTION_SOURCE_DATA_FILE.getDescription());
+		if (!commandLineHelper.hasOption(CliOptions.OPTION_INPUT_DATA_FILE)) {
+			System.err.println("Must specify " + CliOptions.OPTION_INPUT_DATA_FILE.getDescription());
 			showHelp();
-			System.exit(CliConstants.EXIT_CODE_ERROR);
 		}
-		File sourceDataFile = commandLineHelper.getOptionValueAsFile(CliConstants.OPTION_SOURCE_DATA_FILE);
+		File sourceDataFile = commandLineHelper.getOptionValueAsFile(CliOptions.OPTION_INPUT_DATA_FILE);
 		
-		if (!commandLineHelper.hasOption(CliConstants.OPTION_OUTPUT_REPORT_FILE)) {
-			System.err.println("Must specify " + CliConstants.OPTION_OUTPUT_REPORT_FILE.getDescription());
+		if (!commandLineHelper.hasOption(CliOptions.OPTION_OUTPUT_REPORT_FILE)) {
+			System.err.println("Must specify " + CliOptions.OPTION_OUTPUT_REPORT_FILE.getDescription());
 			showHelp();
-			System.exit(CliConstants.EXIT_CODE_ERROR);
 		}
-		File outputReportFile = commandLineHelper.getOptionValueAsFile(CliConstants.OPTION_OUTPUT_REPORT_FILE);
+		File outputReportFile = commandLineHelper.getOptionValueAsFile(CliOptions.OPTION_OUTPUT_REPORT_FILE);
 
 		boolean verbose = false;
-		if (commandLineHelper.hasOption(CliConstants.OPTION_VERBOSE)) {
+		if (commandLineHelper.hasOption(CliOptions.OPTION_VERBOSE)) {
 			verbose = true;
 		}
 
@@ -100,7 +98,7 @@ public class OpenOfficeReportBuilderCLI {
 		} catch (Exception e) {
 			e.printStackTrace(System.err);
 			System.err.println( "Error building report: " + e.getMessage());
-			System.exit(CliConstants.EXIT_CODE_ERROR);
+			System.exit(SystemExitValues.EXIT_CODE_ERROR);
 		}
 		System.out.println( "Finished converting files.");
 	}
@@ -110,7 +108,7 @@ public class OpenOfficeReportBuilderCLI {
 				+ " [options] -intemplate <input-template-file> -indata <input-data-file> -outreport <output-report-file>\n";
 		HelpFormatter helpFormatter = new HelpFormatter();
 		helpFormatter.printHelp(syntax, OPTIONS);
-		System.exit(CliConstants.EXIT_CODE_TOO_FEW_ARGS);
+		System.exit(SystemExitValues.EXIT_CODE_TOO_FEW_ARGS);
 	}
 
 }

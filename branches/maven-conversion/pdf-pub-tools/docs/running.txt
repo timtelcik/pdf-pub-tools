@@ -1,0 +1,20 @@
+= PDF Publishing Tools - How To Run =
+
+Created: 11-Feb-2012, Rich Sezov <sezovr@gmail.com>
+Modified: 15-Feb-2012, Tim Telcik <telcik@gmail.com>
+
+
+== Command Line ==
+
+=== Run Book Publisher Command Line Tool ===
+
+./run-book-publisher-cli.sh -v -indir /home/rsezov/temp/training-r4/03-portal-dev -outdir /home/rsezov/temp/training-r4/dev-test -outbook /home/rsezov/temp/training-r4/output-book.pdf -ps LETTER
+
+
+=== Start Open Office ===
+
+start Open Office on localhost loopback (127.0.0.1) to listen on port 8100.
+
+soffice "-accept=socket,host=127.0.0.1,port=8100,tcpNoDelay=1;urp;" -headless -nodefault -nofirststartwizard -nolockcheck -nologo -norestore
+
+

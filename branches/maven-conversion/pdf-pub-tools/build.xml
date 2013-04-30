@@ -1,0 +1,170 @@
+<?xml version="1.0"?>
+<!DOCTYPE project>
+
+<!--
+    Copyright (C) 2010-2011  Tim Telcik <telcik@gmail.com>
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+	
+<project name="pdf-pub-tools" default="deploy" basedir=".">
+
+	<description>
+        Apache Ant build script for PDF Publishing Tools project.
+        See "https://code.google.com/p/pdf-pub-tools/".
+	</description>
+
+	<!-- set global properties for this build -->
+	<property name="etc.dir" location="${basedir}/etc" />
+	<property name="lib.dir" location="${basedir}/lib" />
+	<property name="src.dir" location="${basedir}/src" />
+	<property name="bin.src.dir" location="${src.dir}/bin" />
+	<property name="fonts.src.dir" location="${resources.src.dir}/fonts" />
+	<property name="java.src.dir" location="${src.dir}/java" />
+	<property name="metainf.src.dir" location="${java.src.dir}/META-INF" />
+	<property name="reports.src.dir" location="${resources.src.dir}/reports" />
+	<property name="resources.src.dir" location="${src.dir}/resources" />
+	<property name="build.dir" location="${basedir}/build" />
+	<property name="classes.build.dir" location="${build.dir}/classes" />
+	<property name="lib.build.dir" location="${build.dir}/lib" />
+	<!--
+	<property name="resources.build.dir" location="${build.dir}/resources" />	
+	-->
+	<property name="resources.build.dir" location="${classes.build.dir}" />	
+	<property name="dist.dir" location="${basedir}/dist" />
+	<property name="deploy.dir" location="${basedir}/deploy" />	
+	<property name="bin.deploy.dir" location="${deploy.dir}/bin" />	
+	<property name="lib.deploy.dir" location="${deploy.dir}/lib" />	
+	<property name="resources.deploy.dir" location="${deploy.dir}/resources" />	
+	<property name="project.lib.jar" location="${lib.build.dir}/${ant.project.name}.jar" />
+
+
+	<path id="classpath.path">
+		<pathelement path="${classpath}" />
+		<fileset dir="${lib.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+		<pathelement location="${classes.build.dir}" />
+	</path>
+
+	<target name="init">
+		<tstamp />
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${classes.build.dir}" />
+		<mkdir dir="${lib.build.dir}" />
+		<mkdir dir="${deploy.dir}" />
+		<mkdir dir="${bin.deploy.dir}" />
+		<mkdir dir="${lib.deploy.dir}" />
+		<mkdir dir="${resources.deploy.dir}" />
+	</target>
+
+	<target name="compile" depends="init" description="compile the source ">
+		<javac srcdir="${src.dir}" destdir="${classes.build.dir}" classpathref="classpath.path" debug="on" />
+
+		<!--
+		<copy todir="${classes.build.dir}">
+			<fileset dir="${java.src.dir}">
+				<exclude name="log4j" />
+				<exclude name="**/log4j" />
+				<include name="**/*.properties" />
+				<include name="**/*.xml" />
+			</fileset>
+  		</copy>
+		-->
+
+		<copy todir="${classes.build.dir}" flatten="true">
+			<resources>
+				<file file="${java.src.dir}/log4j.properties"/>
+			</resources>
+		</copy>
+
+		<!--
+		<mkdir dir="${resources.build.dir}" />
+		-->
+		<copy todir="${resources.build.dir}">
+			<fileset dir="${resources.src.dir}" />
+  		</copy>
+		<copy todir="${build.dir}/META-INF">
+			<fileset file="${metainf.src.dir}/MANIFEST.MF"/>
+		</copy>
+	</target>
+
+	<target name="dist-x" depends="compile" description="generate the distribution">
+		<mkdir dir="${dist.dir}/lib" />
+		<jar jarfile="${dist.dir}/lib/${ant.project.name}-${DSTAMP}.jar" basedir="${build.dir}" />
+	</target>
+
+	<target name="dist" depends="deploy" description="Build the distribution">
+		<mkdir dir="${dist.dir}" />
+		<!-- <jar jarfile="${dist.dir}/lib/${ant.project.name}-${DSTAMP}.jar" basedir="${build.dir}" /> -->
+		<!-- <zip destfile="${dist.dir}/lib/${ant.project.name}-${DSTAMP}.zip" basedir="${build.dir}" /> -->
+		<zip destfile="${dist.dir}/${ant.project.name}-${DSTAMP}.zip">
+			<zipfileset dir="${bin.deploy.dir}/" prefix="bin" filemode="755" />
+			<zipfileset dir="${lib.deploy.dir}/" prefix="lib" />
+			<zipfileset dir="${resources.deploy.dir}/" prefix="resources" />
+			<!--
+			<zipfileset dir="." includes="ChangeLog.txt"/>
+			-->
+		</zip>
+	</target>
+
+	<target name="lib" depends="compile" description="builds the runtime library">
+		<mkdir dir="${lib.build.dir}" />
+		<!--
+		<jar jarfile="${lib.build.dir}/${ant.project.name}-${DSTAMP}.jar" basedir="${classes.build.dir}" />
+		-->
+		<jar jarfile="${project.lib.jar}" basedir="${classes.build.dir}" />
+	</target>
+
+	<target name="deploy" depends="lib" description="deploys the runtime libraries">
+		<mkdir dir="${bin.deploy.dir}" />
+		<mkdir dir="${lib.deploy.dir}" />
+		<mkdir dir="${resources.deploy.dir}" />
+
+		<copy file="${project.lib.jar}" todir="${lib.deploy.dir}" />
+
+		<copy todir="${lib.deploy.dir}">
+			<fileset dir="${lib.dir}"
+				includes="**/*.jar" />
+  		</copy>
+
+		<copy todir="${bin.deploy.dir}">
+			<fileset dir="${bin.src.dir}">
+				<include name="**/*.sh" />
+			</fileset>
+  		</copy>
+
+		<chmod perm="755" verbose="true">
+			<fileset dir="${bin.deploy.dir}">
+				<!--
+				<include name="**/.sh" />
+				-->
+				<include name="**/*" />
+			</fileset>
+		</chmod>
+
+		<copy todir="${resources.deploy.dir}">
+			<fileset dir="${resources.src.dir}" />
+  		</copy>
+	</target>
+
+	<target name="clean" description="clean up">
+		<delete dir="${build.dir}" />
+		<delete dir="${dist.dist}" />
+	</target>
+	
+	<target name="purge" depends="clean" description="purge">
+		<delete dir="${deploy.dir}" />
+	</target>	
+</project>

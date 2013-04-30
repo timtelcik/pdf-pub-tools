@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctoc>
+  <section>
+    <title>Ubuntu 6.06</title>
+    <pageNumber>100</pageNumber>
+  </section>
+  <section>
+    <title>MySQL 5.0</title>
+    <pageNumber>200</pageNumber>
+  </section>
+  <section>
+    <title>OpenOffice.org 2.0</title>
+    <pageNumber>300</pageNumber>
+  </section>
+  <section>
+    <title>The GIMP 2.2</title>
+    <pageNumber>400</pageNumber>
+  </section>
+</doctoc>

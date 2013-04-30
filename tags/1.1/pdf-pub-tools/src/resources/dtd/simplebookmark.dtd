@@ -1,0 +1,19 @@
+ <?xml version='1.0' encoding='UTF-8'?>
+ 
+ <!ELEMENT Title (#PCDATA|Title)*>
+ 
+ <!ATTLIST Title
+    Action CDATA #IMPLIED
+    Open CDATA #IMPLIED
+    Page CDATA #IMPLIED
+    URI CDATA #IMPLIED
+    File CDATA #IMPLIED
+    Named CDATA #IMPLIED
+    NamedN CDATA #IMPLIED
+    NewWindow CDATA #IMPLIED
+    Style CDATA #IMPLIED
+    Color CDATA #IMPLIED
+ >
+ 
+ <!ELEMENT Bookmark (Title)*>
+ 

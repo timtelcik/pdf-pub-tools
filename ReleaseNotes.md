@@ -1,0 +1,11 @@
+# Releases #
+
+## Release 1.0 ##
+
+  * Includes PDF command line tools and Book Publisher GUI.
+  * Includes upgrade from JODReports 2.x to JODReports 3.x
+
+## Release 1.1 ##
+
+  * Book Publisher GUI and CLI create PDF books with bookmarks (aka. TOC)
+  * Adds “open bookmarks” flag/status to PDF so the bookmarks view opens automatically when Acrobat opens PDF.

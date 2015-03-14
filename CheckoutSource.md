@@ -1,0 +1,10 @@
+# Checkout Source #
+
+  * Checkout source for this project using details at http://code.google.com/p/pdf-pub-tools/source/checkout
+
+eg.
+```
+% md -p $HOME/work/project/pdf-pub-tools/trunk
+% cd $HOME/work/project/pdf-pub-tools/trunk
+% svn  checkout  https://pdf-pub-tools.googlecode.com/svn/trunk/pdf-pub-tools .
+```

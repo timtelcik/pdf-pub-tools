@@ -1,0 +1,74 @@
+# Backlog #
+
+This page contains a non-exhaustive list of backlog items.
+
+## Release 1.x ##
+
+### General ###
+
+  * Review performance for processing large doc sets (i.e. memory usage. thread count).
+  * Revise verbose and debug logging. Use log4j ?
+  * Review GPL v3 license model
+  * Review command line (CLI) options and usage messages for all tools.
+  * Convert project to Maven 2 POM.
+
+### Book Publisher ###
+
+#### Build Publisher GUI ####
+
+  * Refresh GUI to support all command line options.
+
+#### Build TOC Page ####
+
+  * Revise Table of Contents (TOC) template document (toc-template.odt).
+
+#### Defaults ####
+
+  * Default paper size according to Locale (eg. A4, LETTER).
+
+
+#### TOC XML Configuration File ####
+
+Use a TOC XML config file to provide grouping of TOC entries and provide default meta-data (eg. title).
+
+eg.
+
+```
+<toc-configuration base="/home/somebody/work/source-docs">
+   <toc-template file="toc.odt">
+      <title>Table of Contents</title>
+   </toc-template>
+   <toc-entries>
+      <toc-entry-group title=”Day 1”>
+         <toc-entry file="overview.pdf">
+            <title>Overview</title>
+            <author>Basil Brush</author>
+            <keywords>overview</keywords>
+            <subject>overview</subject>
+          </toc-entry>
+      <toc-entry-group>
+      <toc-entry-group title=”Day 2”>
+         <toc-entry file="configuration.pdf">
+            <title>Configuration</title>
+            <author>Erik The Viking </author>
+            <keywords>configuration, setup</keywords>
+            <subject>configuration</subject>
+         </toc-entry>
+      </toc-entry-group>
+   </toc-entries>
+</toc-configuration>
+```
+
+Notes
+  * If PDF metadata does not have a title, author etc, default to values from TOC configuration entry.
+  * Use commons Digester to parse toc XML configuration into toc Entry model objects.
+  * Update TOC model objects with details collected during pdf assembly.
+  * Assume TOC template file path differs from PDF or ODT slide file path ?
+
+#### PDF Edit Meta ####
+
+(using iText)
+
+  * Read source PDF
+  * Create new PDF doc, add content bytes from source PDF, update meta title, subject etc.
+  * Write new PDF doc

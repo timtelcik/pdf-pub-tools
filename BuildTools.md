@@ -1,0 +1,22 @@
+# Build Tools #
+
+## Dependency ##
+
+[CheckoutSource](CheckoutSource.md).
+
+
+## Bourne Shell CLI ##
+
+eg.
+
+```
+% cd $HOME/work/project/pdf-pub-tools/trunk
+% ant clean deploy
+```
+
+The runtime items (eg. scripts, libraries) are built and deployed to the "deploy" folder.
+
+## Eclipse IDE ##
+
+  * Import pdf-pub-tools project into Eclipse IDE as an existing Java project.
+  * Build project.

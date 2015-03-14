@@ -1,0 +1,109 @@
+# Pre-Requisites #
+
+  * See [GettingStarted](GettingStarted.md).
+  * Setup [RuntimeEnvironment](RuntimeEnvironment.md).
+
+# Usage #
+
+Basic workflow:
+
+  * Start Open Office in "headless" (aka. server) mode.
+  * Run required publishing tool (eg. book publisher, pdf publisher)
+  * Stop Open Office
+
+# Dependency #
+
+## Open Office ##
+
+Start Open Office in "headless" mode.
+
+See [OpenOfficeHeadlessMode](OpenOfficeHeadlessMode.md).
+
+
+## Tools ##
+
+### Command Line Interfaces (CLI) ###
+
+#### Book Publisher CLI ####
+
+**Purpose**
+
+Exports Open Office docs to PDF and assembled into PDF book with a Table of Contents (TOC).
+
+**Java Class**
+
+net.mitnet.tools.pdf.book.publisher.ui.cli.BookPublisherCLI
+
+**Usage**
+
+```
+% $PDF_PUB_TOOLS_BIN/run-book-publisher-cli.sh -indir <input-dir> -ooutdir <output-dir> -outbook <output-pdf-book>
+```
+
+#### Open Office Doc Converter CLI ####
+
+**Purpose**
+
+Converts Open Office docs (eg. **.odt) to PDF (by default)**
+
+**Java Class**
+
+net.mitnet.tools.pdf.openoffice.ui.cli.OpenOfficeDocConverterCLI
+
+**Usage**
+
+```
+% $PDF_PUB_TOOLS_BIN/run-oo-doc-converter-cli.sh  -indir <input-dir>  -outbook <output-book-file>
+```
+
+#### Open Office Report Builder CLI ####
+
+**Purpose**
+
+Builds a report using a report template and data file.
+
+**Java Class**
+
+net.mitnet.tools.pdf.openoffice.ui.cli.OpenOfficeReportBuilderrCLI
+
+**Usage**
+
+```
+% $PDF_PUB_TOOLS_BIN/run-oo-report-builder-cli.sh  -template <template-file>  -data <report-data-file> -report <report-file>
+```
+
+
+
+#### Pdf Book Builder CLI ####
+
+**Purpose**
+
+Assembles a set of PDF files into a 2up PDF book.
+
+**Java Class**
+
+net.mitnet.tools.pdf.pdf.builder.ui.cli.PdfBookBuilderCLI
+
+**Usage**
+
+```
+% $PDF_PUB_TOOLS_BIN/run-pdf-book-builder-cli.sh  -indir <input-dir>  -outbook <output-book-file>
+```
+
+### Graphical User Interface (GUI) ###
+
+#### Book Publisher GUI ####
+
+**Purpose**
+
+Graphical interface to the Book Publisher tools. The GUI is equivalent to the Book Publisher CLI
+
+**Java Class**
+
+net.mitnet.tools.pdf.book.publisher.ui.gui.BookPublisherGUI
+
+**Usage**
+
+```
+% $PDF_PUB_TOOLS_BIN/run-book-publisher-gui.sh -indir <input-dir> -ooutdir <output-dir> -outbook <output-pdf-book>
+```

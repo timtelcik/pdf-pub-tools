@@ -4,12 +4,13 @@ PDF Publishing Tools - README
 History
 -------
 
-Created: 1-Mar-2011, Tim Telcik <telcik@gmail.com>
-Updated: 1-Mar-2011, Tim Telcik <telcik@gmail.com>
-Updated: 20-Jul-2011, Tim Telcik <telcik@gmail.com>
-Updated: 15-Feb-2012, Tim Telcik <telcik@gmail.com>
-Updated: 14-Mar-2015, Tim Telcik <telcik@gmail.com>
-+ Automatically exported from code.google.com/p/pdf-pub-tools
+* Created: 1-Mar-2011, Tim Telcik <telcik@gmail.com>
+* Updated: 1-Mar-2011, Tim Telcik <telcik@gmail.com>
+* Updated: 20-Jul-2011, Tim Telcik <telcik@gmail.com>
+* Updated: 15-Feb-2012, Tim Telcik <telcik@gmail.com>
+* Updated: 14-Mar-2015, Tim Telcik <telcik@gmail.com>
+
+    Automatically exported from code.google.com/p/pdf-pub-tools
 
 
 Overview
@@ -27,40 +28,40 @@ See related notes in the "docs" folder.
 How To Build
 ------------
 
-### Checkout Source from Trunk
+### Checkout Source from GitHub
 
-Setup local trunk folder and checkout latest source from trunk.
+Setup local master folder and clone latest source from master.
 
 % cd <YOUR-PROJECT-WORK-FOLDER>
 % mkdir -p pdf-pub-tools/master
 % cd pdf-pub-tools/master
-% git clone http://github.com/timtelcik/pdf-pub-tools.git
+% git clone https://github.com/timtelcik/pdf-pub-tools.git
 
 
 ### Build
 
-1/ cd pdf-pub-tools/trunk/pdf-pub-tools
+1/ cd pdf-pub-tools/master/pdf-pub-tools
 
 2/ ant clean
 
 3/ ant deploy
 
-   This will create a "deploy" folder with runtime libraries and resources, including "lib/pdf-pub-tools.jar".
+This will create a "deploy" folder with runtime libraries and resources, including "lib/pdf-pub-tools.jar".
 
 4/ cd deploy
 
 5/ Review and use relevant runtime wrapper script.
 
-   eg. 
+eg. 
 
-   deploy/bin/run-book-builder-cli.sh
-   deploy/bin/run-book-builder-gui.sh
-   deploy/bin/run-pdf-book-builder-cli.sh
+    deploy/bin/run-book-builder-cli.sh
+    deploy/bin/run-book-builder-gui.sh
+    deploy/bin/run-pdf-book-builder-cli.sh
 
-   deploy/bin/test-book-publisher-cli.sh, which is a wrapper for run-book-builder-cli.sh
-   deploy/bin/test-pdf-book-builder-cli.sh, which is a wrapper for run-pdf-book-builder-cli.sh
+NOTE: deploy/bin/test-book-publisher-cli.sh is a wrapper for run-book-builder-cli.sh
+NOTE: deploy/bin/test-pdf-book-builder-cli.sh is a wrapper for run-pdf-book-builder-cli.sh
 
-   Also see "docs/usage.txt".
+Also see "docs/usage.txt".
 
 
 Development

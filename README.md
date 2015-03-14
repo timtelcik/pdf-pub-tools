@@ -32,25 +32,43 @@ How To Build
 
 Setup local master folder and clone latest source from master.
 
-% cd <YOUR-PROJECT-WORK-FOLDER>
-% mkdir -p pdf-pub-tools/master
-% cd pdf-pub-tools/master
-% git clone https://github.com/timtelcik/pdf-pub-tools.git
+eg.
+
+    % cd <YOUR-PROJECT-WORK-FOLDER>
+    % mkdir -p pdf-pub-tools/master
+    % cd pdf-pub-tools/master
+    % git clone https://github.com/timtelcik/pdf-pub-tools.git
 
 
 ### Build
 
-1/ cd pdf-pub-tools/master/pdf-pub-tools
+1/ Navigate to source folder
 
-2/ ant clean
+eg.
 
-3/ ant deploy
+    cd pdf-pub-tools/master/pdf-pub-tools
 
-This will create a "deploy" folder with runtime libraries and resources, including "lib/pdf-pub-tools.jar".
+2/ Clean source folder
 
-4/ cd deploy
+eg.
 
-5/ Review and use relevant runtime wrapper script.
+    ant clean
+
+3/ Deploy resources
+
+eg.
+
+    ant deploy
+
+NOTE: This will create a "deploy" folder with runtime libraries and resources, including "lib/pdf-pub-tools.jar".
+
+4/ Navigate to deploy folder
+
+eg.
+
+    cd deploy
+
+5/ Review and/or use relevant runtime wrapper scripts.
 
 eg. 
 

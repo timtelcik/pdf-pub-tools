@@ -20,7 +20,7 @@ This folder contains the source code and resources for the PDF Publishing Tools 
 
 See the JUnit test cases and Eclipse IDE launch configs in folder "test/src" for examples of runtime and API usage.
 
-This project is currently hosted by Google Code at "https://code.google.com/p/pdf-pub-tools/".
+This project is currently hosted by GitHub at "https://github.com/timtelcik/pdf-pub-tools".
 
 See related notes in the "docs" folder.
 

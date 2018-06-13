@@ -23,6 +23,12 @@ See related notes in the "docs" folder.
 
 ## How To Build
 
+### Install Build Tools
+
+ * Oracle Java 1.8+ (8)
+ * Gradle 4.5.1
+
+
 ### Checkout Source from GitHub
 
 Setup local trunk folder and checkout latest source from trunk.
@@ -34,7 +40,7 @@ $ cd pdf-pub-tools
 ```
 
 
-### Install Dependencies
+### Install Java Dependencies
 
 ```
 $ cd <YOUR-PROJECT-WORK-FOLDER>

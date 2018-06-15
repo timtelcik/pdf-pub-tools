@@ -54,48 +54,59 @@ public class PdfBookmarkBuilder {
 
 	public void addBookmarks( File inputPdfFile, String bookmarksFile, File outputPdfFile ) throws IOException, DocumentException {
 		
-		Reader bookmarksReader = new FileReader(bookmarksFile);
+		Reader bookmarksReader = new FileReader( bookmarksFile );
 
-		List<HashMap<String, Object>> bookmarks = SimpleBookmark.importFromXML(bookmarksReader);
+		List<HashMap<String, Object>> bookmarksList = SimpleBookmark.importFromXML(bookmarksReader);
 		
-		addBookmarks( inputPdfFile, bookmarks, outputPdfFile);
+		addBookmarks( inputPdfFile, bookmarksList, outputPdfFile );
 	}
 
 	
-	public void addBookmarks( File inputPdfFile, List<HashMap<String, Object>> bookmarks, File outputPdfFile ) throws IOException, DocumentException {
+	public void addBookmarks( File inputPdfFile, List<HashMap<String, Object>> bookmarksList, File outputPdfFile ) throws IOException, DocumentException {
 		
 		String inputPdfFileName = inputPdfFile.getAbsolutePath();
 		
 		String outputPdfFileName = outputPdfFile.getAbsolutePath();
 		
-		addBookmarks( inputPdfFileName, bookmarks, outputPdfFileName);
+		addBookmarks( inputPdfFileName, bookmarksList, outputPdfFileName );
 	}
 	
 	
 	public void addBookmarks( String inputPdfFile, String bookmarksFile, String outputPdfFile ) throws IOException, DocumentException {
 		
-		Reader bookmarksReader = new FileReader(bookmarksFile);
-
-		List<HashMap<String, Object>> bookmarks = SimpleBookmark.importFromXML(bookmarksReader);
-		
-		addBookmarks( inputPdfFile, bookmarks, outputPdfFile);
+		addBookmarks( inputPdfFile, bookmarksFile, outputPdfFile, null );
 	}
+	
+	
+	public void addBookmarks( String inputPdfFile, String bookmarksFile, String outputPdfFile, Integer pageShift ) throws IOException, DocumentException {
+		
+		Reader bookmarksReader = new FileReader( bookmarksFile );
+
+		List<HashMap<String, Object>> bookmarksList = SimpleBookmark.importFromXML( bookmarksReader );
+		
+		if (pageShift != null) {
+			System.out.println("shifting pages by " + pageShift);
+			SimpleBookmark.shiftPageNumbers( bookmarksList, pageShift, null );
+		}
+		
+		addBookmarks( inputPdfFile, bookmarksList, outputPdfFile );
+	}	
 	
 	
 	public void addBookmarks( String inputPdfFile, List<HashMap<String, Object>> bookmarks, String outputPdfFile ) throws IOException, DocumentException {
 		
-		PdfReader reader = new PdfReader(inputPdfFile);
+		PdfReader reader = new PdfReader( inputPdfFile );
 
-		PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(outputPdfFile));
+		PdfStamper stamper = new PdfStamper( reader, new FileOutputStream( outputPdfFile ) );
 		
 		if (bookmarks != null) {
-			System.out.println("bookmarks.size: " + bookmarks.size());	
+			System.out.println("bookmarks.size: " + bookmarks.size());
 		}
 		System.out.println("bookmarks: " + bookmarks);
 		
 		stamper.setOutlines(bookmarks);
 		
-		stamper.addViewerPreference(PdfName.NONFULLSCREENPAGEMODE, PdfName.USEOUTLINES);
+		stamper.addViewerPreference( PdfName.NONFULLSCREENPAGEMODE, PdfName.USEOUTLINES );
 		
 		stamper.close();
 	}	
@@ -103,21 +114,31 @@ public class PdfBookmarkBuilder {
 	
 	public static void main(String[] args) throws IOException, DocumentException {
 		
-		if (args.length != 3) {
-			System.err.println("usage: " + PdfBookmarkBuilder.class.getName() + " <input-pdf-file> <bookmarks-file> <output-pdf-file>");
+		if (args.length < 3) {
+			System.err.println("usage: " + PdfBookmarkBuilder.class.getName() + " <input-pdf-file> <bookmarks-file> <output-pdf-file> [page-shift]");
 			System.exit(1);
 		}
 		
 		String inputPdfFile = args[0];
 		String bookmarksFile = args[1];
 		String outputPdfFile = args[2];
+
+		Integer pageShift = null;
+		if (args.length == 4) {
+			pageShift = Integer.valueOf( args[3] );			
+		}
 		
 		System.out.println("inputPdfFile: " + inputPdfFile);
 		System.out.println("bookmarksFile: " + bookmarksFile);
 		System.out.println("outputPdfFile: " + outputPdfFile);
+
+		if (pageShift != null) {
+			System.out.println("pageShift: " + pageShift);			
+		}
 		
 		PdfBookmarkBuilder builder = new PdfBookmarkBuilder();
-		builder.addBookmarks(inputPdfFile,bookmarksFile,outputPdfFile);
+		
+		builder.addBookmarks( inputPdfFile, bookmarksFile, outputPdfFile, pageShift );
 		
 		System.exit(0);
 	}

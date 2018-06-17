@@ -15,7 +15,6 @@ echo "PRG_DIR: $PRG_DIR"
 
 . $PRG_DIR/set-env.sh
 
-#MAIN_CLASS=net/mitnet/tools/pdf/book/publisher/ui/cli/BookPublisherCLI
 MAIN_CLASS=net.mitnet.tools.pdf.book.pdf.util.PdfBookmarkBuilder
 echo "MAIN_CLASS: $MAIN_CLASS"
 

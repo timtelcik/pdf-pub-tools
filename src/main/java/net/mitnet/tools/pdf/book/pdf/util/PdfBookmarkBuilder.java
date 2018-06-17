@@ -20,10 +20,15 @@ package net.mitnet.tools.pdf.book.pdf.util;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
 
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.PdfName;
@@ -35,6 +40,8 @@ import com.lowagie.text.pdf.SimpleBookmark;
 /**
  * PDF Bookmark Builder.
  * 
+ * @author Tim Telcik <telcik@gmail.com>
+ *
  * @see http://api.itextpdf.com/itext/com/itextpdf/text/pdf/SimpleBookmark.html
  * @see http://api.itextpdf.com/itext/com/itextpdf/text/pdf/PdfStamper.html
  * @see http://api.itextpdf.com/itext/com/itextpdf/text/pdf/interfaces/PdfViewerPreferences.html
@@ -44,7 +51,8 @@ import com.lowagie.text.pdf.SimpleBookmark;
  * @see http://itextpdf.com/examples/iia.php?id=141 
  * @see http://kuujinbo.info/cs/itext_toc.aspx
  * 
- * @author Tim Telcik <telcik@gmail.com>
+ * @see PdfStamper
+ * @see SimpleBookmark
  */
 public class PdfBookmarkBuilder {
 	
@@ -52,16 +60,6 @@ public class PdfBookmarkBuilder {
 	}
 
 
-	public void addBookmarks( File inputPdfFile, String bookmarksFile, File outputPdfFile ) throws IOException, DocumentException {
-		
-		Reader bookmarksReader = new FileReader( bookmarksFile );
-
-		List<HashMap<String, Object>> bookmarksList = SimpleBookmark.importFromXML(bookmarksReader);
-		
-		addBookmarks( inputPdfFile, bookmarksList, outputPdfFile );
-	}
-
-	
 	public void addBookmarks( File inputPdfFile, List<HashMap<String, Object>> bookmarksList, File outputPdfFile ) throws IOException, DocumentException {
 		
 		String inputPdfFileName = inputPdfFile.getAbsolutePath();
@@ -69,7 +67,7 @@ public class PdfBookmarkBuilder {
 		String outputPdfFileName = outputPdfFile.getAbsolutePath();
 		
 		addBookmarks( inputPdfFileName, bookmarksList, outputPdfFileName );
-	}
+	}	
 	
 	
 	public void addBookmarks( String inputPdfFile, String bookmarksFile, String outputPdfFile ) throws IOException, DocumentException {
@@ -78,37 +76,47 @@ public class PdfBookmarkBuilder {
 	}
 	
 	
-	public void addBookmarks( String inputPdfFile, String bookmarksFile, String outputPdfFile, Integer pageShift ) throws IOException, DocumentException {
+	public void addBookmarks( String inputPdfFileName, String bookmarksFileName, String outputPdfFileName, Integer pageShift ) throws IOException, DocumentException {
 		
-		Reader bookmarksReader = new FileReader( bookmarksFile );
+		Reader bookmarksReader = new FileReader( bookmarksFileName );
+		
+		System.out.println("importing bookmarks from file " + bookmarksFileName);
 
 		List<HashMap<String, Object>> bookmarksList = SimpleBookmark.importFromXML( bookmarksReader );
 		
 		if (pageShift != null) {
-			System.out.println("shifting pages by " + pageShift);
+			System.out.println("shifting pages by (" + pageShift + ")");
 			SimpleBookmark.shiftPageNumbers( bookmarksList, pageShift, null );
 		}
 		
-		addBookmarks( inputPdfFile, bookmarksList, outputPdfFile );
+		System.out.println("adding bookmarks to file " + bookmarksFileName);
+		
+		addBookmarks( inputPdfFileName, bookmarksList, outputPdfFileName );
+		
+		String newBookmarksOutFileName = "new-bookmarks.xml";
+		
+		Writer newBookmarksWriter = new FileWriter( newBookmarksOutFileName );
+
+		// TODO: Review config and usage		
+		SimpleBookmark.exportToXML( bookmarksList, newBookmarksWriter, StandardCharsets.UTF_8.name(), true );
 	}	
 	
 	
-	public void addBookmarks( String inputPdfFile, List<HashMap<String, Object>> bookmarks, String outputPdfFile ) throws IOException, DocumentException {
-		
-		PdfReader reader = new PdfReader( inputPdfFile );
+	public void addBookmarks( String inputPdfFile, List<HashMap<String, Object>> bookmarksList, String outputPdfFile ) throws IOException, DocumentException {
 
-		PdfStamper stamper = new PdfStamper( reader, new FileOutputStream( outputPdfFile ) );
+		logList( bookmarksList, "Bookmarks" );
 		
-		if (bookmarks != null) {
-			System.out.println("bookmarks.size: " + bookmarks.size());
-		}
-		System.out.println("bookmarks: " + bookmarks);
+		PdfReader pdfReader = new PdfReader( inputPdfFile );
 		
-		stamper.setOutlines(bookmarks);
+		System.out.println("adding bookmark outlines to file " + inputPdfFile);
+
+		PdfStamper pdfStamper = new PdfStamper( pdfReader, new FileOutputStream( outputPdfFile ) );
 		
-		stamper.addViewerPreference( PdfName.NONFULLSCREENPAGEMODE, PdfName.USEOUTLINES );
+		pdfStamper.setOutlines( bookmarksList );
 		
-		stamper.close();
+		pdfStamper.addViewerPreference( PdfName.NONFULLSCREENPAGEMODE, PdfName.USEOUTLINES );
+		
+		pdfStamper.close();
 	}	
 
 	
@@ -133,7 +141,7 @@ public class PdfBookmarkBuilder {
 		System.out.println("outputPdfFile: " + outputPdfFile);
 
 		if (pageShift != null) {
-			System.out.println("pageShift: " + pageShift);			
+			System.out.println("pageShift: (" + pageShift + ")");			
 		}
 		
 		PdfBookmarkBuilder builder = new PdfBookmarkBuilder();
@@ -141,6 +149,20 @@ public class PdfBookmarkBuilder {
 		builder.addBookmarks( inputPdfFile, bookmarksFile, outputPdfFile, pageShift );
 		
 		System.exit(0);
+	}
+	
+	
+	private void logList( List list, String name ) {
+		
+		if (list != null) {
+			if (!StringUtils.isEmpty(name)) {
+				System.out.println("list name : " + name);
+			}
+			System.out.println("list size : " + list.size());			
+			for (Object obj : list) {
+				System.out.println(obj);
+			}
+		}
 	}
 
 }

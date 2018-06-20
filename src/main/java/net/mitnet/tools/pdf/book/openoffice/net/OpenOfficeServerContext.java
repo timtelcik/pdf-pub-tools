@@ -17,6 +17,10 @@
 
 package net.mitnet.tools.pdf.book.openoffice.net;
 
+import org.artofsolving.jodconverter.office.DefaultOfficeManagerConfiguration;
+
+import com.artofsolving.jodconverter.openoffice.connection.OpenOfficeConnection;
+
 
 /**
  * Open Office Server Context.
@@ -24,7 +28,8 @@ package net.mitnet.tools.pdf.book.openoffice.net;
  * Contains details for the Open Office service.
  *
  * @author Tim Telcik <telcik@gmail.com>
- * 
+ *
+ * @see DefaultOfficeManagerConfiguration
  * @see OpenOfficeConnection
  * @see OpenOfficeConnectionFactory
  */
@@ -35,6 +40,7 @@ public class OpenOfficeServerContext {
 	
 	private String host = DEFAULT_HOST;
 	private int port = DEFAULT_PORT;
+	private String homePath;
 	
 	
 	public OpenOfficeServerContext() {
@@ -67,10 +73,19 @@ public class OpenOfficeServerContext {
 	public void setPort(int port) {
 		this.port = port;
 	}
+	
+	public void setHomePath( String path ) {
+		this.homePath = path;
+	}
+	
+	public String getHomePath() {
+		return this.homePath;
+	}	
 
 	@Override
 	public String toString() {
-		return "OpenOfficeServerContext [host=" + host + ", port=" + port + "]";
+		String str = String.format("OpenOfficeServerContext [host=%s, port=%d, homePath=%s]", host, port, homePath);
+		return str;
 	}
 
 }

@@ -21,33 +21,24 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import javax.swing.border.Border;
 
-import net.mitnet.tools.pdf.book.io.FileExtensionConstants;
-import net.mitnet.tools.pdf.book.openoffice.converter.OpenOfficeDocConverter;
-import net.mitnet.tools.pdf.book.openoffice.net.OpenOfficeServerContext;
-import net.mitnet.tools.pdf.book.pdf.util.PdfPageSizeHelper;
 import net.mitnet.tools.pdf.book.publisher.BookPublisher;
-import net.mitnet.tools.pdf.book.publisher.BookPublisherConfig;
 import net.mitnet.tools.pdf.book.ui.gui.ProgressBarMonitor;
 import net.mitnet.tools.pdf.book.util.ProgressMonitor;
-
-import org.apache.commons.io.FilenameUtils;
-
-import com.lowagie.text.Rectangle;
 
 
 /**
@@ -65,9 +56,7 @@ import com.lowagie.text.Rectangle;
  * TODO - refactor GUI widget layout
  */
 public class BookPublisherGUI2 extends BaseBookPublisherGUI {
-	
-	private static final long serialVersionUID = -7359553392594050434L;
-	
+
 	private static final String FRAME_TITLE = "PDF Book Publisher 2";
 	
     public static final int FILE_TEXTFIELD_WIDTH = 40;
@@ -89,7 +78,9 @@ public class BookPublisherGUI2 extends BaseBookPublisherGUI {
 	
 	private JProgressBar progressBar;
 	
-	private JLabel statusMessageLabel;
+	private JTextArea statusMessageTextArea;
+	private JScrollPane statusMessageScrollPane;
+	
 
 
 	/**
@@ -200,14 +191,17 @@ public class BookPublisherGUI2 extends BaseBookPublisherGUI {
         });
         
         
-        // status message label
-        statusMessageLabel = new JLabel();
-        // String statusMessageText = "Press " + publishButton.getText() + " to start.";
-        String statusMessageText = "";
-        statusMessageLabel.setText(statusMessageText);
-        // statusMessageLabel.setVisible(false);
+        // status message text area
+        statusMessageTextArea = new JTextArea();
+        statusMessageTextArea.setSize(40, 20);
         
+        statusMessageScrollPane = new JScrollPane();
+        statusMessageScrollPane.getViewport().add(statusMessageTextArea);
 
+        String statusMessageText = "Press " + publishButton.getText() + " to start.";
+        setStatusMessage(statusMessageText);
+
+        
 		// progress bar
         progressBar = new JProgressBar();
 
@@ -231,7 +225,8 @@ public class BookPublisherGUI2 extends BaseBookPublisherGUI {
         // mainPanel.add(new Spacer());
         mainPanel.add(progressBar);
         // mainPanel.add(new Spacer());
-        mainPanel.add(statusMessageLabel);
+        //mainPanel.add(this.statusMessageTextArea);
+        mainPanel.add(this.statusMessageScrollPane);
         // mainPanel.add(new Spacer());
         mainPanel.add(exitButton);
 
@@ -244,18 +239,22 @@ public class BookPublisherGUI2 extends BaseBookPublisherGUI {
 
     }
 
+
 	private void inputDirButtonActionHandler(ActionEvent event) {
 		browseDir(inputDirField);
 	}
+
 	
 	private void outputDirButtonActionHandler(ActionEvent event) {
 		browseDir(outputDirField);
 	}
+
 	
 	private void exitButtonActionHandler(ActionEvent event) {
 		this.frame.setVisible(false);
 		System.exit(0);
 	}
+
 	
 	private void publishButtonActionHandler(ActionEvent event) {
 		// convertOpenOfficeDocumentsToPdf();
@@ -264,16 +263,18 @@ public class BookPublisherGUI2 extends BaseBookPublisherGUI {
 	
 
 	public void setStatusMessage(String msg) {
-		statusMessageLabel.setText(msg);
+		this.statusMessageTextArea.setText(msg);
 	}
 
 	private void updateProgressBar(int value) {
 		progressBar.setValue(value);
 	}
+
 	
 	private JProgressBar getProgressBar() {
 		return this.progressBar;
 	}
+
 	
 	public String getInputDirName() {
 		String dirName = inputDirField.getText(); 
@@ -282,10 +283,12 @@ public class BookPublisherGUI2 extends BaseBookPublisherGUI {
 		}
 		return dirName;
 	}
+
 	
 	public File getInputDir() {
 		return new File( getInputDirName() );
 	}
+
 	
 	public String getOutputDirName() {
 		String dirName = outputDirField.getText(); 
@@ -294,43 +297,12 @@ public class BookPublisherGUI2 extends BaseBookPublisherGUI {
 		}
 		return dirName;
 	}
+
 	
 	public File getOutputDir() {
 		return new File( getOutputDirName() );
 	}
 	
-	
-	/*
-	public BookPublisherConfig buildBookPublisherConfig() {
-		
-		BookPublisherConfig config = new BookPublisherConfig();
-		
-		ProgressMonitor progressMonitor = new ProgressBarMonitor(getProgressBar());
-		config.setProgressMonitor(progressMonitor);
-		
-		OpenOfficeServerContext serverContext = new OpenOfficeServerContext();
-		config.setServerContext(serverContext);
-		
-		Rectangle pageSize = PdfPageSizeHelper.getDefaultPageSizeByLocale();
-		config.setPageSize(pageSize);
-
-		// config.setMetaTitle(metaTitle);
-
-		// String metaAuthor = System.getProperty( "user.name" );
-		// config.setMetaAuthor(metaAuthor);
-		
-		config.setNup(BookPublisherConfig.DEFAULT_NUP);
-
-		boolean verbose = true;
-		config.setVerboseEnabled(verbose);
-		
-		boolean debug = true;
-		config.setDebugEnabled(debug);
-		
-		return config;
-	}
-	*/
-
 	
 	public static void main( String[] args ) {
 		SwingUtilities.invokeLater( new GuiRunner() );

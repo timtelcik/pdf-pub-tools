@@ -23,6 +23,11 @@ import java.util.Date;
 import javax.swing.JFileChooser;
 import javax.swing.JTextField;
 
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.StringUtils;
+
+import com.lowagie.text.Rectangle;
+
 import net.mitnet.tools.pdf.book.io.FileExtensionConstants;
 import net.mitnet.tools.pdf.book.openoffice.converter.OpenOfficeDocConverter;
 import net.mitnet.tools.pdf.book.openoffice.net.OpenOfficeServerContext;
@@ -30,10 +35,7 @@ import net.mitnet.tools.pdf.book.pdf.util.PdfPageSizeHelper;
 import net.mitnet.tools.pdf.book.publisher.BookPublisher;
 import net.mitnet.tools.pdf.book.publisher.BookPublisherConfig;
 import net.mitnet.tools.pdf.book.util.ProgressMonitor;
-
-import org.apache.commons.io.FilenameUtils;
-
-import com.lowagie.text.Rectangle;
+import net.mitnet.tools.pdf.book.util.SystemPropertyHelper;
 
 
 /**
@@ -46,6 +48,13 @@ import com.lowagie.text.Rectangle;
  * @see BookPublisher
  */
 public abstract class BaseBookPublisherGUI {
+	
+	// NOTE: JOD Converter parses system property "office.home" in OfficeUtils#getDefaultOfficeHome
+	public static final String PROPERTY_KEY_OPEN_OFFICE_HOME = "OPEN_OFFICE_HOME";
+
+	//public static final String PROPERTY_KEY_OPEN_OFFICE_PORT = "OPEN_OFFICE_PORT";
+	public static final String PROPERTY_KEY_OPEN_OFFICE_PORT = "office.port";
+	
 	
 	protected BaseBookPublisherGUI() {
 		// do nothing (yet)
@@ -91,23 +100,52 @@ public abstract class BaseBookPublisherGUI {
 				setStatusMessage("Converting OpenOffice docs ...");
 				// ProgressMonitor progressMonitor = new ProgressBarMonitor(getProgressBar());
 				ProgressMonitor progressMonitor = getProgressMonitor();
+				
 				System.out.println( "Converting OpenOffice docs in dir " + inputDir + " to PDF ..." );
+				
 				OpenOfficeServerContext serverContext = new OpenOfficeServerContext();
+				//OpenOfficeServerContext serverContext = buildOpenOfficeServerContext();
+				System.out.println("serverContext: " + serverContext);
+				
 				OpenOfficeDocConverter docConverter = new OpenOfficeDocConverter(serverContext);
 				boolean verbose = true;
 				docConverter.setVerboseEnabled(verbose);
 				docConverter.setProgressMonitor(progressMonitor);
 				docConverter.convertDocuments( inputDir, outputDir, OpenOfficeDocConverter.OUTPUT_FORMAT_PDF );
 				setStatusMessage("Finished converting documents.");
+				
 			} catch (Exception ex) {
 				setStatusMessage("Error publishing book: " + ex.getMessage());
 			}
+			
 		} else {
 			setStatusMessage("Source or output folder is invalid.");
 		}
 	}
-
 	
+	
+	protected OpenOfficeServerContext buildOpenOfficeServerContext() {
+		
+		// TODO: Use config library to manager property search path (e.g. Apache Commons Config)
+		
+		OpenOfficeServerContext serverContext = new OpenOfficeServerContext();
+		
+		// TODO: Interrogate host for open office home		
+		// see OfficeUtils#getDefaultOfficeHome
+		String homePath = SystemPropertyHelper.getSystemPropertyAsString(PROPERTY_KEY_OPEN_OFFICE_HOME);
+		if (! StringUtils.isEmpty(homePath)) {
+			serverContext.setHomePath(homePath);
+		}
+		
+		Integer port = SystemPropertyHelper.getSystemPropertyAsInteger(PROPERTY_KEY_OPEN_OFFICE_PORT);
+		if (port != null) {
+			serverContext.setPort(port.intValue());
+		}
+		
+		return serverContext;
+	}
+	
+
 	protected void publishBook() {
 		
 		File inputDir = getInputDir();

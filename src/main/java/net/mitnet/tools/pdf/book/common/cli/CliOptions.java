@@ -56,6 +56,9 @@ public class CliOptions {
 
 	public static final Option OPTION_OPEN_OFFICE_PORT = new Option("oop",
 			"open-office-port", true, "OpenOffice server port");
+
+	public static final Option OPTION_OPEN_OFFICE_HOME = new Option("ooh",
+			"open-office-home", false, "OpenOffice home");
 	
 	public static final Option OPTION_OUTPUT_FORMAT = 
 		new Option("f","output-format", true, "Output document format (e.g. pdf)");

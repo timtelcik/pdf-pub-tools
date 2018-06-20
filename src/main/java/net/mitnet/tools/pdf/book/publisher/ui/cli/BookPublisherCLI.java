@@ -40,6 +40,7 @@ import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.PosixParser;
+import org.apache.xml.utils.StringBufferPool;
 
 import com.google.common.io.Files;
 import com.lowagie.text.Rectangle;
@@ -171,6 +172,13 @@ public class BookPublisherCLI {
 			openOfficePort = commandLineHelper.getOptionValueAsInt(CliOptions.OPTION_OPEN_OFFICE_PORT);
 			serverContext.setPort(openOfficePort);
 		}
+		
+		//String openOfficeHomePath = OpenOfficeServerContext.DEFAULT_HOME;
+		String openOfficeHomePath = "";
+		if (commandLineHelper.hasOption(CliOptions.OPTION_OPEN_OFFICE_HOME)) {
+			openOfficeHomePath = commandLineHelper.getOptionValue(CliOptions.OPTION_OPEN_OFFICE_HOME);
+			serverContext.setHomePath(openOfficeHomePath);
+		}		
 		
 		Rectangle pageSize = ConfigHelper.parsePageSize(commandLineHelper);
 		config.setPageSize(pageSize);

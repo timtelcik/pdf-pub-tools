@@ -22,17 +22,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.mitnet.tools.pdf.book.io.FileHelper;
-import net.mitnet.tools.pdf.book.openoffice.net.OpenOfficeServerContext;
-import net.mitnet.tools.pdf.book.util.MathHelper;
-import net.mitnet.tools.pdf.book.util.ProgressMonitor;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.artofsolving.jodconverter.OfficeDocumentConverter;
 import org.artofsolving.jodconverter.office.DefaultOfficeManagerConfiguration;
 import org.artofsolving.jodconverter.office.OfficeManager;
+
+import net.mitnet.tools.pdf.book.io.FileHelper;
+import net.mitnet.tools.pdf.book.openoffice.net.OpenOfficeServerContext;
+import net.mitnet.tools.pdf.book.util.MathHelper;
+import net.mitnet.tools.pdf.book.util.ProgressMonitor;
 
 
 /**
@@ -137,6 +137,7 @@ public class OpenOfficeDocConverter {
 	    officeManager.start();
 		
 		try {
+
 			OfficeDocumentConverter converter = new OfficeDocumentConverter(officeManager);
 			if (isDebugEnabled()) {
 				verbose("converter is " + converter );
@@ -151,13 +152,11 @@ public class OpenOfficeDocConverter {
 					if (outputDir == null) {
 						baseOutputFilePath = inputFile.getParent();
 					} else {
-						String pathToParent = FileHelper.getPathToParent(
-								sourceDir, inputFile);
+						String pathToParent = FileHelper.getPathToParent(sourceDir, inputFile);
 						if (StringUtils.isEmpty(pathToParent)) {
 							baseOutputFilePath = outputDir.getAbsolutePath();
 						} else {
-							baseOutputFilePath = new File(outputDir,
-									pathToParent).getPath();
+							baseOutputFilePath = new File(outputDir,pathToParent).getPath();
 						}
 					}
 					String baseInputFileName = FilenameUtils.getBaseName(inputFile.getName());
@@ -170,6 +169,13 @@ public class OpenOfficeDocConverter {
 					}
 				}
 			}
+			
+		} catch (Exception e) {
+			
+			String msg = "Error converting documents : " + e.getMessage();
+			System.err.println(msg);
+			e.printStackTrace(System.err);
+			throw new Exception(msg, e);
 
 		} finally {
 			if (isDebugEnabled()) {
@@ -251,7 +257,14 @@ public class OpenOfficeDocConverter {
 		}
 		
 		DefaultOfficeManagerConfiguration config = new DefaultOfficeManagerConfiguration();
+		
 		config.setPortNumber(serverContext.getPort());
+		
+		String officeHomePath = serverContext.getHomePath();
+		if (! StringUtils.isEmpty(officeHomePath)) {
+			config.setOfficeHome(officeHomePath);
+		}
+		
 		OfficeManager officeManager = config.buildOfficeManager();
 		
 		if (isVerboseEnabled()) {

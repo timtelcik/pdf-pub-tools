@@ -26,16 +26,17 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
+import org.jdesktop.layout.GroupLayout;
+import org.jdesktop.layout.LayoutStyle;
+
 import net.mitnet.tools.pdf.book.publisher.BookPublisher;
 import net.mitnet.tools.pdf.book.ui.gui.ProgressBarMonitor;
 import net.mitnet.tools.pdf.book.util.ProgressMonitor;
-
-import org.jdesktop.layout.GroupLayout;
-import org.jdesktop.layout.LayoutStyle;
 
 
 
@@ -56,14 +57,12 @@ import org.jdesktop.layout.LayoutStyle;
  * TODO - use temp folder for output dir, allow user to browser output book file
  */
 public class BookPublisherGUI extends BaseBookPublisherGUI {
-	
-	private static final long serialVersionUID = -7359553392594050434L;
-	
+
 	private static final String FRAME_TITLE = "PDF Book Publisher";
 	
 	private JFrame frame;
 	private JProgressBar progressBar;
-	private JLabel statusMessageLabel;
+	private JTextArea statusMessageTextArea;
 	private JTextField inputDirField;
 	private JTextField outputDirField;
 
@@ -189,11 +188,10 @@ public class BookPublisherGUI extends BaseBookPublisherGUI {
         });
 
         
-        statusMessageLabel = new JLabel();
+        statusMessageTextArea = new JTextArea();
+        statusMessageTextArea.setSize(40, 10);
         String statusMessageText = "Click " + publishButton.getText() + " to start.";
-        // String statusMessageText = "";
-        statusMessageLabel.setText(statusMessageText);
-        // statusMessageLabel.setVisible(false);
+        setStatusMessage(statusMessageText);
         
         
         progressBar = new JProgressBar();
@@ -215,7 +213,7 @@ public class BookPublisherGUI extends BaseBookPublisherGUI {
                 .add(118, 118, 118))
             .add(layout.createSequentialGroup()
                 .addContainerGap()
-                .add(statusMessageLabel, GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE)
+                .add(statusMessageTextArea, GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE)
                 .addContainerGap())
             .add(layout.createSequentialGroup()
                 .add(159, 159, 159)
@@ -232,7 +230,7 @@ public class BookPublisherGUI extends BaseBookPublisherGUI {
                 .add(18, 18, 18)
                 .add(progressBar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                 .add(18, 18, 18)
-                .add(statusMessageLabel)
+                .add(statusMessageTextArea)
                 .add(43, 43, 43)
                 .add(exitButton)
                 .addContainerGap())
@@ -259,13 +257,12 @@ public class BookPublisherGUI extends BaseBookPublisherGUI {
 
 	
 	private void publishButtonActionHandler(ActionEvent event) {
-		// convertOpenOfficeDocumentsToPdf();
 		publishBook();
 	}
 	
 	
 	public void setStatusMessage(String msg) {
-		statusMessageLabel.setText(msg);
+		this.statusMessageTextArea.setText(msg);
 	}
 
 	

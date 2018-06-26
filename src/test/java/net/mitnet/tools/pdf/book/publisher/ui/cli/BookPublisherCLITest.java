@@ -1,4 +1,5 @@
 /*
+
     Copyright (C) 2010 to present by Tim Telcik <telcik@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
@@ -31,6 +32,7 @@ public class BookPublisherCLITest {
 	@Before
 	public void setUp() throws Exception {
 	}
+
 
 	@After
 	public void tearDown() throws Exception {

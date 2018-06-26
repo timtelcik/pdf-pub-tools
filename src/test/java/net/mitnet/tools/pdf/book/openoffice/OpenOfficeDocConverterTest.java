@@ -19,6 +19,10 @@ package net.mitnet.tools.pdf.book.openoffice;
 
 import java.io.File;
 
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Ignore;
+
 import junit.framework.TestCase;
 import net.mitnet.tools.pdf.book.common.cli.ConsoleProgressMonitor;
 import net.mitnet.tools.pdf.book.openoffice.converter.OpenOfficeDocConverter;
@@ -34,6 +38,7 @@ import net.mitnet.tools.pdf.book.util.ProgressMonitor;
  * 
  * @see OpenOfficeDocConverter
  */
+@Ignore
 public class OpenOfficeDocConverterTest extends TestCase {
 	
 	public OpenOfficeDocConverterTest(String name) {
@@ -41,12 +46,14 @@ public class OpenOfficeDocConverterTest extends TestCase {
 	}
 
 	
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		super.setUp();
 	}
 
 	
-	protected void tearDown() throws Exception {
+	@After
+	public void tearDown() throws Exception {
 		super.tearDown();
 	}
 	

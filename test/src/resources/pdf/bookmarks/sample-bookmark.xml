@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- http://www.mail-archive.com/itext-questions@lists.sourceforge.net/msg10971.html -->
+
+<Bookmark>
+   <Title Action="GoTo" Page="1 Fit" >PAGE ONE</Title>
+   <Title Action="GoTo" Page="2 Fit" >PAGE TWO</Title>
+   <Title Action="GoTo" Page="3 Fit" >PAGE THREE</Title>
+   <Title Action="GoTo" Page="4 Fit" >PAGE FOUR</Title>
+</Bookmark>

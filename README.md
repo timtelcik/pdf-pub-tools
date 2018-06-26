@@ -1,97 +1,102 @@
-PDF Publishing Tools - README
-=============================
+# PDF Publishing Tools - README
 
-History
--------
+## History
 
-* Created: 1-Mar-2011, Tim Telcik <telcik@gmail.com>
-* Updated: 1-Mar-2011, Tim Telcik <telcik@gmail.com>
-* Updated: 20-Jul-2011, Tim Telcik <telcik@gmail.com>
-* Updated: 15-Feb-2012, Tim Telcik <telcik@gmail.com>
-* Updated: 14-Mar-2015, Tim Telcik <telcik@gmail.com>
-
-    Automatically exported from code.google.com/p/pdf-pub-tools
+ * Created: 1-Mar-2011, Tim Telcik <telcik@gmail.com>
+ * Updated: 1-Mar-2011, Tim Telcik <telcik@gmail.com>
+ * Updated: 20-Jul-2011, Tim Telcik <telcik@gmail.com>
+ * Updated: 15-Feb-2012, Tim Telcik <telcik@gmail.com>
+ * Updated: 14-Mar-2015, Tim Telcik <telcik@gmail.com>
+ * Updated: 13-Jun-2018, Tim Telcik <telcik@gmail.com>
 
 
-Overview
---------
+## Overview
 
 This folder contains the source code and resources for the PDF Publishing Tools project.
 
-See the JUnit test cases and Eclipse IDE launch configs in folder "test/src" for examples of runtime and API usage.
+See the JUnit test cases and Eclipse IDE launch configuration in folder "src/test/resources/eclipse-ide/launch" for examples of runtime and API usage.
 
-This project is currently hosted by GitHub at "https://github.com/timtelcik/pdf-pub-tools".
+This project is currently hosted by GitHub at "https://github.com/timtelcik/pdf-pub-tools/".
 
 See related notes in the "docs" folder.
 
 
-How To Build
-------------
+## How To Build
+
+### Install Build Tools
+
+ * Oracle Java 1.8+ (8)
+ * Gradle 4.5.1
+
 
 ### Checkout Source from GitHub
 
-Setup local master folder and clone latest source from master.
+Setup local trunk folder and checkout latest source from trunk.
 
-eg.
+```
+$ cd <YOUR-PROJECT-WORK-FOLDER>
+$ git clone https://github.com/timtelcik/pdf-pub-tools/
+$ cd pdf-pub-tools
+```
 
-    % cd <YOUR-PROJECT-WORK-FOLDER>
-    % mkdir -p pdf-pub-tools/master
-    % cd pdf-pub-tools/master
-    % git clone https://github.com/timtelcik/pdf-pub-tools.git
+
+### Install Java Dependencies
+
+```
+$ cd <YOUR-PROJECT-WORK-FOLDER>
+$ cd pdf-pub-tools
+$ cd lib
+$ sh ./install-maven-deps.sh
+```
 
 
 ### Build
 
-1/ Navigate to source folder
+1/ cd pdf-pub-tools/
 
-eg.
+2/ gradle clean
 
-    cd pdf-pub-tools/master/pdf-pub-tools
+3/ gradle build
 
-2/ Clean source folder
 
-eg.
+### Install Package
 
-    ant clean
+1/ cd pdf-pub-tools/build/distribution
 
-3/ Deploy resources
+2/ unzip pdf-pub-tools-VERSION.zip
 
-eg.
 
-    ant deploy
+  
+### Usage
 
-NOTE: This will create a "deploy" folder with runtime libraries and resources, including "lib/pdf-pub-tools.jar".
+1/ Run tool wrapper script
 
-4/ Navigate to deploy folder
+e.g. run book builder
 
-eg.
+```
+$ ./bin/run-book-builder-cli.sh
+```
 
-    cd deploy
+e.g. run book publisher
 
-5/ Review and/or use relevant runtime wrapper scripts.
+```
+$ ./bin/run-book-publisher-cli.sh
+```
 
-eg. 
+e.g. run PDF book builder
 
-    deploy/bin/run-book-builder-cli.sh
-    deploy/bin/run-book-builder-gui.sh
-    deploy/bin/run-pdf-book-builder-cli.sh
-
-NOTE: deploy/bin/test-book-publisher-cli.sh is a wrapper for run-book-builder-cli.sh
-NOTE: deploy/bin/test-pdf-book-builder-cli.sh is a wrapper for run-pdf-book-builder-cli.sh
+```
+$ ./bin/run-book-builder-cli.sh
+```
 
 Also see "docs/usage.txt".
 
 
-Development
------------
+## Development
 
-Import "pdf-pub-tools" folder into Eclipse IDE 3.6+ as an existing Java project.
+### Eclipse IDE
 
-Eclipse will also configure the launch configs (src/*.launch) and make them available for running some of the 
+Import "pdf-pub-tools" source code into Eclipse IDE 3.6+ as a Gradle project.
+
+Eclipse IDE will also configure the launch configs (src/*.launch) and make them available for running some of the 
 test cases.
-
-
-Usage
------
-
-See "docs/usage.txt".

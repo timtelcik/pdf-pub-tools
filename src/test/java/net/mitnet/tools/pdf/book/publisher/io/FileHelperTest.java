@@ -20,6 +20,10 @@ package net.mitnet.tools.pdf.book.publisher.io;
 import java.io.File;
 import java.util.List;
 
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Ignore;
+
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import net.mitnet.tools.pdf.book.io.FileHelper;
@@ -31,19 +35,25 @@ import net.mitnet.tools.pdf.book.test.TestConstants;
  * 
  * @author Tim Telcik <telcik@gmail.com>
  */
+@Ignore
 public class FileHelperTest extends TestCase {
 
 	public FileHelperTest(String name) {
 		super(name);
 	}
 
-	protected void setUp() throws Exception {
+
+	@Before
+	public void setUp() throws Exception {
 		super.setUp();
 	}
 
-	protected void tearDown() throws Exception {
+	
+	@After
+	public void tearDown() throws Exception {
 		super.tearDown();
 	}
+
 
 	public void testFindOpenOfficeFiles() throws Exception {
 		
@@ -59,6 +69,7 @@ public class FileHelperTest extends TestCase {
 		System.out.println( "source dir " + sourceDir + " contains " + sourceFileList.size() + " ODT file(s)");
 	}
 	
+
 	public void testFindOpenOfficeFilesRecursive() throws Exception {
 		
 		File sourceDir = TestConstants.BOOK_SOURCE_DIR;
@@ -74,6 +85,7 @@ public class FileHelperTest extends TestCase {
 		System.out.println( "source dir " + sourceDir + " contains " + sourceFileList.size() + " ODT file(s)");
 	}
 	
+
 	public void testFindPdfFiles() throws Exception {
 		
 		File sourceDir = TestConstants.BOOK_OUTPUT_DIR;
@@ -103,6 +115,7 @@ public class FileHelperTest extends TestCase {
 		System.out.println( "source dir " + sourceDir + " contains " + sourceFileList.size() + " PDF file(s)");
 	}
 	
+
 	public void testPathToParent() throws Exception {
 		
 		File parentDir = new File( "/Users/tim.telcik/spool/docs/input" );
@@ -122,12 +135,12 @@ public class FileHelperTest extends TestCase {
 		String pathToParent = FileHelper.getPathToParent(parentDir, sourceFile);
 		System.out.println( "pathToParent: " + pathToParent);
 	}
-	
+
+
 	public static TestSuite suite() {
 		 TestSuite suite = new TestSuite();
 		 suite.addTest(new FileHelperTest("testPathToParent"));
 		 return suite;
 	}
-	
 
 }

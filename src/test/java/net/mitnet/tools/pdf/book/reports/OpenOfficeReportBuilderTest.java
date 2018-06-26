@@ -34,6 +34,7 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 
 
 /**
@@ -43,6 +44,7 @@ import org.junit.BeforeClass;
  * 
  * @author Tim Telcik <telcik@gmail.com>
  */ 
+@Ignore
 public class OpenOfficeReportBuilderTest extends TestCase {
 	
 	private File homeDir = new File( System.getProperty( "user.home" ) );

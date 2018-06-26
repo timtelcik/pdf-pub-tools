@@ -19,6 +19,7 @@ package net.mitnet.tools.pdf.book.pdf.builder.ui.cli;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 
 
 /**
@@ -31,6 +32,7 @@ public class PdfBookBuilderCLITest {
 	@Before
 	public void setUp() throws Exception {
 	}
+
 
 	@After
 	public void tearDown() throws Exception {

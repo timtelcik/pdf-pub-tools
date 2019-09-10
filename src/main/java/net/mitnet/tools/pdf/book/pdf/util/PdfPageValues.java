@@ -17,8 +17,8 @@
 
 package net.mitnet.tools.pdf.book.pdf.util;
 
-import com.lowagie.text.PageSize;
-import com.lowagie.text.Rectangle;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Rectangle;
 
 
 /**

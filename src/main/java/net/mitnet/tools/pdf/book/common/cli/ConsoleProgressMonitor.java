@@ -19,7 +19,6 @@ package net.mitnet.tools.pdf.book.common.cli;
 
 import net.mitnet.tools.pdf.book.util.ProgressMonitor;
 
-
 /**
  * Console Progress Monitor.
  * 

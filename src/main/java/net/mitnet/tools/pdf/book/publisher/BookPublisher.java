@@ -17,6 +17,15 @@
 
 package net.mitnet.tools.pdf.book.publisher;
 
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.PdfCopyFields;
+import com.itextpdf.text.pdf.PdfPageEvent;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfStamper;
+import com.itextpdf.text.pdf.SimpleBookmark;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -24,6 +33,9 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
 
 import net.mitnet.tools.pdf.book.io.FileExtensionConstants;
 import net.mitnet.tools.pdf.book.io.FileNameHelper;
@@ -41,22 +53,6 @@ import net.mitnet.tools.pdf.book.pdf.event.PdfPageEventLogger;
 import net.mitnet.tools.pdf.book.pdf.util.PdfBookmarkBuilder;
 import net.mitnet.tools.pdf.book.pdf.util.PdfMetaKeys;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.StringUtils;
-
-import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.PageSize;
-import com.lowagie.text.Rectangle;
-import com.lowagie.text.pdf.PdfCopyFields;
-import com.lowagie.text.pdf.PdfPageEvent;
-import com.lowagie.text.pdf.PdfReader;
-import com.lowagie.text.pdf.PdfStamper;
-import com.lowagie.text.pdf.SimpleBookmark;
-import com.lowagie.toolbox.plugins.HtmlBookmarks;
-import com.lowagie.toolbox.plugins.InspectPDF;
-import com.lowagie.toolbox.plugins.XML2Bookmarks;
-
 
 /**
  * Book Publisher.
@@ -67,10 +63,10 @@ import com.lowagie.toolbox.plugins.XML2Bookmarks;
  * 
  * @see com.lowagie.toolbox.plugins.Handouts
  * @see com.lowagie.toolbox.plugins.NUp
- * @see HtmlBookmarks
- * @see InspectPDF
+ * see HtmlBookmarks
+ * see InspectPDF
  * @see SimpleBookmark
- * @see XML2Bookmarks
+ * see XML2Bookmarks
  */
 public class BookPublisher {
 	
@@ -354,7 +350,9 @@ public class BookPublisher {
         String metaKeywords = config.getMetaKeywords();
         addNonEmptyMapValue( metaMap, PdfMetaKeys.KEYWORDS, metaKeywords );
         
-        String metaCreator = PDF_PUBLISHER_TOOLS_IDENT + " with " + Document.getVersion();
+        // TODO: Fix version lookup
+        //String metaCreator = PDF_PUBLISHER_TOOLS_IDENT + " with " + Document.getVersion();
+        String metaCreator = PDF_PUBLISHER_TOOLS_IDENT;
         addNonEmptyMapValue( metaMap, PdfMetaKeys.CREATOR, metaCreator );
         
         String metaAuthor = config.getMetaAuthor();

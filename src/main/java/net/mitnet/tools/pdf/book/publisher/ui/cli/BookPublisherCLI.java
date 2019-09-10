@@ -17,7 +17,16 @@
 
 package net.mitnet.tools.pdf.book.publisher.ui.cli;
 
+import com.google.common.io.Files;
+import com.itextpdf.text.Rectangle;
+
 import java.io.File;
+
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.PosixParser;
 
 import net.mitnet.tools.pdf.book.common.cli.CliDefaultValues;
 import net.mitnet.tools.pdf.book.common.cli.CliOptions;
@@ -34,16 +43,6 @@ import net.mitnet.tools.pdf.book.pdf.builder.ui.cli.PdfBookBuilderCLI;
 import net.mitnet.tools.pdf.book.publisher.BookPublisher;
 import net.mitnet.tools.pdf.book.publisher.BookPublisherConfig;
 import net.mitnet.tools.pdf.book.util.ProgressMonitor;
-
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.PosixParser;
-import org.apache.xml.utils.StringBufferPool;
-
-import com.google.common.io.Files;
-import com.lowagie.text.Rectangle;
 
 
 /**

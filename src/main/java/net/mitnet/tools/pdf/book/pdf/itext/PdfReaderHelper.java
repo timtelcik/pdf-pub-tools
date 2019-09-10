@@ -17,10 +17,10 @@
 
 package net.mitnet.tools.pdf.book.pdf.itext;
 
-import java.util.Map;
+import com.itextpdf.text.pdf.PdfName;
+import com.itextpdf.text.pdf.PdfReader;
 
-import com.lowagie.text.pdf.PdfName;
-import com.lowagie.text.pdf.PdfReader;
+import java.util.Map;
 
 
 /**

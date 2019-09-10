@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2010-2011  Tim Telcik <telcik@gmail.com>
+    Copyright (C) 2010 to present by Tim Telcik <telcik@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -22,18 +22,14 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Map;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-import net.mitnet.tools.pdf.book.model.converter.TocToTemplateDataMapConverter;
-import net.mitnet.tools.pdf.book.model.toc.Toc;
-import net.mitnet.tools.pdf.book.model.toc.TocRow;
-import net.mitnet.tools.pdf.book.openoffice.reports.OpenOfficeReportBuilder;
-import net.sf.jooreports.templates.DocumentTemplateException;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+import net.sf.jooreports.templates.DocumentTemplateException;
 
 
 /**

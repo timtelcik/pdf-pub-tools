@@ -22,13 +22,13 @@ import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.sf.jooreports.templates.DocumentTemplate;
-import net.sf.jooreports.templates.DocumentTemplateFactory;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+
+import net.sf.jooreports.templates.DocumentTemplate;
+import net.sf.jooreports.templates.DocumentTemplateFactory;
 
 
 /**

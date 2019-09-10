@@ -17,6 +17,8 @@
 
 package net.mitnet.tools.pdf.book.publisher.ui.gui;
 
+import com.itextpdf.text.Rectangle;
+
 import java.io.File;
 import java.util.Date;
 
@@ -25,8 +27,6 @@ import javax.swing.JTextField;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
-
-import com.lowagie.text.Rectangle;
 
 import net.mitnet.tools.pdf.book.io.FileExtensionConstants;
 import net.mitnet.tools.pdf.book.openoffice.converter.OpenOfficeDocConverter;

@@ -17,7 +17,17 @@
 
 package net.mitnet.tools.pdf.book.pdf.builder.ui.cli;
 
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.PdfPageEvent;
+
 import java.io.File;
+
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.PosixParser;
+import org.apache.commons.io.FilenameUtils;
 
 import net.mitnet.tools.pdf.book.common.cli.CliDefaultValues;
 import net.mitnet.tools.pdf.book.common.cli.CliOptions;
@@ -32,16 +42,6 @@ import net.mitnet.tools.pdf.book.pdf.builder.PdfBookBuilder;
 import net.mitnet.tools.pdf.book.pdf.builder.PdfBookBuilderConfig;
 import net.mitnet.tools.pdf.book.pdf.event.PdfPageEventLogger;
 import net.mitnet.tools.pdf.book.util.ProgressMonitor;
-
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.PosixParser;
-import org.apache.commons.io.FilenameUtils;
-
-import com.lowagie.text.Rectangle;
-import com.lowagie.text.pdf.PdfPageEvent;
 
 
 /**

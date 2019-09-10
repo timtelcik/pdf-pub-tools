@@ -19,7 +19,6 @@ package net.mitnet.tools.pdf.book.publisher;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 
 
 /**

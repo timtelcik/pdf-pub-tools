@@ -17,12 +17,12 @@
 
 package net.mitnet.tools.pdf.book.pdf.util;
 
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Rectangle;
+
 import java.util.Locale;
 
 import net.mitnet.tools.pdf.book.util.LocaleHelper;
-
-import com.lowagie.text.PageSize;
-import com.lowagie.text.Rectangle;
 
 
 /**

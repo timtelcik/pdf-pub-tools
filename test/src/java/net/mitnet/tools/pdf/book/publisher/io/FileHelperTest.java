@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2010-2011  Tim Telcik <telcik@gmail.com>
+    Copyright (C) 2010 to present by Tim Telcik <telcik@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -22,8 +22,6 @@ import java.util.List;
 
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import net.mitnet.tools.pdf.book.io.FileHelper;
-import net.mitnet.tools.pdf.book.test.TestConstants;
 
 
 /**

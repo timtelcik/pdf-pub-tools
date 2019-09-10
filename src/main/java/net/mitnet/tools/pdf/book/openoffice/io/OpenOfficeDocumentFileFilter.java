@@ -20,7 +20,6 @@ package net.mitnet.tools.pdf.book.openoffice.io;
 import net.mitnet.tools.pdf.book.io.FileExtensionConstants;
 import net.mitnet.tools.pdf.book.io.FileNameSuffixFileFilter;
 
-
 /**
  * Open Office Document File Filter.
  *

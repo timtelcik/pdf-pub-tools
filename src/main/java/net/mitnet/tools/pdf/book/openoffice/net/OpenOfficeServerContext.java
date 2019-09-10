@@ -17,9 +17,9 @@
 
 package net.mitnet.tools.pdf.book.openoffice.net;
 
-import org.artofsolving.jodconverter.office.DefaultOfficeManagerConfiguration;
-
 import com.artofsolving.jodconverter.openoffice.connection.OpenOfficeConnection;
+
+import org.artofsolving.jodconverter.office.DefaultOfficeManagerConfiguration;
 
 
 /**

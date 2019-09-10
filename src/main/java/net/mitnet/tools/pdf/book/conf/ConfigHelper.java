@@ -17,15 +17,15 @@
 
 package net.mitnet.tools.pdf.book.conf;
 
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Rectangle;
+
+import org.apache.commons.lang.StringUtils;
+
 import net.mitnet.tools.pdf.book.common.cli.CliOptions;
 import net.mitnet.tools.pdf.book.common.cli.CommandLineHelper;
 import net.mitnet.tools.pdf.book.pdf.util.PdfPageSizeHelper;
 import net.mitnet.tools.pdf.book.pdf.util.PdfPageValues;
-
-import org.apache.commons.lang.StringUtils;
-
-import com.lowagie.text.PageSize;
-import com.lowagie.text.Rectangle;
 
 
 /**

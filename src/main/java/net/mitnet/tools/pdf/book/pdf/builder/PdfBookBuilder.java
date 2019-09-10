@@ -17,9 +17,23 @@
 
 package net.mitnet.tools.pdf.book.pdf.builder;
 
+import com.itextpdf.text.Chapter;
+import com.itextpdf.text.ChapterAutoNumber;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfImportedPage;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.sun.star.report.Section;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.List;
+
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.StringUtils;
 
 import net.mitnet.tools.pdf.book.io.FileHelper;
 import net.mitnet.tools.pdf.book.model.toc.TocRow;
@@ -28,20 +42,6 @@ import net.mitnet.tools.pdf.book.pdf.event.PdfPageEventLogger;
 import net.mitnet.tools.pdf.book.pdf.itext.PdfReaderHelper;
 import net.mitnet.tools.pdf.book.util.MathHelper;
 import net.mitnet.tools.pdf.book.util.ProgressMonitor;
-
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang.StringUtils;
-
-import com.lowagie.text.Chapter;
-import com.lowagie.text.ChapterAutoNumber;
-import com.lowagie.text.Document;
-import com.lowagie.text.Rectangle;
-import com.lowagie.text.Section;
-import com.lowagie.text.pdf.BaseFont;
-import com.lowagie.text.pdf.PdfContentByte;
-import com.lowagie.text.pdf.PdfImportedPage;
-import com.lowagie.text.pdf.PdfReader;
-import com.lowagie.text.pdf.PdfWriter;
 
 
 /**

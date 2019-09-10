@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2010-2011  Tim Telcik <telcik@gmail.com>
+    Copyright (C) 2010 to present by Tim Telcik <telcik@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -22,13 +22,13 @@ import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.sf.jooreports.templates.DocumentTemplate;
-import net.sf.jooreports.templates.DocumentTemplateFactory;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+
+import net.sf.jooreports.templates.DocumentTemplate;
+import net.sf.jooreports.templates.DocumentTemplateFactory;
 
 
 /**

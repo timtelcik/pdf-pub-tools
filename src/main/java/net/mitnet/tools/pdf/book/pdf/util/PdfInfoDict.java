@@ -17,15 +17,15 @@
 
 package net.mitnet.tools.pdf.book.pdf.util;
 
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.pdf.PdfReader;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.pdf.PdfReader;
 
 
 /**

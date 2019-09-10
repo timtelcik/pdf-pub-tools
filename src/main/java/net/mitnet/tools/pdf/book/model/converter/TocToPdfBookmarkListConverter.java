@@ -17,6 +17,8 @@
 
 package net.mitnet.tools.pdf.book.model.converter;
 
+import com.itextpdf.text.pdf.SimpleBookmark;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,8 +28,6 @@ import java.util.List;
 import net.mitnet.tools.pdf.book.model.toc.Toc;
 import net.mitnet.tools.pdf.book.model.toc.TocRow;
 import net.sf.jooreports.templates.DocumentTemplateException;
-
-import com.lowagie.text.pdf.SimpleBookmark;
 
 
 /**
@@ -39,7 +39,7 @@ import com.lowagie.text.pdf.SimpleBookmark;
  * @see http://api.itextpdf.com/itext/com/itextpdf/text/pdf/SimpleBookmark.html
  * @see http://itext-general.2136553.n4.nabble.com/simply-add-a-bookmark-at-the-root-of-new-PDF-for-each-concat-ed-document-td2140075.html
  * @see http://www.mail-archive.com/itext-questions@lists.sourceforge.net/msg10971.html
- * @see com.itextpdf.text.pdf.SimpleBookmark
+ * @see com.itextpdf.text.DocumentException
  * @see http://itextpdf.com/examples/iia.php?id=140
  */
 public class TocToPdfBookmarkListConverter {

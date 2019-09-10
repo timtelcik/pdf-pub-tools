@@ -19,13 +19,6 @@ package net.mitnet.tools.pdf.book.openoffice.ui.cli;
 
 import java.io.File;
 
-import net.mitnet.tools.pdf.book.common.cli.CliOptions;
-import net.mitnet.tools.pdf.book.common.cli.CommandLineHelper;
-import net.mitnet.tools.pdf.book.common.cli.ConsoleProgressMonitor;
-import net.mitnet.tools.pdf.book.common.cli.SystemExitValues;
-import net.mitnet.tools.pdf.book.openoffice.converter.OpenOfficeDocConverter;
-import net.mitnet.tools.pdf.book.util.ProgressMonitor;
-
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.HelpFormatter;
@@ -33,6 +26,13 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.PosixParser;
 import org.artofsolving.jodconverter.office.DefaultOfficeManagerConfiguration;
 import org.artofsolving.jodconverter.office.OfficeManager;
+
+import net.mitnet.tools.pdf.book.common.cli.CliOptions;
+import net.mitnet.tools.pdf.book.common.cli.CommandLineHelper;
+import net.mitnet.tools.pdf.book.common.cli.ConsoleProgressMonitor;
+import net.mitnet.tools.pdf.book.common.cli.SystemExitValues;
+import net.mitnet.tools.pdf.book.openoffice.converter.OpenOfficeDocConverter;
+import net.mitnet.tools.pdf.book.util.ProgressMonitor;
 
 
 

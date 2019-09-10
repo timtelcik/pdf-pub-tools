@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2010-2011  Tim Telcik <telcik@gmail.com>
+    Copyright (C) 2010 to present by Tim Telcik <telcik@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -20,11 +20,6 @@ package net.mitnet.tools.pdf.book.openoffice;
 import java.io.File;
 
 import junit.framework.TestCase;
-import net.mitnet.tools.pdf.book.common.cli.ConsoleProgressMonitor;
-import net.mitnet.tools.pdf.book.openoffice.converter.OpenOfficeDocConverter;
-import net.mitnet.tools.pdf.book.openoffice.net.OpenOfficeServerContext;
-import net.mitnet.tools.pdf.book.test.TestConstants;
-import net.mitnet.tools.pdf.book.util.ProgressMonitor;
 
 
 /**

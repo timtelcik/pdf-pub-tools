@@ -24,14 +24,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import net.mitnet.tools.pdf.book.model.toc.Toc;
-import net.sf.jooreports.templates.DocumentTemplate;
-import net.sf.jooreports.templates.DocumentTemplateFactory;
-
 import org.apache.commons.io.FilenameUtils;
 
 import freemarker.ext.dom.NodeModel;
 import freemarker.template.Configuration;
+import net.mitnet.tools.pdf.book.model.toc.Toc;
+import net.sf.jooreports.templates.DocumentTemplate;
+import net.sf.jooreports.templates.DocumentTemplateFactory;
 
 
 /**

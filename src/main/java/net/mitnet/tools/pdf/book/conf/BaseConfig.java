@@ -17,12 +17,12 @@
 
 package net.mitnet.tools.pdf.book.conf;
 
+import com.itextpdf.text.Rectangle;
+
 import net.mitnet.tools.pdf.book.common.cli.CliDefaultValues;
 import net.mitnet.tools.pdf.book.pdf.util.PdfPageSizeHelper;
 import net.mitnet.tools.pdf.book.pdf.util.PdfPageValues;
 import net.mitnet.tools.pdf.book.util.ProgressMonitor;
-
-import com.lowagie.text.Rectangle;
 
 
 /**

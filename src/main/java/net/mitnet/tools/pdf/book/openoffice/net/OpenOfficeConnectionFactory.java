@@ -17,6 +17,8 @@
 
 package net.mitnet.tools.pdf.book.openoffice.net;
 
+import com.artofsolving.jodconverter.openoffice.connection.OpenOfficeConnection;
+
 //import com.artofsolving.jodconverter.openoffice.connection.OpenOfficeConnection;
 //import com.artofsolving.jodconverter.openoffice.connection.SocketOpenOfficeConnection;
 

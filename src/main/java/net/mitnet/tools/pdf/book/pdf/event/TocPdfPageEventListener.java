@@ -17,10 +17,10 @@
 
 package net.mitnet.tools.pdf.book.pdf.event;
 
-import com.lowagie.text.Document;
-import com.lowagie.text.pdf.PdfPageEvent;
-import com.lowagie.text.pdf.PdfPageEventHelper;
-import com.lowagie.text.pdf.PdfWriter;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.pdf.PdfPageEvent;
+import com.itextpdf.text.pdf.PdfPageEventHelper;
+import com.itextpdf.text.pdf.PdfWriter;
 
 /**
  * TOC Page Event Listener.

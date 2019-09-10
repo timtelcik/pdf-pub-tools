@@ -17,6 +17,12 @@
 
 package net.mitnet.tools.pdf.book.pdf.util;
 
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.pdf.PdfName;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfStamper;
+import com.itextpdf.text.pdf.SimpleBookmark;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
@@ -29,12 +35,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.pdf.PdfName;
-import com.lowagie.text.pdf.PdfReader;
-import com.lowagie.text.pdf.PdfStamper;
-import com.lowagie.text.pdf.SimpleBookmark;
 
 
 /**

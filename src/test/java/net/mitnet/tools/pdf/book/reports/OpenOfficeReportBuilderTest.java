@@ -22,6 +22,12 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Map;
 
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
+
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import net.mitnet.tools.pdf.book.model.converter.TocToTemplateDataMapConverter;
@@ -29,12 +35,6 @@ import net.mitnet.tools.pdf.book.model.toc.Toc;
 import net.mitnet.tools.pdf.book.model.toc.TocRow;
 import net.mitnet.tools.pdf.book.openoffice.reports.OpenOfficeReportBuilder;
 import net.sf.jooreports.templates.DocumentTemplateException;
-
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
 
 
 /**

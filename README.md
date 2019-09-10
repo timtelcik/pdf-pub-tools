@@ -8,6 +8,7 @@
  * Updated: 15-Feb-2012, Tim Telcik <telcik@gmail.com>
  * Updated: 14-Mar-2015, Tim Telcik <telcik@gmail.com>
  * Updated: 13-Jun-2018, Tim Telcik <telcik@gmail.com>
+ * Updated: 10-Sep-2018, Tim Telcik <telcik@gmail.com> 
 
 
 ## Overview
@@ -98,5 +99,4 @@ Also see "docs/usage.txt".
 
 Import "pdf-pub-tools" source code into Eclipse IDE 3.6+ as a Gradle project.
 
-Eclipse IDE will also configure the launch configs (src/*.launch) and make them available for running some of the 
-test cases.
+Eclipse IDE will also configure the launch configs (src/*.launch) and make them available for running some of the test cases.
